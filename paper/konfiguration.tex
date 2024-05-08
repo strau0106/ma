@@ -1,0 +1,31 @@
+% Paket um vordefinierte Texte (z.B. "Inhaltsverzeichnis") auf Deutsch zu übersetzen
+\usepackage[ngerman]{babel}
+
+% Paket um Schriftarten festzulegen (für XeLaTeX)
+\usepackage{fontspec}
+
+% serifenfreie Schriftart Arial festlegen
+% \setsansfont{}
+
+% serifenfreie Schriftvariante verwenden
+\renewcommand{\familydefault}{\sfdefault}
+
+% Paket um Grafiken (JPG, PNG, PDF) einzubinden
+\usepackage{graphicx}
+
+% Paket für Zeilenabstand
+\usepackage{setspace}
+
+% Paket für korrekte Anführungszeichen
+\usepackage{csquotes}
+
+% Paket für selbst definierte Kopf- und Fusszeilen
+\usepackage{scrlayer-scrpage}
+
+% Pakte für Zitate und Bibliografie
+\usepackage{biblatex}
+
+\addbibresource{literatur.bib}
+
+% Paket zum Erzeugen von Platzhaltertext
+\usepackage{lipsum}

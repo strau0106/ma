@@ -1,0 +1,45 @@
+\documentclass[parskip=full]{scrreprt}
+\input{konfiguration}
+
+% Schmale Seitenränder festlegen
+\KOMAoption{DIV}{15}
+
+% Text auf Titelseite festlegen
+\subject{Maturaarbeit}
+\title{Titel der Arbeit}
+\author{Name Autor*in\vspace{1cm}\\
+Betreut durch \\
+Name Betreuer*in}
+\publishers{\includegraphics{logo}\vspace{1cm}\\
+Gymnasium Kirchenfeld\\
+Abteilung XY}
+
+% selbst definierte Kopf- und Fusszeile
+\lohead{Maturaarbeit}
+%\rohead{\theauthor}
+\cofoot{\thepage}
+
+% Zeilenabstand festlegen
+\singlespacing
+%\onehalfspacing
+%\doublespacing
+
+% Trennlinie für Kopfzeile
+\KOMAoption{headsepline}{off} % oder on
+
+% Trennlinie für Fusszeile
+\KOMAoption{footsepline}{on} % oder on
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\input{1-einleitung.tex}
+\input{2-hauptteil.tex}
+
+\listoffigures
+\printbibliography
+
+\end{document}
