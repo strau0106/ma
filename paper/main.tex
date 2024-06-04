@@ -1,21 +1,22 @@
 \documentclass[parskip=full]{scrreprt}
-\input{konfiguration}
+\input{configuration}
 
 % Schmale Seitenränder festlegen
 \KOMAoption{DIV}{15}
 
 % Text auf Titelseite festlegen
-\subject{Maturaarbeit}
-\title{Titel der Arbeit}
-\author{Name Autor*in\vspace{1cm}\\
-Betreut durch \\
-Name Betreuer*in}
+\subject{Maturapaper}
+\title{Designing and implementing an 8-bit Computer Architecture in Verilog}
+\author{Rufus Spyra\vspace{1cm}\\
+Supervised by \\
+Stefan Rothe \\
+Corinne Sörensen}
 \publishers{\includegraphics{logo}\vspace{1cm}\\
 Gymnasium Kirchenfeld\\
-Abteilung XY}
+Divison MN}
 
 % selbst definierte Kopf- und Fusszeile
-\lohead{Maturaarbeit}
+\lohead{Maturapaper}
 %\rohead{\theauthor}
 \cofoot{\thepage}
 
@@ -36,8 +37,8 @@ Abteilung XY}
 
 \tableofcontents
 
-\input{1-einleitung.tex}
-\input{2-hauptteil.tex}
+\input{1-introduction.tex}
+\input{2-mainpart.tex}
 
 \listoffigures
 \printbibliography
