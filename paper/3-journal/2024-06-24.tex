@@ -19,5 +19,39 @@
   \end{center}
 \end{table}
 
+General Ideas: Going into this for features
+I/O of system. How do I do I/O? Because I need I/O...
+\begin{enumerate}
+  \item Magic Adresses, so certain memory is I/O buffers?
+  \item I/O registers? Buffering is going to be annoying. I need interrupts then?
+  \item iface with py so it looks cool/fun? thats also always a factor? 
+\end{enumerate}
+
+Microcode. 
+Distributing the microcode w/ each assembly. 
+"Only the instructions you need". 
+Also prematurely being able to "break" out of state cycles prematurely. one more flag in the control word required, if that high, skip to next instruction. 
+--> Saves instruction cycles. 
+
+That probably even means that you should be able to modify microcode on the fly. Sounds sketchy. 
+
+
+"Unlimited" Memory -> In silicon, goal is to only need to add one adder/subtracter. 
+With "unlimited memory address width", that means, I would need relative addressing, if I cant access absolute. 
+
+Also still first 255 addr would still be accsible absolutely?
+
+What would I do with magic addresses if I want them. Sacrifice first 255 for them?
+
+Other Idea: In Microcode implemntation of what part of memory to access. 
+
+But Microcode in mem would be annoying? every instr/state and resulting control word would have to travel over the bus. Sounds annoying. 
+
+What if secondary ROM for microcode only. Like I think Ben Eater does in his SAP-1/2/3 impl.
+Would loose the ability to change microcode on the fly with that however. 
+
+obv in this case, all ROMs/RAMs in this case are just files
+
+
 
 % chapter 2024-06-24 (end)
