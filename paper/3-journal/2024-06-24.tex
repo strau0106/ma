@@ -4,7 +4,7 @@
 \begin{table}
   \caption{Schedule}\label{tab:}
   \begin{center}
-    \begin{tabular}[c]{l|l}
+    \begin{tabular}[c]{l|l|l}
       \hline
       Day & Morning & Afternoon \\
       \hline
@@ -51,6 +51,53 @@ What if secondary ROM for microcode only. Like I think Ben Eater does in his SAP
 Would loose the ability to change microcode on the fly with that however. 
 
 obv in this case, all ROMs/RAMs in this case are just files
+
+
+Ideas on Testing Infrastructure:
+
+Problem is this has to be "recursive testing in a way". 
+
+Each sub component would probably have its own testcases. And thus would have to be built one after the other, tested, next level built, tested. 
+
+Each test may have different test harnesses but some may have the same test harness but different input (assemblies). 
+
+
+There are libs/tools out there that do unit testing. Although it seems like they wouldnt be able to do multiple passes with different assemblies. https://github.com/dpretet/svut https://github.com/VUnit/VUnit
+
+VUnit seems more promising, as API more scriptable, but apparently no specific integration to iverilog.
+
+Goal finally would be to run tests on GLab runners. 
+
+
+\dirtree{%
+.1 /.
+.2 computer.v.
+.2 alu. 
+.3 alu.v. 
+.3 alu-subcomponent. 
+.4 alu-subcomponent.v. 
+.4 test. 
+.5 alu-subcomp-case-1-tb.v.
+.5 alu-subcomp-case-1.test.py.
+.5 alu-subcomp-case-2-tb.v.
+.5 alu-subcomp-case-2.test.py.
+.5 alu-subcomp-case-2.dat.
+.3 test.
+.4 alu-case-1-tb.v.
+.4 alu-case-1.test.py.
+.2 test.
+.3 computer-test-1-tb.v.
+.3 computer-test-1.test.py.
+.3 computer-t-1-c-1.asm.
+.3 computer-t-1-c-2.asm.
+}
+
+Apart from that would probably also be nice if CICD compiles tex paper. not must have
+
+
+
+
+Ideas on Chapter Structure:
 
 
 
