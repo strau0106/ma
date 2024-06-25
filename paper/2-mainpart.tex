@@ -40,57 +40,15 @@ Architecturally required are conecpts that must be implemented to create interop
 Feature Requirements: For now, they exist.
 
 
+Generally only feature requirements are considered to be tesatable. The fulfillment of the others is inherent to any functioning of the architecture at all. 
+
 \section{Architecture}
 
-\subsection{Arithmetic Logic Unit}
-
-\begin{turing-requirement}
-  Ability to add two data words.
-\end{turing-requirement}
-
-\begin{turing-requirement}
-  Generation of at least one status flag (overflow, underflow and/or remainder of divison). 
-\end{turing-requirement}
-
-\begin{arch-requirement}
-  Ability to take in data from 2 registers.
-\end{arch-requirement}
-
-\begin{arch-requirement}
-  Ability to output data to the bus. 
-\end{arch-requirement}
-
-\begin{arch-requirement}
-  Ability to execute all calculations within one timing state.
-\end{arch-requirement}
-
-\begin{feat-requirement}
-  Ability to subtract two data words.
-\end{feat-requirement}
-
-\begin{feat-requirement}
-  Ability to multiply two data words.
-\end{feat-requirement}
-
-\begin{feat-requirement}
-  Ability to divide two data words.
-\end{feat-requirement}
-
-\begin{feat-requirement}
-  Ability to shift a data word bitwise.
-\end{feat-requirement}
-
-\begin{feat-requirement}
-  Ability to shift a data word bitwise.
-\end{feat-requirement}
-
-\begin{feat-requirement}
-  Ability to rotate a data word bitwise.
-\end{feat-requirement}
+\input{2-mainpart/architecture/alu}
 
 \subsection{Memory}
 
-\begin
+
 
 \subsection{Registers}
 

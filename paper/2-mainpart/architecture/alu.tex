@@ -1,0 +1,64 @@
+\subsection{Arithmetic Logic Unit}
+
+\begin{turing-requirement}
+  Ability to add two data words.
+\end{turing-requirement}
+
+\begin{turing-requirement}
+  Generation of at least one status flag (overflow, underflow and/or remainder of divison). 
+\end{turing-requirement}
+
+\begin{arch-requirement}
+  Ability to take in data from 2 registers.
+\end{arch-requirement}
+
+\begin{arch-requirement}
+  Ability to output data to the bus. 
+\end{arch-requirement}
+
+\begin{arch-requirement}
+  Ability to execute all calculations within one timing state.
+\end{arch-requirement}
+
+\begin{feat-requirement}
+  Ability to subtract two data words.
+\end{feat-requirement}
+
+\begin{feat-requirement}
+  Ability to multiply two data words.
+\end{feat-requirement}
+
+\begin{feat-requirement}
+  Ability to divide two data words.
+\end{feat-requirement}
+
+\begin{feat-requirement}
+  Ability to shift a data word bitwise.
+\end{feat-requirement}
+
+\begin{feat-requirement}
+  Ability to rotate a data word bitwise.
+\end{feat-requirement}
+
+\begin{feat-requirement}
+  Must not exert undefined behaviour in case of undefined control signals. 
+\end{feat-requirement}
+
+\begin{feat-requirement}
+  Must not output unless control signals indicate to do so. 
+\end{feat-requirement}
+
+Given those requirements a list of signals going into and out of the module can be compiled. 
+
+\begin{table}[]
+\begin{tabular}{ccc}
+Type& Name & Purpose \\ \hline
+I   & Clock & Timinga \\
+O   & Bus     & Data output         \\
+I   & Register 1 and 2 & Data input \\
+I   & ALU control word & Control \\
+O   & Status flag word & Control
+\end{tabular}
+\caption{}
+\label{tab:alu-i/o}
+\end{table} 
