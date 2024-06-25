@@ -1,0 +1,70 @@
+\chapter{The Computer} % (fold)
+\label{chap:The Computer}
+
+\section{Process}
+
+The Author has decided to opt for a requirement based, test driven development approach. Thus the current plan for the development is the following:
+\begin{enumerate}
+  \item Define loose architecture. 
+  \item For each component of the architecture define (testable) requirements. 
+  \item Justify requirements
+  \item For each component:
+  \begin{itemize}
+    \item Write testcases
+    \item Write corresponding verilog code.
+  \end{itemize}
+\end{enumerate}
+
+\section{Architecture}
+\newtheorem{requirement}{Req.}[subsection]
+
+\subsection{Arithmetic Logic Unit}
+
+
+\begin{requirement}
+  Ability to take in data from 2 registers.
+\end{requirement}
+
+\begin{requirement}
+  Ability to output data to the bus. 
+\end{requirement}
+
+\begin{requirement}
+  Ability to add two data words.
+\end{requirement}
+
+\begin{requirement}
+  Ability to subtract two data words.
+\end{requirement}
+
+\begin{requirement}
+  Ability to multiply two data words.
+\end{requirement}
+
+\begin{requirement}
+  Ability to divide two data words.
+\end{requirement}
+
+\begin{requirement}
+  Ability to shift a data word bitwise.
+\end{requirement}
+
+\begin{requirement}
+  Ability to shift a data word bitwise.
+\end{requirement}
+
+\begin{requirement}
+  Ability to rotate a data word bitwise.
+\end{requirement}
+
+\begin{requirement}
+  Ability to execute all calculations within one timing state.
+\end{requirement}
+
+\begin{requirement}
+  Generation of status flags for: overflow, underflow and remainder of divison. 
+\end{requirement}
+
+
+
+% chapter The Computer (end)
