@@ -3,7 +3,7 @@ stages:
 
 
 paper:
-  image: leplusorg/latex
+  image: ghcr.io/strau0106/latex:main
   stage: build
   before_script: 
     - cd paper
