@@ -12,4 +12,4 @@ paper:
   artifacts:
     untracked: true
     expire_in: 10 weeks
-  when: on_sucess
+  when: on_success
