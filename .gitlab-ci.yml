@@ -10,6 +10,7 @@ paper:
   script: 
     - latexmk main.tex
   artifacts:
-    untracked: true
+    paths:
+      - paper/*.pdf
     expire_in: 10 weeks
   when: on_success
