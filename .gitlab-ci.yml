@@ -1,0 +1,15 @@
+stages: 
+  - build
+
+
+paper:
+  image: leplusorg/latex
+  stage: build
+  before_script: 
+    - cd paper
+  script: 
+    - latexmk main.tex
+  artifacts:
+    untracked: true
+    expire_in: 10 weeks
+  when: on_sucess
