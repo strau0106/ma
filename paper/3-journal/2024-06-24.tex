@@ -94,10 +94,82 @@ Goal finally would be to run tests on GLab runners.
 
 Apart from that would probably also be nice if CICD compiles tex paper. not must have
 
+VUnit does not support IVerilog. Implementing support seems out of scope. 
+
 
 
 
 Ideas on Chapter Structure:
+
+
+Thinking on switching to Verilator.
+
+Testing is cleaner with verilator. 
+
+Gtest can be used => generates semi nice looking test reports etc. 
+
+All the ideas i had up until now were not related to the ALU. 
+
+I need things to implement in my alu. 
+
+
+
+
+Lets ask chatgpt: (chatgpt-4o, 2024-06-24 17:21, https://chatgpt.com/c/e6e27912-59b6-47b8-9256-d1a848c5ff9e)
+I am designing a computer architecture in Verilog and am looking for some interesting concepts/ideas/features to implement in the ALU of the computer. Give me 10 ideas.
+ChatGPT
+
+Designing a computer architecture and implementing a custom ALU (Arithmetic Logic Unit) in Verilog can be an exciting and challenging task. Here are ten interesting concepts, ideas, or features you could implement in your ALU to make it more versatile, efficient, and powerful:
+
+    Multi-Precision Arithmetic: Implement support for multi-precision arithmetic operations, such as 8-bit, 16-bit, 32-bit, and 64-bit operations, using configurable modes. This can be useful for applications requiring various levels of precision.
+
+    Floating-Point Arithmetic: Add support for floating-point arithmetic operations (addition, subtraction, multiplication, division) conforming to the IEEE 754 standard. This will enable your ALU to handle more complex mathematical calculations.
+
+    Vector Operations: Include support fI am designing a computer architecture in Verilog and am looking for some interesting concepts/ideas/features to implement in the ALU of the computer. Give me 10 ideas.
+ChatGPT
+
+Designing a computer architecture and implementing a custom ALU (Arithmetic Logic Unit) in Verilog can be an exciting and challenging task. Here are ten interesting concepts, ideas, or features you could implement in your ALU to make it more versatile, efficient, and powerful:
+
+    Multi-Precision Arithmetic: Implement support for multi-precision arithmetic operations, such as 8-bit, 16-bit, 32-bit, and 64-bit operations, using configurable modes. This can be useful for applications requiring various levels of precision.
+
+    Floating-Point Arithmetic: Add support for floating-point arithmetic operations (addition, subtraction, multiplication, division) conforming to the IEEE 754 standard. This will enable your ALU to handle more complex mathematical calculations.
+
+    Vector Operations: Include support for SIMD (Single Instruction, Multiple Data) operations. Implementing vector instructions can significantly speed up data-parallel tasks like multimedia processing and scientific computations.
+
+    Hardware Multiplication and Division: Enhance the ALU with dedicated hardware for fast multiplication and division. You could also implement Booth's algorithm for efficient multiplication of signed numbers.
+
+    Bit Manipulation Instructions: Add specialized instructions for bit-level manipulations, such as bitwise rotation, population count (counting the number of set bits), leading/trailing zero count, and bit field extraction/insertion. These are useful for tasks requiring fine-grained control over data at the bit level.
+
+    Barrel Shifter: Implement a barrel shifter for performing shift and rotate operations in a single clock cycle. This can greatly speed up shift operations compared to iterative shifting.
+
+    Condition Code Register: Incorporate a condition code register (CCR) or status flags to store the results of arithmetic operations, such as zero, carry, overflow, and negative flags. This can be used to influence the flow of control in the CPU based on the results of ALU operations.
+
+    Parallelism and Pipelining: Design your ALU with parallelism and pipelining in mind. Implementing a pipelined ALU can improve the overall throughput by allowing multiple instructions to be processed simultaneously at different stages.
+
+    ALU Operation Configurability: Provide a configurable ALU that can switch between different operation modes (e.g., arithmetic, logical, shift/rotate) dynamically based on control signals. This can increase the flexibility and efficiency of your processor.
+
+    Cryptographic Functions: Integrate basic cryptographic operations such as modular arithmetic, Galois Field operations, and hash functions (e.g., SHA-256). These features are increasingly important for security-related applications.
+
+By incorporating some of these ideas, you can design an ALU that is not only powerful and efficient but also versatile enough to handle a wide range of computational tasks.
+
+Considering I have 2 data words, one of which is the instructions i get 8-bit. Floating point numbers seem unrealistic. 
+
+Multiplication seems interesting. 
+Hashing/Crypto also, would be a cool brain exercise implementing it. ==> XOR defo
+
+ A Lot of flags. Overflow, Underflow (the corresponding jmp also would need to be implemented)
+
+ Controlword would need to be based on instr, state and flags
+
+Bitwise ops and rotations ops would be interesting as well. 
+Hashing actually doesnt make sense, as that is iterative. 
+
+ALU how many registers is it connected to?
+
+Cant do SIMD with just one data word to spare lol. 
+
+
+
 
 
 
