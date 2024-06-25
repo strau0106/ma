@@ -4,7 +4,6 @@
 include Makefile.macros
 
 
-VLCOVFLAGS = --annotate logs/annotate --annotate-all --annotate-min 1
 
 # User only needs to edit below
 MODULES = alu
@@ -31,7 +30,7 @@ runtest: all $(TARGETS)
 	@for test in $(TARGETS); do ./$$test || exit 1; done
 
 coverage: runtest
-	verilator_coverage $(VLCOVFLAGS) -write-info logs/merged.info logs/coverage1.dat logs/coverage2.dat logs/coverage3.dat
+	verilator_coverage --annotate logs/annotate --annotate-all --annotate-min 1 -write-info logs/merged.info logs/alu.dat
 
 genhtml: coverage
 	genhtml logs/merged.info --output-directory logs/html
