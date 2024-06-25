@@ -15,56 +15,91 @@ The Author has decided to opt for a requirement based, test driven development a
   \end{itemize}
 \end{enumerate}
 
+\subsection{Requirements}
+The requirements can be loosely split into three categories:
+
+\begin{itemize}
+  \item Turing requirements
+  \item Architechtural requirements
+  \item Feature requirements
+\end{itemize}
+
+
+\newtheorem{turing-requirement}{Turing Req.}[subsection]
+Turing requirements are requirements to the architectures that exist to give it turing completeness. Thus these requirements will always be derived from citation lol (Turing Machine): 
+\begin{itemize}
+  \item Infinite memory
+  \item Ability to modify memory
+  \item Ability to conditionally execute
+\end{itemize}
+
+\newtheorem{arch-requirement}{Arch. Req.}[subsection]
+Architecturally required are conecpts that must be implemented to create interoperability between the components. They are required to be implemented under every circumstance given a certrain architecture. 
+
+\newtheorem{feat-requirement}{Feat. Req.}[subsection]
+Feature Requirements: For now, they exist.
+
+
 \section{Architecture}
-\newtheorem{requirement}{Req.}[subsection]
 
 \subsection{Arithmetic Logic Unit}
 
-
-\begin{requirement}
-  Ability to take in data from 2 registers.
-\end{requirement}
-
-\begin{requirement}
-  Ability to output data to the bus. 
-\end{requirement}
-
-\begin{requirement}
+\begin{turing-requirement}
   Ability to add two data words.
-\end{requirement}
+\end{turing-requirement}
 
-\begin{requirement}
-  Ability to subtract two data words.
-\end{requirement}
+\begin{turing-requirement}
+  Generation of at least one status flag (overflow, underflow and/or remainder of divison). 
+\end{turing-requirement}
 
-\begin{requirement}
-  Ability to multiply two data words.
-\end{requirement}
+\begin{arch-requirement}
+  Ability to take in data from 2 registers.
+\end{arch-requirement}
 
-\begin{requirement}
-  Ability to divide two data words.
-\end{requirement}
+\begin{arch-requirement}
+  Ability to output data to the bus. 
+\end{arch-requirement}
 
-\begin{requirement}
-  Ability to shift a data word bitwise.
-\end{requirement}
-
-\begin{requirement}
-  Ability to shift a data word bitwise.
-\end{requirement}
-
-\begin{requirement}
-  Ability to rotate a data word bitwise.
-\end{requirement}
-
-\begin{requirement}
+\begin{arch-requirement}
   Ability to execute all calculations within one timing state.
-\end{requirement}
+\end{arch-requirement}
 
-\begin{requirement}
-  Generation of status flags for: overflow, underflow and remainder of divison. 
-\end{requirement}
+\begin{feat-requirement}
+  Ability to subtract two data words.
+\end{feat-requirement}
 
+\begin{feat-requirement}
+  Ability to multiply two data words.
+\end{feat-requirement}
 
+\begin{feat-requirement}
+  Ability to divide two data words.
+\end{feat-requirement}
+
+\begin{feat-requirement}
+  Ability to shift a data word bitwise.
+\end{feat-requirement}
+
+\begin{feat-requirement}
+  Ability to shift a data word bitwise.
+\end{feat-requirement}
+
+\begin{feat-requirement}
+  Ability to rotate a data word bitwise.
+\end{feat-requirement}
+
+\subsection{Memory}
+
+\begin
+
+\subsection{Registers}
+
+\subsection{Control Unit}
+
+\subsection{Micro programming}
+
+\subsection{Macro Programming}
+
+\subsection{Input/Output}
 
 % chapter The Computer (end)
