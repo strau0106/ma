@@ -12,7 +12,7 @@ UNITS =
 
 TARGETS = $(addsuffix Test, $(addprefix bin/, $(UNITS))) $(addsuffix Test, $(addprefix bin/, $(MODULES)))
 
-vpath %.sv src/modules src/units
+vpath %.sv src/modules src/units src/packages
 
 all: directories $(TARGETS)
 
@@ -46,6 +46,9 @@ directories: build
 build:
 	@mkdir -p build bin
 
+
+format:
+	@git diff -U0 HEAD^ ../computer/ | clang-format-16
 
 # Misc clean targets
 clean:
