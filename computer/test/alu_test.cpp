@@ -133,7 +133,7 @@ TEST_F(ALU, FreatureRequirement1216) {
     alu_dut->register2 = 2;
 
     alu_dut->out=1;
-    alu_dut->op_dir=0;
+    alu_dut->op_dir=1;
     alu_dut->op_shift=1;
     alu_dut->op_add=1;
 
@@ -156,6 +156,49 @@ TEST_F(ALU, FreatureRequirement1217) {
 
     EXPECT_EQ(alu_dut->result, 0);
 }
+
+TEST_F(ALU, FreatureRequirement1218) {
+    alu_dut->register1 = 0b01010111; 
+    alu_dut->register2 = 0b00110010;
+
+    alu_dut->out=1;
+
+    alu_dut->op_and=1;
+
+    AdvanceClock();
+
+    EXPECT_EQ(alu_dut->result, 0b00010010);
+
+    alu_dut->op_and=0;
+    alu_dut->op_or=1;
+
+    AdvanceClock();
+
+    EXPECT_EQ(alu_dut->result, 0b01110111);
+
+    alu_dut->op_or=0;
+    alu_dut->op_xor=1;
+
+    AdvanceClock();
+
+    EXPECT_EQ(alu_dut->result, 0b01100101);
+
+}
+
+TEST_F(ALU, FreatureRequirement1219) {
+    alu_dut->register1 = 0b10101010; 
+
+    alu_dut->out=1;
+    
+    alu_dut->op_not=1;
+
+    AdvanceClock();
+
+    EXPECT_EQ(alu_dut->result, 0b01010101);
+}
+
+
+
 
 
 
