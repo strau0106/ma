@@ -1,5 +1,6 @@
 #!/bin/bash
-
+#
+cd googletest
 mkdir build
 cd build
 cmake ..
