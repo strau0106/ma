@@ -26,3 +26,4 @@ clean-hooks:
 	@echo "Git hooks cleaned successfully."
 
 pre-commit: paper-tex
+	@cd computer; make runtest
