@@ -4,7 +4,7 @@
 #include <verilated.h>
 #include <gtest/gtest.h>
 
-class ALUTest: public ::testing::Test {
+class ALU: public ::testing::Test {
     protected: 
     alu * alu_dut; 
 
@@ -28,7 +28,7 @@ class ALUTest: public ::testing::Test {
 };
 
 
-TEST_F(ALUTest, TuringRequirement1211) {
+TEST_F(ALU, TuringRequirement1211) {
     alu_dut->register1 = 3;
     alu_dut->register2 = 2;
     alu_dut->out = 1; 
@@ -40,7 +40,7 @@ TEST_F(ALUTest, TuringRequirement1211) {
 
 }
 
-TEST_F(ALUTest, FeatureRequirement1211) {
+TEST_F(ALU, FeatureRequirement1211) {
     alu_dut->register1 = 5;
     alu_dut->register2 = 3; 
     
@@ -53,7 +53,7 @@ TEST_F(ALUTest, FeatureRequirement1211) {
 
 }
 
-TEST_F(ALUTest, FeatureRequirement1212) {
+TEST_F(ALU, FeatureRequirement1212) {
     alu_dut->register1 = 4;
     alu_dut->register2 = 2; 
 
@@ -65,7 +65,7 @@ TEST_F(ALUTest, FeatureRequirement1212) {
     EXPECT_EQ(alu_dut->result, 8);
 }
 
-TEST_F(ALUTest, FreatureRequirement1213) {
+TEST_F(ALU, FreatureRequirement1213) {
     alu_dut->register1 = 4;
     alu_dut->register2 = 2; 
 
@@ -85,8 +85,8 @@ TEST_F(ALUTest, FreatureRequirement1213) {
 }
 
 
-TEST_F(ALUTest, FreatureRequirement1214) {
-    alu_dut->register1 = 0b10110101; 
+TEST_F(ALU, FreatureRequirement1214) {
+    alu_dut->register1 = 0b10110101; // 181
 
     alu_dut->out=1;
     alu_dut->op_dir=0;
@@ -94,9 +94,9 @@ TEST_F(ALUTest, FreatureRequirement1214) {
 
     AdvanceClock();
 
-    EXPECT_EQ(alu_dut->result, 0b01101010);
+    EXPECT_EQ(alu_dut->result, 0b01101010); // 106
 
-    alu_dut->register1 = 0b10110101; 
+    alu_dut->register1 = 0b10110101; // 181
 
     alu_dut->out=1;
     alu_dut->op_dir=1;
@@ -104,32 +104,31 @@ TEST_F(ALUTest, FreatureRequirement1214) {
 
     AdvanceClock();
 
-    EXPECT_EQ(alu_dut->result, 0b01011010);
+    EXPECT_EQ(alu_dut->result, 0b01011010); // 90
 }
 
-TEST_F(ALUTest, FreatureRequirement1215) {
-    alu_dut->register1 = 0b10110101; 
+TEST_F(ALU, FreatureRequirement1215) {
+    alu_dut->register1 = 0b10110101; // 181 
 
     alu_dut->out=1;
     alu_dut->op_dir=0;
-    alu_dut->op_shift=1;
+    alu_dut->op_rot=1;
 
     AdvanceClock();
 
-    EXPECT_EQ(alu_dut->result, 0b01101011);
+    EXPECT_EQ(alu_dut->result, 0b01101011); // 107
 
-    alu_dut->register1 = 0b10110101; 
-
+    alu_dut->register1 = 0b10110101;  // 181
     alu_dut->out=1;
     alu_dut->op_dir=1;
-    alu_dut->op_shift=1;
+    alu_dut->op_rot=1;
 
     AdvanceClock();
 
-    EXPECT_EQ(alu_dut->result, 0b11011010);
+    EXPECT_EQ(alu_dut->result, 0b11011010); // 218
 }
 
-TEST_F(ALUTest, FreatureRequirement1216) {
+TEST_F(ALU, FreatureRequirement1216) {
     alu_dut->register1 = 12; 
     alu_dut->register2 = 2;
 
@@ -143,7 +142,7 @@ TEST_F(ALUTest, FreatureRequirement1216) {
     EXPECT_EQ(alu_dut->result, 0);
 }
 
-TEST_F(ALUTest, FreatureRequirement1217) {
+TEST_F(ALU, FreatureRequirement1217) {
     alu_dut->register1 = 12; 
     alu_dut->register2 = 2;
 
