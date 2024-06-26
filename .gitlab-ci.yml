@@ -30,7 +30,9 @@ verilator-coverage:
   artifacts:
     paths:
       - computer/logs/html
+      - computer/report.xml
+    untracked: true
     expire_in: 10 weeks
     reports:
-      junit: report.xml
+      junit: computer/report.xml
     when: always
