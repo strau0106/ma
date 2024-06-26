@@ -1,7 +1,6 @@
 stages: 
   - build
 
-
 paper:
   image: ghcr.io/strau0106/latex:main
   stage: build
@@ -14,3 +13,21 @@ paper:
       - paper/*.pdf
     expire_in: 10 weeks
   when: on_success
+
+verilator-coverage:
+  image: ghcr.io/strau0106/verilator:master
+  stage: build
+  before_script: 
+    - cd computer
+    - make gtest || true
+  script: 
+    - export GTEST_OUTPUT="xml:./report.xml"
+    - make runtest || true # No interest in if all tests pass or not, thats what the html is for.
+    - make genhtml
+  artifacts:
+    paths:
+      - computer/logs/html
+    expire_in: 10 weeks
+    reports:
+      junit: report.xml
+    when: always

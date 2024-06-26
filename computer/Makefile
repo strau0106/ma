@@ -29,7 +29,7 @@ $(foreach unit, $(UNITS), $(eval $(call make_mktargets,$(unit),units,$(UNITS.$(u
 runtest: all $(TARGETS)
 	@for test in $(TARGETS); do ./$$test || exit 1; done
 
-coverage: runtest
+coverage:
 	verilator_coverage --annotate logs/annotate --annotate-all --annotate-min 1 -write-info logs/merged.info logs/alu.dat
 
 genhtml: coverage
