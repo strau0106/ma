@@ -56,11 +56,11 @@
   Ability to perform NOT on a data word.
 \end{feat-requirement}
 
-Each OP as individual wire, because decoding instr is not part of the ALUs purpose. (This is normal, vgl. Digital Computer electronics p. 175). Also decreased complexity 9 vs. 4 wires and a bunch of decoding logic?
+Each OP as individual wire, because decoding instructions is not the purpose of the ALU, although this means, that it needs to be checked if it is actually only one OP. (This is normal, vgl. Digital Computer electronics p. 175/ von Neumann). 
+
+Also decreased complexity 9 vs. 4 wires and a bunch of decoding logic? Not limited in package pins etc. 
 
 Direct Register Access because wanting to save timing states and is more easier. 
-
-
 
 Given those requirements a list of signals going into and out of the module can be compiled. 
 
@@ -69,7 +69,7 @@ Given those requirements a list of signals going into and out of the module can 
 Type& Name & Purpose \\ \hline
 I   & Clock & Timinga \\
 O   & Bus     & Data output         \\
-I   & Register 1 and 2 & Data input \\
+I   & Register A and B & Data input \\
 I   & ALU control word & Control \\
 O   & Status flag word & Control
 \end{tabular}
@@ -82,3 +82,12 @@ Given this Netlist
 Karnaugh map of Operations. 
 
 
+\lstinputlisting[language=verilog]{../computer/src/modules/alu.sv}
+
+op sum to check if only one op is started
+
+check if out to make sure to only output if said to do so. (three state output)
+
+Each indivdual operation is performed if given.
+
+Only one bit rotations possible since there is no length that can be put in, since only one, the second data word, value can be given in. Additionally, the implementation is much easier, if just one bit...
