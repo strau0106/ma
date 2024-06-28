@@ -56,6 +56,11 @@
   Ability to perform NOT on a data word.
 \end{feat-requirement}
 
+Each OP as individual wire, because decoding instr is not part of the ALUs purpose. (This is normal, vgl. Digital Computer electronics p. 175). Also decreased complexity 9 vs. 4 wires and a bunch of decoding logic?
+
+Direct Register Access because wanting to save timing states and is more easier. 
+
+
 
 Given those requirements a list of signals going into and out of the module can be compiled. 
 
@@ -70,4 +75,10 @@ O   & Status flag word & Control
 \end{tabular}
 \caption{}
 \label{tab:alu-i/o}
-\end{table} 
+\end{table}
+
+Given this Netlist
+
+Karnaugh map of Operations. 
+
+
