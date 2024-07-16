@@ -3,19 +3,20 @@
 
 \section{The Goal}
 
-- Computers complex
 - 8 bit -> limitation on complexity
 - Nostalgic
 - Still a lot of (fun things) that can be implemented even only with 8-bit bus width
+- Turing Complete and aligned with John von Neumann.
+
 
 \section{Process}
 How to get to the Goal?
 
 I have decided to opt for a requirement driven, test based development approach. Thus the current plan for the development is the following:
 \begin{enumerate}
-  \item Define loose architecture. 
+  \item Define loose architecture. (Done, at least in my head)
   \item For each component of the architecture define (testable) requirements. 
-  \item Justify requirements
+  \item (Justify requirements) Unsure wether or not i need to do this.
   \item For each component:
   \begin{itemize}
     \item Write testcases
@@ -42,7 +43,7 @@ The requirements can be loosely split into three categories:
 
 
 \newtheorem{turing-requirement}{Turing Req.}[subsection]
-Turing requirements are requirements to the architectures that exist to give it turing completeness. Thus these requirements will always be derived from (probably need a citation here) (Alan Turing, 1936?): 
+The implementation of Turing requirements is required to achieve turing completeness. Thus these requirements will always be derived from (probably need a citation here) (Alan Turing, 1936?): 
 \begin{itemize}
   \item Infinite memory
   \item Ability to modify memory
@@ -53,16 +54,22 @@ Turing requirements are requirements to the architectures that exist to give it 
 Architecturally required are conecpts that must be implemented to create interoperability between the components. They are required to be implemented under every circumstance given a certrain architecture. (I guess most of them are JvNeumann)
 
 \newtheorem{feat-requirement}{Feat. Req.}[subsection]
-Feature Requirements: For now, they exist.
+Feature Requirements: For now, they exist because I want them because they are cool or something like that.
 
 
 Generally only feature and turing requirements are considered to be tesatable. The fulfillment of the others is inherent to any functioning of the architecture at all. 
 
 \subsection{Tooling}
-- Initially Icarus verilog because experience
-- Now Verilator because nicer and more complexer test benches in cpp, esp in relation with unit testing. 
-- Now just need a testing framework
-- Most popular are GTest and Catch etc. 
+
+The choice for the hardware description language fell on Verilog due to its widespread professional use. More specfically this project will use a Verilog superset, SystemVerilog, as it eases development by providing features such as multi-dimensional arrays and structs. 
+
+As Verilog is only a set of syntax, additional software is required to do anything (change here). In my case one of these additionally required pieces of software is a simulator, to let the written Verilog code produce results. Although I have previous experience with a Verilog compilation and simulation suite, Icarus Verilog, I chose another one. The Verilator suite offers a very modern toolset consisting of a compiler/simulator that provides an interface to C++, language diagnostic tools as well as test coverage report generation. I am under the impression that the ability to write test bench code in another language is of great importance as this reduces development time of tests, especially if these tests are more complex, e.g. execution of transpiled assembly code. 
+
+To increase test repeatability and efficiency I have decided to employ a testing framework. Widely used and already used for me, I opted for the GoogleTest framework. It is simple to use and provides testingreports in various formats, e.g. understandable by GitLab. 
+
+To increase initial development momentum I additionally copied build system setup from a third party.
+
+
 - I chose google test, there are code examples out there with Verilog/Verilator. 
 - Copied make files to get started, BSD license so that is fine. 
 - latexmk, previous experience, just works.
@@ -85,8 +92,8 @@ For the development of my computer architecture I have decided to implement such
 \subsection{All Troubles with tools. title subject to change}
 Structing vs alot of signals
 
-Verilator and structs in public, ahhh, could use that sketchy name there, that doesnt seem to change, but should i?
-
+Verilator and structs in public, ahhh, alu\_control.h could use that sketchy name there, that doesnt seem to change, but should i?
+debian unstable would do, but do i want.
 
 \input{2-mainpart/architecture}
 
