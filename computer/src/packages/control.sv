@@ -19,4 +19,13 @@ package control;
         CARRY,
         REMAINDER
     } alu_flag_e /*verilator public*/;
+    typedef enum {
+        READ,
+        WRITE
+    } memory_op_e /*verilator public*/;
+    typedef enum {
+        ABSOLUTE,
+        RELATIVE
+    } memory_addr_mode_e /*verilator public*/;
+
 endpackage
