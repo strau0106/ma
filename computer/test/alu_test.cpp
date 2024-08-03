@@ -4,8 +4,6 @@
 #include <alu_control.h>
 #include <verilated.h>
 #include <gtest/gtest.h>
-#include <alu_control.h>
-
 
 class ALU: public ::testing::Test {
     protected: 
