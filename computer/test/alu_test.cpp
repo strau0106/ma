@@ -184,25 +184,23 @@ TEST_F(ALU, FreatureRequirement1315) {
 }
 
 TEST_F(ALU, FreatureRequirement1316) {
-    /* alu_dut->register1 = 12; 
+    alu_dut->register1 = 12; 
     alu_dut->register2 = 2;
 
-    alu_dut->out=1;
-    alu_dut->alu_control->op_dir=1;
-    alu_dut->alu_control->op_shift=1;
-    alu_dut->alu_control->op_add=1;
+    alu_dut->out = 1;
+    alu_dut->op = 99;
 
     AdvanceClock();
 
-    EXPECT_EQ(alu_dut->result, 0) */
-    SUCCEED();
+    EXPECT_EQ(alu_dut->result, 0);
+
 }
 
 TEST_F(ALU, FreatureRequirement1317) {
     alu_dut->register1 = 12; 
     alu_dut->register2 = 2;
 
-    alu_dut->out=0;
+    alu_dut->out = 0;
 
     alu_dut->op = alu_control::alu_op_e::ADD;
 
@@ -257,11 +255,6 @@ TEST_F(ALU, FreatureRequirement1319) {
 
     EXPECT_EQ(alu_dut->result, 0b01010101);
 }
-
-
-
-
-
 
 int main(int argc, char **argv) {
   Verilated::commandArgs(argc, argv);
