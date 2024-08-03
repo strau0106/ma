@@ -6,7 +6,7 @@ include Makefile.macros
 
 
 # User only needs to edit below
-MODULES = alu
+MODULES = alu memory
 UNITS = 
 # User only needs to edit above
 
@@ -30,8 +30,7 @@ runtest: all $(TARGETS)
 	@for test in $(TARGETS); do ./$$test || exit 1; done
 
 coverage:
-	verilator_coverage --annotate logs/annotate --annotate-all --annotate-min 1 -write-info logs/merged.info logs/alu.dat
-
+	verilator_coverage --annotate logs/annotate --annotate-all --annotate-min 1 -write-info logs/merged.info logs/*.dat
 genhtml: coverage
 	genhtml logs/merged.info --output-directory logs/html
 
