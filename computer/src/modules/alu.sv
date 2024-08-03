@@ -11,17 +11,18 @@ module alu(
     input alu_op_e op
 );
     bit[7:0] tmp;
-    bit [8:0] tmp_ext;
+
 
     bit is_zero;
     bit is_carry;
     bit is_remainder;
 
     assign is_zero = (tmp == 0);
-    assign is_carry = (tmp_ext[8] == 1);
-    assign is_remainder = (op == DIV);
+    assign is_remainder = (op == DIV) && (out*register2 != register1);
 
-    assign flag = is_zero ? ZERO : is_carry ? CARRY : is_remainder ? REMAINDER : NONE;
+    assign flag = (is_zero | !out) ? ZERO :
+                  ((is_carry & (op==ADD | op==MUL)) ? CARRY :
+                  (is_remainder ? REMAINDER : NONE));
 
     assign result = out ? tmp : 0;
 
@@ -29,14 +30,12 @@ module alu(
     case (op)
       default:
         tmp <= 0;
-      ADD: begin
-        tmp_ext <= register1 + register2;
-        tmp <= tmp_ext[7:0];
-      end
+      ADD:
+        {is_carry, tmp} <= register1 + register2;
       SUB:
         tmp <= register1 - register2;
       MUL:
-        tmp <= register1 * register2;
+        {is_carry, tmp} <= register1 * register2;
       DIV:
         tmp <= register1 / register2;
       SHL:

@@ -41,10 +41,24 @@ TEST_F(ALU, TuringRequirement1311) {
 
     EXPECT_EQ(alu_dut->result, 5);
 
+    alu_dut->register1 = 0b11111111; // 255
+    alu_dut->register2 = 0b00000001; // 1
+
+    AdvanceClock();
+
+    EXPECT_EQ(alu_dut->result, 0);
+
+    alu_dut->register1 = 0b11111111; // 255
+    alu_dut->register2 = 0b00000010; // 2
+
+    AdvanceClock();
+
+    EXPECT_EQ(alu_dut->result, 1);
+
+
 }
 
 TEST_F(ALU, TuringRequirement1312) {
-  // Check for CARRY, ZERO and REMAINDER flag
     alu_dut->register1 = 1;
     alu_dut->register2 = 1;
     alu_dut->out = 1;
@@ -60,7 +74,7 @@ TEST_F(ALU, TuringRequirement1312) {
     
     AdvanceClock();
     
-    EXPECT_EQ(alu_dut->result, 255);
+    EXPECT_EQ(alu_dut->result, 254);
     EXPECT_EQ(alu_dut->flag, alu_control::alu_flag_e::CARRY);
     
     alu_dut->op = alu_control::alu_op_e::SUB;
@@ -71,10 +85,11 @@ TEST_F(ALU, TuringRequirement1312) {
 
     alu_dut->register1 = 5;
     alu_dut->register2 = 2;
+    alu_dut->op = alu_control::alu_op_e::DIV;
 
     AdvanceClock();
 
-    EXPECT_EQ(alu_dut->result, 3);
+    EXPECT_EQ(alu_dut->result, 2);
     EXPECT_EQ(alu_dut->flag, alu_control::alu_flag_e::REMAINDER);
 
     alu_dut->register1 = 5;
