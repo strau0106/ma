@@ -24,7 +24,7 @@ module alu(
                   ((is_carry & (op==ADD | op==MUL)) ? CARRY :
                   (is_remainder ? REMAINDER : NONE));
 
-    assign result = enable ? tmp : 0;
+    assign result = enable ? tmp : 'z;
 
     always_ff @(posedge clock) begin
     case (op)
