@@ -3,11 +3,11 @@ import control ::*;
 
 module alu(
     input bit clock,
-    output bit[7:0] result,
+    output wire[7:0] result,
     output alu_flag_e flag,
     input bit[7:0] register1,
     input bit[7:0] register2,
-    input bit out,
+    input bit enable,
     input alu_op_e op
 );
     bit[7:0] tmp;
@@ -18,13 +18,13 @@ module alu(
     bit is_remainder;
 
     assign is_zero = (tmp == 0);
-    assign is_remainder = (op == DIV) && (out*register2 != register1);
+    assign is_remainder = (op == DIV) && (enable*register2 != register1);
 
-    assign flag = (is_zero | !out) ? ZERO :
+    assign flag = (is_zero | !enable) ? ZERO :
                   ((is_carry & (op==ADD | op==MUL)) ? CARRY :
                   (is_remainder ? REMAINDER : NONE));
 
-    assign result = out ? tmp : 0;
+    assign result = enable ? tmp : 0;
 
     always_ff @(posedge clock) begin
     case (op)

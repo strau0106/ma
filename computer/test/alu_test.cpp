@@ -1,4 +1,4 @@
-// Test file for component of Section 1.2.1: Arithmetic Logic Unit
+// Test file for component of Section 1.3.1: Arithmetic Logic Unit
 
 #include <alu.h>
 #include <alu_control.h>
@@ -32,7 +32,7 @@ class ALU: public ::testing::Test {
 TEST_F(ALU, TuringRequirement1311) {
     alu_dut->register1 = 3;
     alu_dut->register2 = 2;
-    alu_dut->out = 1; 
+    alu_dut->enable = 1; 
     alu_dut->op = alu_control::alu_op_e::ADD;
 
     AdvanceClock();
@@ -59,7 +59,7 @@ TEST_F(ALU, TuringRequirement1311) {
 TEST_F(ALU, TuringRequirement1312) {
     alu_dut->register1 = 1;
     alu_dut->register2 = 1;
-    alu_dut->out = 1;
+    alu_dut->enable = 1;
     alu_dut->op = alu_control::alu_op_e::ADD;
 
     AdvanceClock();
@@ -104,7 +104,7 @@ TEST_F(ALU, FeatureRequirement1311) {
     alu_dut->register1 = 5;
     alu_dut->register2 = 3; 
     
-    alu_dut->out = 1;
+    alu_dut->enable = 1;
     alu_dut->op = alu_control::alu_op_e::SUB;
     
     AdvanceClock();
@@ -117,7 +117,7 @@ TEST_F(ALU, FeatureRequirement1312) {
     alu_dut->register1 = 4;
     alu_dut->register2 = 2; 
 
-    alu_dut->out=1;
+    alu_dut->enable=1;
     alu_dut->op = alu_control::alu_op_e::MUL;
 
     AdvanceClock();
@@ -129,7 +129,7 @@ TEST_F(ALU, FreatureRequirement1313) {
     alu_dut->register1 = 4;
     alu_dut->register2 = 2; 
 
-    alu_dut->out=1;
+    alu_dut->enable=1;
     alu_dut->op = alu_control::alu_op_e::DIV;
 
     AdvanceClock();
@@ -148,7 +148,7 @@ TEST_F(ALU, FreatureRequirement1313) {
 TEST_F(ALU, FreatureRequirement1314) {
     alu_dut->register1 = 0b10110101; // 181
 
-    alu_dut->out=1;
+    alu_dut->enable=1;
     alu_dut->op = alu_control::alu_op_e::SHL;
 
     AdvanceClock();
@@ -157,7 +157,7 @@ TEST_F(ALU, FreatureRequirement1314) {
 
     alu_dut->register1 = 0b10110101; // 181
 
-    alu_dut->out=1;
+    alu_dut->enable=1;
     alu_dut->op = alu_control::alu_op_e::SHR;
 
     AdvanceClock();
@@ -168,7 +168,7 @@ TEST_F(ALU, FreatureRequirement1314) {
 TEST_F(ALU, FreatureRequirement1315) {
     alu_dut->register1 = 0b10110101; // 181 
 
-    alu_dut->out=1;
+    alu_dut->enable=1;
     alu_dut->op = alu_control::alu_op_e::ROL;
 
     AdvanceClock();
@@ -176,7 +176,7 @@ TEST_F(ALU, FreatureRequirement1315) {
     EXPECT_EQ(alu_dut->result, 0b01101011); // 107
 
     alu_dut->register1 = 0b10110101;  // 181
-    alu_dut->out=1;
+    alu_dut->enable=1;
     alu_dut->op = alu_control::alu_op_e::ROR;
     AdvanceClock();
 
@@ -187,7 +187,7 @@ TEST_F(ALU, FreatureRequirement1316) {
     alu_dut->register1 = 12; 
     alu_dut->register2 = 2;
 
-    alu_dut->out = 1;
+    alu_dut->enable = 1;
     alu_dut->op = 99;
 
     AdvanceClock();
@@ -200,7 +200,7 @@ TEST_F(ALU, FreatureRequirement1317) {
     alu_dut->register1 = 12; 
     alu_dut->register2 = 2;
 
-    alu_dut->out = 0;
+    alu_dut->enable = 0;
 
     alu_dut->op = alu_control::alu_op_e::ADD;
 
@@ -208,11 +208,11 @@ TEST_F(ALU, FreatureRequirement1317) {
 
     EXPECT_EQ(alu_dut->result, 0);
 
-    alu_dut->out=1;
+    alu_dut->enable=1;
     
     AdvanceClock();
 
-    alu_dut->out=0;
+    alu_dut->enable=0;
 
     AdvanceClock();
     
@@ -223,7 +223,7 @@ TEST_F(ALU, FreatureRequirement1318) {
     alu_dut->register1 = 0b01010111; 
     alu_dut->register2 = 0b00110010;
 
-    alu_dut->out=1;
+    alu_dut->enable=1;
     alu_dut->op = alu_control::alu_op_e::AND;
 
     AdvanceClock();
@@ -247,7 +247,7 @@ TEST_F(ALU, FreatureRequirement1318) {
 TEST_F(ALU, FreatureRequirement1319) {
     alu_dut->register1 = 0b10101010; 
 
-    alu_dut->out=1;
+    alu_dut->enable=1;
     
     alu_dut->op = alu_control::alu_op_e::NOT;
 
