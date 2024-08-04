@@ -18,7 +18,7 @@ module alu(
     bit is_remainder;
 
     assign is_zero = (tmp == 0);
-    assign is_remainder = (op == DIV) && (enable*register2 != register1);
+    assign is_remainder = (op == DIV) && (tmp*register2 != register1);
 
     assign flag = (is_zero | !enable) ? ZERO :
                   ((is_carry & (op==ADD | op==MUL)) ? CARRY :
