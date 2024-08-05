@@ -1,3 +1,5 @@
+`define ADDR_BUS_WIDTH 9
+
 package control;
     typedef enum {
         ADD,
@@ -20,8 +22,12 @@ package control;
         REMAINDER
     } alu_flag_e /*verilator public*/;
     typedef enum {
+        NOP,
         READ,
-        WRITE
+        WRITE,
+        ABSOLUTE,
+        REL_SUB,
+        REL_ADD
     } memory_op_e /*verilator public*/;
     typedef enum {
         ABSOLUTE,
