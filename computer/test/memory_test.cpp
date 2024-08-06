@@ -20,6 +20,7 @@ class Memory : public ::testing::Test {
   void SetUp() {
     memory_dut = new memory;
     memory_dut->eval();
+    memory_dut->bus_selector = 0;
   }
 
   void TearDown() {
@@ -32,7 +33,7 @@ TEST_F(Memory, TuringRequirement1321) {
 
 #define ARBITRARY_WRITE_LOCATION 0b111110001
 #define ARBITRARY_DATA 0b11101111
-  memory_dut->rootp->memory__DOT__addr_reg = ARBITRARY_WRITE_LOCATION;
+  memory_dut->rootp->memory__DOT__memory_address_register = ARBITRARY_WRITE_LOCATION;
   memory_dut->data_word_selector = 0;
   memory_dut->in = 0b11101111;  // arbitrary data
   memory_dut->op = memory_control::memory_op_e::WRITE;
@@ -49,7 +50,7 @@ TEST_F(Memory, TuringRequirement1321) {
 
   memory_dut->rootp->memory__DOT__cells.m_storage[ARBIRARY_READ_LOCATION << 1] =
       ARBITRARY_DATA;
-  memory_dut->rootp->memory__DOT__addr_reg = ARBIRARY_READ_LOCATION;
+  memory_dut->rootp->memory__DOT__memory_address_register = ARBIRARY_READ_LOCATION;
 
   memory_dut->op = memory_control::memory_op_e::READ;
 
@@ -67,7 +68,7 @@ TEST_F(Memory, TuringRequirementt1323) {
 
   AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__addr_reg, 127);
+  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 127);
 
   memory_dut->op = memory_control::memory_op_e::READ;
 
@@ -86,14 +87,14 @@ TEST_F(Memory, TuringRequirementt1324) {
 
   AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__addr_reg, 127);
+  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 127);
 
   memory_dut->in = 173;
   memory_dut->op = memory_control::memory_op_e::REL_ADD;
 
   AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__addr_reg, 300);
+  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 300);
 
   memory_dut->op = memory_control::memory_op_e::READ;
 
@@ -106,13 +107,65 @@ TEST_F(Memory, TuringRequirementt1324) {
 
   AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__addr_reg, 290);
+  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 290);
 
   memory_dut->op = memory_control::memory_op_e::READ;
 
   AdvanceClock();
 
   ASSERT_EQ(memory_dut->out, 0b11111110);
+
+
+  memory_dut->bus_selector = 1;
+  
+  memory_dut->in = 127;
+  memory_dut->op = memory_control::memory_op_e::ABSOLUTE;
+
+  AdvanceClock();
+
+  ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 127);
+
+  memory_dut->in = 173;
+  memory_dut->op = memory_control::memory_op_e::REL_ADD;
+
+  AdvanceClock();
+
+  ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 300);
+
+  memory_dut->op = memory_control::memory_op_e::READ;
+
+  AdvanceClock();
+
+  ASSERT_EQ(memory_dut->out, 0b11111111);
+
+  memory_dut->in = 10;
+  memory_dut->op = memory_control::memory_op_e::REL_SUB;
+
+  AdvanceClock();
+
+  ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 290);
+
+  memory_dut->op = memory_control::memory_op_e::READ;
+
+  AdvanceClock();
+
+  ASSERT_EQ(memory_dut->out, 0b11111110);
+
+}
+
+TEST_F(Memory, REQTBD) {
+  // test if reset works so set mar and pc and then reset, and then check if 0
+
+  memory_dut->rootp->memory__DOT__memory_address_register = 0b11111111;
+  memory_dut->rootp->memory__DOT__programm_counter = 0b11111111;
+
+  memory_dut->reset = 1;
+
+  AdvanceClock();
+
+  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 0);
+  ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 0);
+  
 }
 
 int main(int argc, char** argv) {
