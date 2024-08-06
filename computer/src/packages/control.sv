@@ -30,8 +30,9 @@ package control;
         REL_ADD
     } memory_op_e /*verilator public*/;
     typedef enum {
-        ABSOLUTE,
-        RELATIVE
-    } memory_addr_mode_e /*verilator public*/;
+        REG_NOP,
+        LOAD,
+        ENABLE
+    } reg_op_e /*verilator public*/;
 
 endpackage

@@ -6,7 +6,7 @@ include Makefile.macros
 
 
 # User only needs to edit below
-MODULES = alu memory
+MODULES = alu memory reg_acc reg_tmp
 UNITS = 
 # User only needs to edit above
 
