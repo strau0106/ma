@@ -5,7 +5,7 @@ module reg_acc (
     input bit clock,
     input bit[7:0] in,
     output bit[7:0] out,
-    input memory_op_e op,
+    input reg_op_e op,
     output bit[7:0] reg_direct
 );
     bit[7:0] tmp;
