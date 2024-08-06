@@ -6,11 +6,11 @@ include Makefile.macros
 
 
 # User only needs to edit below
-MODULES = alu memory reg_acc reg_tmp
+MODULES = alu memory reg_acc reg_tmp control_unit
 UNITS = 
 # User only needs to edit above
 
-TARGETS = $(addsuffix Test, $(addprefix bin/, $(UNITS))) $(addsuffix Test, $(addprefix bin/, $(MODULES)))
+TARGETS = $(addsuffix test, $(addprefix bin/, $(UNITS))) $(addsuffix _test, $(addprefix bin/, $(MODULES)))
 
 vpath %.sv src/modules src/units src/packages
 
@@ -27,7 +27,7 @@ $(foreach unit, $(UNITS), $(eval $(call make_mktargets,$(unit),units,$(UNITS.$(u
 
 #
 runtest: all $(TARGETS)
-	@for test in $(TARGETS); do ./$$test || exit 1; done
+	@for test in $(TARGETS); do ./$$_test || exit 1; done
 
 coverage:
 	verilator_coverage --annotate logs/annotate --annotate-all --annotate-min 1 -write-info logs/merged.info logs/*.dat
