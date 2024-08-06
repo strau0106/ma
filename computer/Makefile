@@ -47,7 +47,7 @@ build:
 
 
 format:
-	@git diff -U0 HEAD^ ../computer/ | clang-format-16
+	@git diff -U0 HEAD^ ../computer/test/ | clang-format-diff-16
 
 # Misc clean targets
 clean:
