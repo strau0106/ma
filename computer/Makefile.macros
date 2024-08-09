@@ -14,12 +14,12 @@ endef
 # build/ddiff/ddiff.mk: src/units/ddiff.sv src/common/dep.sv test/ddiff.cpp
 #
 define make_mktargets
-build/$(1)/$(1).mk: src/$(2)/$(1).sv $(3) src/packages/*.sv test/$(1)_test.cpp
-	@verilator --coverage --timescale 1ns --timing --top-module $(1) -cc src/packages/*.sv src/$(2)/$(1).sv $(3) -y . \
-							-Mdir build/$(1) --prefix $(1) \
+build/$(1)/$(1).mk: src/$(2)/$(1).sv $(3) src/packages/*.sv test/$(1)_test.cpp lib/
+	@verilator --coverage --timescale 1ns --timing --top-module $(1) -cc src/packages/*.sv src/modules/*.sv src/units/*.sv -Ilib/microcode/ \
+							-Mdir build/$(1)  --prefix $(1) \
 	            --exe ../test/$(1)_test.cpp \
 							-o $(1)_test \
 	            -LDFLAGS "-L../../googletest/build/lib -lgtest -lpthread" \
-	            -CFLAGS "-I../../googletest/googletest/include/"
+	            -CFLAGS "-I../../googletest/googletest/include/ -I../../lib/"
 	@make -C build/$(1) -j 8 -f $(1).mk && cp build/$(1)/$(1)_test bin
 endef

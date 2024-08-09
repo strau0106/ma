@@ -7,7 +7,7 @@ module memory (
     input bit[7:0] in,
     output bit[7:0] out,
     input bit data_word_selector,
-    input bit bus_selector, // 0: MAR, 1: PC
+    input memory_bus_selector_e bus_selector, // 0: MAR, 1: PC
     input memory_op_e op
 );
 
@@ -44,6 +44,9 @@ module memory (
             REL_ADD:
                 if (bus_selector) programm_counter <= programm_counter + {1'b0, in};
                 else memory_address_register <= memory_address_register + {1'b0, in};
+            INC:
+                if(bus_selector) programm_counter <= programm_counter + 1;
+                else memory_address_register <= memory_address_register + 1;
         endcase
     end
 endmodule

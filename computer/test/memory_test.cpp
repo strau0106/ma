@@ -7,172 +7,171 @@
 #include <verilated.h>
 
 class Memory : public ::testing::Test {
- protected:
-  memory* memory_dut;
+   protected:
+    memory* memory_dut;
 
-  void AdvanceClock() {
-    memory_dut->clock = 1;
-    memory_dut->eval();
-    memory_dut->clock = 0;
-    memory_dut->eval();
-  }
+    void AdvanceClock() {
+        memory_dut->clock = 1;
+        memory_dut->eval();
+        memory_dut->clock = 0;
+        memory_dut->eval();
+    }
 
-  void SetUp() {
-    memory_dut = new memory;
-    memory_dut->eval();
-    memory_dut->bus_selector = 0;
-  }
+    void SetUp() {
+        memory_dut = new memory;
+        memory_dut->eval();
+        memory_dut->bus_selector = 0;
+    }
 
-  void TearDown() {
-    memory_dut->final();
-    delete memory_dut;
-  }
+    void TearDown() {
+        memory_dut->final();
+        delete memory_dut;
+    }
 };
 
 TEST_F(Memory, TuringRequirement1321) {
 
 #define ARBITRARY_WRITE_LOCATION 0b111110001
 #define ARBITRARY_DATA 0b11101111
-  memory_dut->rootp->memory__DOT__memory_address_register = ARBITRARY_WRITE_LOCATION;
-  memory_dut->data_word_selector = 0;
-  memory_dut->in = 0b11101111;  // arbitrary data
-  memory_dut->op = memory_control::memory_op_e::WRITE;
+    memory_dut->rootp->memory__DOT__memory_address_register =
+        ARBITRARY_WRITE_LOCATION;
+    memory_dut->data_word_selector = 0;
+    memory_dut->in = 0b11101111;  // arbitrary data
+    memory_dut->op = memory_control::memory_op_e::WRITE;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__cells
-                .m_storage[ARBITRARY_WRITE_LOCATION << 1],
-            ARBITRARY_DATA);  // << 1 because of data_word_selector
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__cells
+                  .m_storage[ARBITRARY_WRITE_LOCATION << 1],
+              ARBITRARY_DATA);  // << 1 because of data_word_selector
 
 #define ARBIRARY_READ_LOCATION 0b111010001
 
-  // data_word_selector is still 0
+    // data_word_selector is still 0
 
-  memory_dut->rootp->memory__DOT__cells.m_storage[ARBIRARY_READ_LOCATION << 1] =
-      ARBITRARY_DATA;
-  memory_dut->rootp->memory__DOT__memory_address_register = ARBIRARY_READ_LOCATION;
+    memory_dut->rootp->memory__DOT__cells
+        .m_storage[ARBIRARY_READ_LOCATION << 1] = ARBITRARY_DATA;
+    memory_dut->rootp->memory__DOT__memory_address_register =
+        ARBIRARY_READ_LOCATION;
 
-  memory_dut->op = memory_control::memory_op_e::READ;
+    memory_dut->op = memory_control::memory_op_e::READ;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->out, ARBITRARY_DATA);
+    ASSERT_EQ(memory_dut->out, ARBITRARY_DATA);
 }
 
 TEST_F(Memory, TuringRequirementt1323) {
-  memory_dut->data_word_selector = 0;
-  memory_dut->rootp->memory__DOT__cells.m_storage[127 << 1] = 0b11111111;
+    memory_dut->data_word_selector = 0;
+    memory_dut->rootp->memory__DOT__cells.m_storage[127 << 1] = 0b11111111;
 
-  memory_dut->in = 127;
-  memory_dut->op = memory_control::memory_op_e::ABSOLUTE;
+    memory_dut->in = 127;
+    memory_dut->op = memory_control::memory_op_e::ABSOLUTE;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 127);
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 127);
 
-  memory_dut->op = memory_control::memory_op_e::READ;
+    memory_dut->op = memory_control::memory_op_e::READ;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->out, 0b11111111);
+    ASSERT_EQ(memory_dut->out, 0b11111111);
 }
 
 TEST_F(Memory, TuringRequirementt1324) {
-  memory_dut->data_word_selector = 0;
-  memory_dut->rootp->memory__DOT__cells.m_storage[300 << 1] = 0b11111111;
-  memory_dut->rootp->memory__DOT__cells.m_storage[290 << 1] = 0b11111110;
+    memory_dut->data_word_selector = 0;
+    memory_dut->rootp->memory__DOT__cells.m_storage[300 << 1] = 0b11111111;
+    memory_dut->rootp->memory__DOT__cells.m_storage[290 << 1] = 0b11111110;
 
-  memory_dut->in = 127;
-  memory_dut->op = memory_control::memory_op_e::ABSOLUTE;
+    memory_dut->in = 127;
+    memory_dut->op = memory_control::memory_op_e::ABSOLUTE;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 127);
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 127);
 
-  memory_dut->in = 173;
-  memory_dut->op = memory_control::memory_op_e::REL_ADD;
+    memory_dut->in = 173;
+    memory_dut->op = memory_control::memory_op_e::REL_ADD;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 300);
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 300);
 
-  memory_dut->op = memory_control::memory_op_e::READ;
+    memory_dut->op = memory_control::memory_op_e::READ;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->out, 0b11111111);
+    ASSERT_EQ(memory_dut->out, 0b11111111);
 
-  memory_dut->in = 10;
-  memory_dut->op = memory_control::memory_op_e::REL_SUB;
+    memory_dut->in = 10;
+    memory_dut->op = memory_control::memory_op_e::REL_SUB;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 290);
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 290);
 
-  memory_dut->op = memory_control::memory_op_e::READ;
+    memory_dut->op = memory_control::memory_op_e::READ;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->out, 0b11111110);
+    ASSERT_EQ(memory_dut->out, 0b11111110);
 
+    memory_dut->bus_selector = 1;
 
-  memory_dut->bus_selector = 1;
-  
-  memory_dut->in = 127;
-  memory_dut->op = memory_control::memory_op_e::ABSOLUTE;
+    memory_dut->in = 127;
+    memory_dut->op = memory_control::memory_op_e::ABSOLUTE;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 127);
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 127);
 
-  memory_dut->in = 173;
-  memory_dut->op = memory_control::memory_op_e::REL_ADD;
+    memory_dut->in = 173;
+    memory_dut->op = memory_control::memory_op_e::REL_ADD;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 300);
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 300);
 
-  memory_dut->op = memory_control::memory_op_e::READ;
+    memory_dut->op = memory_control::memory_op_e::READ;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->out, 0b11111111);
+    ASSERT_EQ(memory_dut->out, 0b11111111);
 
-  memory_dut->in = 10;
-  memory_dut->op = memory_control::memory_op_e::REL_SUB;
+    memory_dut->in = 10;
+    memory_dut->op = memory_control::memory_op_e::REL_SUB;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 290);
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 290);
 
-  memory_dut->op = memory_control::memory_op_e::READ;
+    memory_dut->op = memory_control::memory_op_e::READ;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->out, 0b11111110);
-
+    ASSERT_EQ(memory_dut->out, 0b11111110);
 }
 
 TEST_F(Memory, REQTBD) {
-  // test if reset works so set mar and pc and then reset, and then check if 0
+    // test if reset works so set mar and pc and then reset, and then check if 0
 
-  memory_dut->rootp->memory__DOT__memory_address_register = 0b11111111;
-  memory_dut->rootp->memory__DOT__programm_counter = 0b11111111;
+    memory_dut->rootp->memory__DOT__memory_address_register = 0b11111111;
+    memory_dut->rootp->memory__DOT__programm_counter = 0b11111111;
 
-  memory_dut->reset = 1;
+    memory_dut->reset = 1;
 
-  AdvanceClock();
+    AdvanceClock();
 
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 0);
-  ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 0);
-  
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 0);
+    ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 0);
 }
 
 int main(int argc, char** argv) {
-  Verilated::commandArgs(argc, argv);
-  testing::InitGoogleTest(&argc, argv);
-  auto res = RUN_ALL_TESTS();
-  Verilated::mkdir("logs");
-  VerilatedCov::write("logs/memory.dat");
-  return res;
+    Verilated::commandArgs(argc, argv);
+    testing::InitGoogleTest(&argc, argv);
+    auto res = RUN_ALL_TESTS();
+    Verilated::mkdir("logs");
+    VerilatedCov::write("logs/memory.dat");
+    return res;
 }

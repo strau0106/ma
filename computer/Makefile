@@ -7,10 +7,10 @@ include Makefile.macros
 
 # User only needs to edit below
 MODULES = alu memory reg_acc reg_tmp control_unit
-UNITS = 
+UNITS = cpu
 # User only needs to edit above
 
-TARGETS = $(addsuffix test, $(addprefix bin/, $(UNITS))) $(addsuffix _test, $(addprefix bin/, $(MODULES)))
+TARGETS = $(addsuffix _test, $(addprefix bin/, $(UNITS))) $(addsuffix _test, $(addprefix bin/, $(MODULES)))
 
 vpath %.sv src/modules src/units src/packages
 
