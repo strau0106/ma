@@ -180,7 +180,7 @@ TEST_F(ALU, FreatureRequirement1316) {
     alu_dut->register2 = 2;
 
     alu_dut->enable = 1;
-    alu_dut->op = 99;
+    alu_dut->op = 16;
 
     AdvanceClock();
 
