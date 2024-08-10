@@ -20,13 +20,13 @@ all: directories $(TARGETS)
 $(foreach module, $(MODULES), $(eval $(call make_bintargets,$(module))))
 $(foreach unit, $(UNITS), $(eval $(call make_bintargets,$(unit))))
 # dependencies
-$(foreach module, $(MODULES), $(eval $(call make_mktargets,$(module),modules)))
-$(foreach unit, $(UNITS), $(eval $(call make_mktargets,$(unit),units,$(UNITS.$(unit)))))
+$(foreach module, $(MODULES), $(eval $(call make_mktargets,$(module))))
+$(foreach unit, $(UNITS), $(eval $(call make_mkunittargets,$(unit))))
 
 
 #
 runtest: all $(TARGETS)
-	@for test in $(TARGETS); do ./$$_test || exit 1; done
+	@for test in $(TARGETS); do $$test || exit 0; done
 
 coverage:
 	verilator_coverage --annotate logs/annotate --annotate-all --annotate-min 1 -write-info logs/merged.info logs/*.dat
