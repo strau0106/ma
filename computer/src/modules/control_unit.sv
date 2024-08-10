@@ -31,16 +31,16 @@ module control_unit (
     bit[3:0] state;
 
     bit[7:0] makro_instruction;
-    
+
     bit next_instr;
     bit load;
-    
+
 
     bit[(`CONTROL_WORD_WIDTH-1):0] microcode[(1<<`MICRO_INSTRUCTION_WORD_WIDTH)-1];
 
     bit[(`MICRO_INSTRUCTION_WORD_WIDTH-1):0] micro_instruction_word;
     assign micro_instruction_word = {state, makro_instruction,  alu_flag};
-    
+
     bit[(`CONTROL_WORD_WIDTH-1):0] control_word;
     assign control_word = microcode[micro_instruction_word];
 
@@ -48,7 +48,7 @@ module control_unit (
     always_ff @(negedge clock) begin
         {alu_op, alu_enable, memory_op, data_word_selector, bus_selector, rax_op, rbx_op, rcx_op, rdx_op, reset, halt, load, next_instr} <= control_word;
     end
-    
+
     // state generation
     always_ff @(posedge clock) begin
         if (reset || next_instr) begin
@@ -58,6 +58,10 @@ module control_unit (
         end
         if (load) begin
             makro_instruction <= bus;
+            $display("makro_instruction: %h", makro_instruction);
+            $display("state: %h", state);
+            $display("bus: %h", bus);
         end
+        
     end
 endmodule
