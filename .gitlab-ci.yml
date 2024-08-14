@@ -18,7 +18,7 @@ paper:
   when: on_success
 
 verilator-coverage:
-  image: ghcr.io/strau0106/verilator:master
+  image: verilator/verilator
   stage: build
   before_script: 
     - cd computer
