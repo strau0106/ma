@@ -46,7 +46,8 @@ module control_unit (
 
     // control_word decoding
     always_ff @(negedge clock) begin
-        {alu_op, alu_enable, memory_op, data_word_selector, bus_selector, rax_op, rbx_op, rcx_op, rdx_op, reset, halt, load, next_instr} <= control_word;
+        {alu_op, alu_enable, memory_op, data_word_selector, bus_selector,
+         rax_op, rbx_op, rcx_op, rdx_op, reset, halt, load, next_instr} <= control_word;
     end
 
     // state generation
@@ -62,6 +63,6 @@ module control_unit (
             $display("state: %h", state);
             $display("bus: %h", bus);
         end
-        
+
     end
 endmodule
