@@ -71,7 +71,7 @@ TEST_F(RegAcc, REQTBD2) {
 
     ASSERT_EQ(reg_acc_dut->reg_direct, 0b11101111);
 
-    reg_acc_dut->op = 99;  // invalid op
+    reg_acc_dut->op = 4;  // invalid op
     reg_acc_dut->in = 0b1010101;
 
     AdvanceClock();

@@ -70,7 +70,7 @@ TEST_F(RegTmp, REQTBD2) {
 
     ASSERT_EQ(reg_tmp_dut->rootp->reg_tmp__DOT__reg_tmp, 0b11101111);
 
-    reg_tmp_dut->op = 99;  // invalid op
+    reg_tmp_dut->op = 4;  // invalid op
     reg_tmp_dut->in = 0b1010101;
 
     AdvanceClock();
