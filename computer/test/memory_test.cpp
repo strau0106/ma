@@ -81,6 +81,7 @@ TEST_F(Memory, TuringRequirementt1323) {
 
 TEST_F(Memory, TuringRequirementt1324) {
     memory_dut->data_word_selector = 0;
+    memory_dut->bus_selector = 0;
     memory_dut->rootp->memory__DOT__cells.m_storage[300 << 1] = 0b11111111;
     memory_dut->rootp->memory__DOT__cells.m_storage[290 << 1] = 0b11111110;
 
