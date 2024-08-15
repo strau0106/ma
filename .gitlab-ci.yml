@@ -24,7 +24,7 @@ verilator-coverage:
     - cd computer
     - make gtest || true
   script: 
-    - export GTEST_OUTPUT="xml:./report.xml"
+    - export GTEST_OUTPUT="xml:./reports/"
     - make runtest || true # No interest in if all tests pass or not, thats what the html is for.
     - make genhtml
   artifacts:
@@ -34,5 +34,5 @@ verilator-coverage:
     untracked: true
     expire_in: 10 weeks
     reports:
-      junit: computer/report.xml
+      junit: computer/reports/*
     when: always
