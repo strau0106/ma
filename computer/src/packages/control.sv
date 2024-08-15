@@ -58,7 +58,7 @@ package control;
         bit halt;
         bit control_unit_load;
         bit next_instr;
-        } control_word_t /*verilator public*/;
+        } control_word_t;
 
 
 
