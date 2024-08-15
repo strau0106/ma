@@ -72,13 +72,12 @@ TEST_F(CPU, Req) {
     cpu_dut->rootp->cpu__DOT__memory__DOT__cells[0] = 0b10101010;
     cpu_dut->rootp->cpu__DOT__memory__DOT__cells[2] = 0b010101011;
 
-    Microcode::microcode_t mc;
-    Microcode::PrimeMicrocode(mc);
-    Microcode::microcode_bin_t bin_mc = { 0 };
-    Microcode::ConvertMicrocodeToBin(mc, bin_mc);
-    // copy bin_mc to m_storage
+    Microcode::microcode_bin_t microcode;
+    Microcode::PrimeMicrocode(microcode);
+    
+    // copy microcode to m_storage
     // cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage
-    std::copy(bin_mc, bin_mc+16383, cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
+    std::copy(microcode, microcode+16383, cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
 
     std::cout<<cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage[0];
 
