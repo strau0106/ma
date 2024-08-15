@@ -9,7 +9,7 @@ MODULES = alu memory reg_acc reg_tmp control_unit
 UNITS = cpu
 # User only needs to edit above
 
-TARGETS = $(addsuffix _test, $(addprefix bin/, $(UNITS))) $(addsuffix _test, $(addprefix bin/, $(MODULES)))
+TARGETS = $(addsuffix _test, $(addprefix bin/, $(MODULES))) $(addsuffix _test, $(addprefix bin/, $(UNITS)))
 
 vpath %.sv src/modules src/units src/packages lib/
 
