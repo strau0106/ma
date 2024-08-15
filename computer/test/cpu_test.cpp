@@ -87,20 +87,17 @@ TEST_F(CPU, Req) {
     tfp->open("dumpfile.fst");
 
     contextp->timeInc(1);
-    while (Verilated::time() &&
-           cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 7) {
+    while (cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 7) {
         contextp->timeInc(1);
         cpu_dut->eval();
         tfp->dump(contextp->time());
     }
-    while (Verilated::time() &&
-           cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 5) {
+    while (cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 5) {
         contextp->timeInc(1);
         cpu_dut->eval();
         tfp->dump(contextp->time());
     }
-        while (Verilated::time() &&
-           cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 4) {
+        while (cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 4) {
         contextp->timeInc(1);
         cpu_dut->eval();
         tfp->dump(contextp->time());
