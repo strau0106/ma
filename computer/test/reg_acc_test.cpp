@@ -85,6 +85,26 @@ TEST_F(RegAcc, REQTBD2) {
     ASSERT_EQ(reg_acc_dut->out, 0b11101111);
 }
 
+TEST_F(RegAcc, REQTBD3) {
+    reg_acc_dut->op = reg_acc_control::reg_op_e::LOAD;
+    reg_acc_dut->in = 0b11101111;
+
+    AdvanceClock();
+
+    ASSERT_EQ(reg_acc_dut->reg_direct, 0b11101111);
+
+    reg_acc_dut->reset = 1;
+
+    AdvanceClock();
+
+    reg_acc_dut->op = reg_acc_control::reg_op_e::ENABLE;
+
+    AdvanceClock();
+
+    ASSERT_EQ(reg_acc_dut->out, 0);
+}
+
+
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     testing::InitGoogleTest(&argc, argv);
