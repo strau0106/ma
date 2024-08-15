@@ -1,4 +1,4 @@
-// connect everything up. bus to everything. reg_direct from rax and rbx to alu. everything else to control_unit    
+// connect everything up. bus to everything. reg_direct from rax and rbx to alu. everything else to control_unit
 module cpu ();
 
     logic clock;
