@@ -72,12 +72,10 @@ TEST_F(CPU, Req) {
     cpu_dut->rootp->cpu__DOT__memory__DOT__cells[0] = 0b10101010;
     cpu_dut->rootp->cpu__DOT__memory__DOT__cells[2] = 0b010101011;
 
-    Microcode::microcode_bin_t microcode;
-    Microcode::PrimeMicrocode(microcode);
+    Microcode* TestMicrocode;
+    TestMicrocode = new Microcode; 
+    TestMicrocode->StoreMicrocodeIntoModel(cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
     
-    // copy microcode to m_storage
-    // cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage
-    std::copy(microcode, microcode+16383, cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
 
     std::cout<<cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage[0];
 
@@ -109,10 +107,11 @@ int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     testing::InitGoogleTest(&argc, argv);
     auto res = RUN_ALL_TESTS();
-    
-    std::this_thread::sleep_for(std::chrono::seconds(1));std::this_thread::sleep_for(std::chrono::seconds(20));
 
+    
+    std::this_thread::sleep_for(std::chrono::seconds(1));std::this_thread::sleep_for(std::chrono::seconds(5));
     Verilated::mkdir("logs");
     VerilatedCov::write("logs/cpu.dat");
+    std::this_thread::sleep_for(std::chrono::seconds(1));std::this_thread::sleep_for(std::chrono::seconds(5));
     return res;
 }

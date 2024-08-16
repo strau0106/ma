@@ -17,7 +17,7 @@ build/$(1)/$(1).mk: src/modules/$(1).sv src/packages/*.sv test/$(1)_test.cpp lib
 endef
 
 define make_mkunittargets
-build/$(1)/$(1).mk: src/units/$(1).sv src/modules/*.sv src/packages/*.sv test/$(1)_test.cpp lib/
+build/$(1)/$(1).mk: src/units/$(1).sv src/modules/*.sv src/packages/*.sv test/$(1)_test.cpp lib/*
 	@verilator --coverage --trace-fst --timescale 1ps --timing --top-module $(1) -cc src/packages/*.sv src/modules/*.sv src/units/*.sv \
 							-Mdir build/$(1)  --prefix $(1) \
 	            --exe ../test/$(1)_test.cpp ../../lib/microcode.cpp \

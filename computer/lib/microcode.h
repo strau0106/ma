@@ -1,6 +1,9 @@
 #ifndef LIB_MICROCODE_H
 #define LIB_MICROCODE_H
 
+#include <control_word.h>
+#include <cpu_control.h>
+
 #define ADDR_BUS_WIDTH 9
 #define MICRO_INSTRUCTION_WORD_WIDTH 14
 #define CONTROL_WORD_WIDTH 22
@@ -28,81 +31,36 @@
         ((control_unit_load) << (CONTROL_WORD_WIDTH - 21)) +                 \
         ((next_instr) << (CONTROL_WORD_WIDTH - 22))
 
-#define INC_CONTROL_WORD_MACRO                                                \
-    COMPUTE_CONCATENATED_CONTROL_WORD(                                  \
-        cpu_control::alu_op_e::ALU_NOP,         /*alu_op*/              \
-        0,                                      /*alu_enable*/          \
-        cpu_control::memory_op_e::INC,          /*memory_op*/           \
-        0,                                      /*data_word_selector*/  \
-        cpu_control::memory_bus_selector_e::PC, /*memory_bus_selector*/ \
-        cpu_control::reg_op_e::REG_NOP,         /*rax_op*/              \
-        cpu_control::reg_op_e::REG_NOP,         /*rbx_op*/              \
-        cpu_control::reg_op_e::REG_NOP,         /*rcx_op*/              \
-        cpu_control::reg_op_e::REG_NOP,         /*rdx_op*/              \
-        0,                                      /*reset*/               \
-        0,                                      /*halt*/                \
-        0,                                      /*control_unit_load*/   \
-        0                                       /*next_instr*/          \
-    )
-
-#define FETCH_CONTROL_WORD_MACRO                                              \
-    COMPUTE_CONCATENATED_CONTROL_WORD(                                  \
-        cpu_control::alu_op_e::ALU_NOP,         /*alu_op*/              \
-        0,                                      /*alu_enable*/          \
-        cpu_control::memory_op_e::READ,         /*memory_op*/           \
-        0,                                      /*data_word_selector*/  \
-        cpu_control::memory_bus_selector_e::PC, /*memory_bus_selector*/ \
-        cpu_control::reg_op_e::REG_NOP,         /*rax_op*/              \
-        cpu_control::reg_op_e::REG_NOP,         /*rbx_op*/              \
-        cpu_control::reg_op_e::REG_NOP,         /*rcx_op*/              \
-        cpu_control::reg_op_e::REG_NOP,         /*rdx_op*/              \
-        0,                                      /*reset*/               \
-        0,                                      /*halt*/                \
-        1,                                      /*control_unit_load*/   \
-        0                                       /*next_instr*/          \
-    )
-
-#define NOP_CONTROL_WORD_MACRO                                                \
-    COMPUTE_CONCATENATED_CONTROL_WORD(                                  \
-        cpu_control::alu_op_e::ALU_NOP,         /*alu_op*/              \
-        0,                                      /*alu_enable*/          \
-        cpu_control::memory_op_e::NOP,          /*memory_op*/           \
-        0,                                      /*data_word_selector*/  \
-        cpu_control::memory_bus_selector_e::PC, /*memory_bus_selector*/ \
-        cpu_control::reg_op_e::REG_NOP,         /*rax_op*/              \
-        cpu_control::reg_op_e::REG_NOP,         /*rbx_op*/              \
-        cpu_control::reg_op_e::REG_NOP,         /*rcx_op*/              \
-        cpu_control::reg_op_e::REG_NOP,         /*rdx_op   */           \
-        0,                                      /*reset*/               \
-        0,                                      /*halt*/                \
-        0,                                      /*control_unit_load*/   \
-        0                                       /*next_instr*/          \
-    )
-
 class Microcode {
-   public:
+   private:
     struct micro_instruction_state_t {
         int resulting_control_word : CONTROL_WORD_WIDTH;
         cpu_control::alu_flag_e flags[4];
     };
 
+    struct microcode_t {
+        micro_instruction_state_t* microcode[1 << MICRO_INSTRUCTION_WORD_WIDTH];
+    };
+
+    typedef IData microcode_bin_t[(1 << MICRO_INSTRUCTION_WORD_WIDTH) - 1];
+
+    IData microcode_bin_instruction_state_t;
+
+    microcode_bin_t microcode;
+
+    void PrimeMicrocode();  // insert fetch decode
+
+   public:
     struct macro_instruction_t {
         const char* name;
         micro_instruction_state_t states[4];
     };
 
-    struct microcode_t {
-        micro_instruction_state_t* microcode[1 << MICRO_INSTRUCTION_WORD_WIDTH];
-    };
-    typedef IData microcode_bin_t[(1 << MICRO_INSTRUCTION_WORD_WIDTH) - 1];
-    IData microcode_bin_instruction_state_t;
-    static const int INC_CONTROL_WORD = INC_CONTROL_WORD_MACRO;
-    static const int FETCH_CONTROL_WORD = FETCH_CONTROL_WORD_MACRO;
-    static const int NOP_CONTROL_WORD = NOP_CONTROL_WORD_MACRO;
-    static void PrimeMicrocode(microcode_bin_t& microcode);  // insert fetch decode
+    Microcode() { PrimeMicrocode(); }
 
-    static void ComputeMicrocode(const microcode_t& microcode,
-                                 microcode_bin_t& microcode_bin);
+    void AddMacroInstruction(const macro_instruction_t& macro_instruction);
+
+    void StoreMicrocodeIntoModel(IData* m_storage);
 };
 
 #endif  // LIB_MICROCODE_H
