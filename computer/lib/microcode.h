@@ -1,5 +1,5 @@
-#ifndef MICROCODE_H
-#define MICROCODE_H
+#ifndef LIB_MICROCODE_H
+#define LIB_MICROCODE_H
 
 #define ADDR_BUS_WIDTH 9
 #define MICRO_INSTRUCTION_WORD_WIDTH 14
@@ -102,4 +102,4 @@ class Microcode {
                                  microcode_bin_t& microcode_bin);
 };
 
-#endif  // MICROCODE_H
+#endif  // LIB_MICROCODE_H
