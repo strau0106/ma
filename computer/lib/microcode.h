@@ -28,7 +28,7 @@
         ((control_unit_load) << (CONTROL_WORD_WIDTH - 21)) +                 \
         ((next_instr) << (CONTROL_WORD_WIDTH - 22))
 
-#define INC_CONTROL_WORD                                                \
+#define INC_CONTROL_WORD_MACRO                                                \
     COMPUTE_CONCATENATED_CONTROL_WORD(                                  \
         cpu_control::alu_op_e::ALU_NOP,         /*alu_op*/              \
         0,                                      /*alu_enable*/          \
@@ -45,7 +45,7 @@
         0                                       /*next_instr*/          \
     )
 
-#define FETCH_CONTROL_WORD                                              \
+#define FETCH_CONTROL_WORD_MACRO                                              \
     COMPUTE_CONCATENATED_CONTROL_WORD(                                  \
         cpu_control::alu_op_e::ALU_NOP,         /*alu_op*/              \
         0,                                      /*alu_enable*/          \
@@ -62,7 +62,7 @@
         0                                       /*next_instr*/          \
     )
 
-#define NOP_CONTROL_WORD                                                \
+#define NOP_CONTROL_WORD_MACRO                                                \
     COMPUTE_CONCATENATED_CONTROL_WORD(                                  \
         cpu_control::alu_op_e::ALU_NOP,         /*alu_op*/              \
         0,                                      /*alu_enable*/          \
@@ -96,6 +96,9 @@ class Microcode {
     };
     typedef IData microcode_bin_t[(1 << MICRO_INSTRUCTION_WORD_WIDTH) - 1];
     IData microcode_bin_instruction_state_t;
+    static const int INC_CONTROL_WORD = INC_CONTROL_WORD_MACRO;
+    static const int FETCH_CONTROL_WORD = FETCH_CONTROL_WORD_MACRO;
+    static const int NOP_CONTROL_WORD = NOP_CONTROL_WORD_MACRO;
     static void PrimeMicrocode(microcode_bin_t& microcode);  // insert fetch decode
 
     static void ComputeMicrocode(const microcode_t& microcode,
