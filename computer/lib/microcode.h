@@ -14,23 +14,6 @@
             cpu_control::alu_flag_e::CARRY, cpu_control::alu_flag_e::REMAINDER \
     }
 
-#define COMPUTE_CONCATENATED_CONTROL_WORD(                                   \
-    alu_op, alu_enable, memory_op, data_word_selector, bus_selector, rax_op, \
-    rbx_op, rcx_op, rdx_op, reset, halt, control_unit_load, next_instr)      \
-    ((alu_op) << (CONTROL_WORD_WIDTH - 4)) +                                 \
-        ((alu_enable) << (CONTROL_WORD_WIDTH - 5)) +                         \
-        ((memory_op) << (CONTROL_WORD_WIDTH - 8)) +                          \
-        ((data_word_selector) << (CONTROL_WORD_WIDTH - 9)) +                 \
-        ((bus_selector) << (CONTROL_WORD_WIDTH - 10)) +                      \
-        ((rax_op) << (CONTROL_WORD_WIDTH - 12)) +                            \
-        ((rbx_op) << (CONTROL_WORD_WIDTH - 14)) +                            \
-        ((rcx_op) << (CONTROL_WORD_WIDTH - 16)) +                            \
-        ((rdx_op) << (CONTROL_WORD_WIDTH - 18)) +                            \
-        ((reset) << (CONTROL_WORD_WIDTH - 19)) +                             \
-        ((halt) << (CONTROL_WORD_WIDTH - 20)) +                              \
-        ((control_unit_load) << (CONTROL_WORD_WIDTH - 21)) +                 \
-        ((next_instr) << (CONTROL_WORD_WIDTH - 22))
-
 class Microcode {
    private:
     struct micro_instruction_state_t {
