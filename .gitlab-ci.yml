@@ -2,11 +2,13 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages: 
+  - paper
   - build
+  - test
 
 paper:
   image: ghcr.io/strau0106/latex:main
-  stage: build
+  stage: paper
   before_script: 
     - cd paper
   script: 
@@ -17,22 +19,41 @@ paper:
     expire_in: 10 weeks
   when: on_success
 
-verilator-coverage:
-  image: ghcr.io/strau0106/verilator:master
+verilate:
   stage: build
+  image: ghcr.io/strau0106/verilator:master
   before_script: 
     - cd computer
     - make gtest || true
   script: 
-    - export GTEST_OUTPUT="xml:./reports/"
-    - make runtest || true # No interest in if all tests pass or not, thats what the html is for.
-    - make genhtml
+    - make
   artifacts:
-    paths:
-      - computer/logs/html
-      - computer/report.xml
     untracked: true
+
+verilator-test:
+  stage: test
+  image: ghcr.io/strau0106/verilator:master
+  dependencies:
+    - verilate
+  before_script: 
+    - cd computer
+  script:
+    - export GTEST_OUTPUT="xml:reports/"
+    - make runtest || true
+  artifacts:
     expire_in: 10 weeks
     reports:
       junit: computer/reports/*
     when: always
+
+verilator-coverage:
+  stage: test
+  image: ghcr.io/strau0106/verilator:master
+  dependencies:
+    - verilate
+  before_script: 
+    - cd computer
+  script:
+    - make runtest || true
+  coverage: /Total coverage \(101\/106\) ([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*))(?:[Ee]([+-]?\d+))?%/
+

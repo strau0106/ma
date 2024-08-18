@@ -109,9 +109,9 @@ int main(int argc, char** argv) {
     auto res = RUN_ALL_TESTS();
 
     
-    std::this_thread::sleep_for(std::chrono::seconds(1));std::this_thread::sleep_for(std::chrono::seconds(5));
+    //std::this_thread::sleep_for(std::chrono::seconds(1));std::this_thread::sleep_for(std::chrono::seconds(5));
     Verilated::mkdir("logs");
     VerilatedCov::write("logs/cpu.dat");
-    std::this_thread::sleep_for(std::chrono::seconds(1));std::this_thread::sleep_for(std::chrono::seconds(5));
+    //std::this_thread::sleep_for(std::chrono::seconds(1));std::this_thread::sleep_for(std::chrono::seconds(5));
     return res;
 }
