@@ -55,4 +55,5 @@ verilator-coverage:
     - cd computer
   script:
     - make runtest || true
+    - make coverage
   coverage: '/Total coverage .* \d+\.\d+%/'
