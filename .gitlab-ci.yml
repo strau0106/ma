@@ -55,5 +55,4 @@ verilator-coverage:
     - cd computer
   script:
     - make runtest || true
-  coverage: /Total coverage \(101\/106\) ([+-]?(?=\.\d|\d)(?:\d+)?(?:\.?\d*))(?:[Ee]([+-]?\d+))?%/
-
+  coverage: '/Total coverage .* \d+\.\d+%/'
