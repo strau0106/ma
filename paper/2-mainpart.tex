@@ -65,9 +65,9 @@ The choice for the hardware description language fell on Verilog due to its wide
 
 As Verilog is only a set of syntax, additional software is required to do anything (change here). In my case one of these additionally required pieces of software is a simulator, to let the written Verilog code produce results. Although I have previous experience with a Verilog compilation and simulation suite, Icarus Verilog, I chose another one. The Verilator suite offers a very modern toolset consisting of a compiler/simulator that provides an interface to C++, language diagnostic tools as well as test coverage report generation. I am under the impression that the ability to write test bench code in another language is of great importance as this reduces development time of tests, especially if these tests are more complex, e.g. execution of transpiled assembly code. 
 
-To increase test repeatability and efficiency I have decided to employ a testing framework. Widely used and already used for me, I opted for the GoogleTest framework. It is simple to use and provides testingreports in various formats, e.g. understandable by GitLab. 
+To increase test repeatability and efficiency I have decided to employ a testing framework. Widely used and already used by me, I opted for the GoogleTest framework. It is simple to use and provides testingreports in various formats, e.g. understandable by GitLab. 
 
-To increase initial development momentum I additionally copied build system setup from a third party.
+To increase initial development momentum I additionally copied a build system setup from a third party.
 
 
 - I chose google test, there are code examples out there with Verilog/Verilator. 
@@ -93,7 +93,13 @@ For the development of my computer architecture I have decided to implement such
 Structing vs alot of signals
 
 Verilator and structs in public, ahhh, alu\_control.h could use that sketchy name there, that doesnt seem to change, but should i?
-debian unstable would do, but do i want.
+debian unstable would do, but do i want. 
+In the end deviated away from the struct code approach because that would be just one more step in verilog. microcode[miw]=>control\_word(=>struct, this is what i am not doing now)=>controlsignals
+
+the mutex lock issue\dots reported to maintainer. 
+work around => split pipelines. 
+
+lib code build system integration. 
 
 \input{2-mainpart/architecture}
 
