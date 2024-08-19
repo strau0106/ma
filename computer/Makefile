@@ -29,7 +29,7 @@ runtest: all $(TARGETS)
 	@for test in $(TARGETS); do $$test || exit 0; done
 
 coverage:
-	verilator_coverage --annotate logs/annotate --annotate-all --annotate-min 1 -write-info logs/merged.info logs/*.dat
+	verilator_coverage --annotate logs/annotate --annotate-all --annotate-min 1 -write-info logs/merged.info logs/*.dat | perl -nle 'print "Total coverage: $$1" and exit if m/Total coverage .* (\d+\.\d+)%/'
 genhtml: coverage
 	genhtml logs/merged.info --output-directory logs/html
 

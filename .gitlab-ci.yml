@@ -55,5 +55,5 @@ verilator-coverage:
     - cd computer
   script:
     - make runtest || true
-    - 'make coverage | perl -nle "print \"Total coverage: $1\" and exit if m/Total coverage .* (\d+\.\d+)%/\"'
+    - make coverage
   coverage: '/Total coverage: \d+\.\d+/'
