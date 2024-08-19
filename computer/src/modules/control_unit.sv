@@ -30,7 +30,7 @@ module control_unit (
 
     bit[3:0] state;
 
-    bit[7:0] makro_instruction;
+    bit[7:0] macro_instruction;
 
     bit next_instr;
     bit load;
@@ -39,7 +39,7 @@ module control_unit (
     bit[(`CONTROL_WORD_WIDTH-1):0] microcode[(1<<`MICRO_INSTRUCTION_WORD_WIDTH)-1];
 
     bit[(`MICRO_INSTRUCTION_WORD_WIDTH-1):0] micro_instruction_word;
-    assign micro_instruction_word = {state, makro_instruction,  alu_flag};
+    assign micro_instruction_word = {state, macro_instruction,  alu_flag};
 
     bit[(`CONTROL_WORD_WIDTH-1):0] control_word;
     assign control_word = microcode[micro_instruction_word];
@@ -58,8 +58,8 @@ module control_unit (
             state <= state + 1;
         end
         if (load) begin
-            makro_instruction <= bus;
-            $display("makro_instruction: %h", makro_instruction);
+            macro_instruction <= bus;
+            $display("macro_instruction: %h", macro_instruction);
             $display("state: %h", state);
             $display("bus: %h", bus);
         end
