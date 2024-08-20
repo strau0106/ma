@@ -10,7 +10,7 @@ void Microcode::PrimeMicrocode() {
         INC->set_memory_op(cpu_control::memory_op_e::INC)
             ->set_memory_bus_selector(cpu_control::memory_bus_selector_e::PC)
             ->bin();
-    free(INC);
+    delete INC;
 
     ControlWord* FETCH = new ControlWord();
     unsigned int FETCH_CONTROL_WORD =
@@ -18,11 +18,11 @@ void Microcode::PrimeMicrocode() {
             ->set_memory_bus_selector(cpu_control::memory_bus_selector_e::PC)
             ->set_control_unit_load(1)
             ->bin();
-    free(FETCH);
+    delete FETCH;
 
     ControlWord* NOP = new ControlWord();
     unsigned int NOP_CONTROL_WORD = NOP->bin();
-    free(NOP);
+    delete NOP;
 
     for (int i = 0; i < (1 << MICRO_INSTRUCTION_WORD_WIDTH); i++) {
         this->microcode[i] = NOP_CONTROL_WORD;
