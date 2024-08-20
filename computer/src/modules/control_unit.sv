@@ -57,12 +57,9 @@ module control_unit (
         end else begin
             state <= state + 1;
         end
-        if (load) begin
+
+        if (load)
             macro_instruction <= bus;
-            $display("macro_instruction: %h", macro_instruction);
-            $display("state: %h", state);
-            $display("bus: %h", bus);
-        end
 
     end
 endmodule
