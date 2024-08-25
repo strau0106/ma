@@ -1,4 +1,4 @@
-// Test file for component of Section 1.3.1: Arithmetic Logic Unit
+// Test file for component of Section 1.3.4: Control Unit
 
 #include <control_unit.h>
 #include <control_unit___024root.h>
@@ -12,6 +12,7 @@ class ControlUnit : public ::testing::Test {
 
     void SetUp() {
         control_unit_dut = new control_unit;
+
         control_unit_dut->eval();
     }
 
@@ -19,7 +20,49 @@ class ControlUnit : public ::testing::Test {
         control_unit_dut->final();
         delete control_unit_dut;
     }
+
+    void Cycle() {
+        Verilated::timeInc(1);
+        control_unit_dut->eval();
+    }
+
+    void MultipleCycles(int n) {
+        for (int i = 0; i < n; i++) {
+            Cycle();
+        }
+    }
 };
+
+TEST_F(ControlUnit, ArchRequirement1341) {
+    control_unit_dut->eval();
+
+    EXPECT_EQ(control_unit_dut->clock, 0);
+
+    MultipleCycles(5);
+
+    EXPECT_EQ(control_unit_dut->clock, 1);
+}
+
+TEST_F(ControlUnit, ArchRequirement1342) {
+    // state increments by 1 every cycle and resets after 0xF
+
+    control_unit_dut->eval();
+
+    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, 0);
+
+    MultipleCycles(5);
+
+    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, 1);
+
+    for (int i = 1; i < 15; i++) {
+        MultipleCycles(10);
+        EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, i + 1);
+    }
+
+    MultipleCycles(10);
+
+    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, 0);
+}
 
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);

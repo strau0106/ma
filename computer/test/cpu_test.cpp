@@ -7,27 +7,27 @@
 #include <microcode.h>
 #include <verilated.h>
 #include <verilated_fst_c.h>
+#include <string>
 
 class CPU : public ::testing::Test {
    protected:
     cpu* cpu_dut;
-    const std::unique_ptr<VerilatedContext> contextp{new VerilatedContext};
 
     void RunUntilHalt() {
         while (!cpu_dut->rootp->cpu__DOT__halt) {
-            contextp->timeInc(1);
+            Verilated::timeInc(1);
             cpu_dut->eval();
         }
     }
 
     void RunUntilCondition(bool& condition) {
         while (condition) {
-            contextp->timeInc(1);
+            Verilated::timeInc(1);
             cpu_dut->eval();
         }
     }
 
-  /*   void RunAndDumpUntilHalt(const char* dumpfile) {
+    /*   void RunAndDumpUntilHalt(const char* dumpfile) {
 
         Verilated::traceEverOn(true);
         VerilatedVcdC* tfp = new VerilatedVcdC;
@@ -36,7 +36,7 @@ class CPU : public ::testing::Test {
         while (Verilated::time() && !cpu_dut->rootp->cpu__DOT__halt) {
             Verilated::timeInc(1);
             cpu_dut->eval();
-            tfp->dump(contextp->time());
+            tfp->dump(Verilated::time());
         }
         tfp->close();
     }
@@ -47,10 +47,10 @@ class CPU : public ::testing::Test {
         VerilatedVcdC* tfp = new VerilatedVcdC;
         cpu_dut->trace(tfp, 99);
         tfp->open(dumpfile);
-        while (contextp->time() && condition) {
-            contextp->timeInc(1);
+        while (Verilated::time() && condition) {
+            Verilated::timeInc(1);
             cpu_dut->eval();
-            tfp->dump(contextp->time());
+            tfp->dump(Verilated::time());
         }
         tfp->close();
     } */
@@ -58,6 +58,7 @@ class CPU : public ::testing::Test {
     void SetUp() {
         cpu_dut = new cpu;
         cpu_dut->eval();
+        Verilated::time(0);
     }
 
     void TearDown() {
@@ -79,26 +80,26 @@ TEST_F(CPU, Req) {
 
     std::cout<<cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage[0];
 
-    contextp->traceEverOn(true);
+    Verilated::traceEverOn(true);
     VerilatedFstC* tfp = new VerilatedFstC;
     cpu_dut->trace(tfp, 99);
     tfp->open("dumpfile.fst");
 
-    contextp->timeInc(1);
+    Verilated::timeInc(1);
     while (cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 7) {
-        contextp->timeInc(1);
+        Verilated::timeInc(1);
         cpu_dut->eval();
-        tfp->dump(contextp->time());
+        tfp->dump(Verilated::time());
     }
     while (cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 5) {
-        contextp->timeInc(1);
+        Verilated::timeInc(1);
         cpu_dut->eval();
-        tfp->dump(contextp->time());
+        tfp->dump(Verilated::time());
     }
-        while (cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 4) {
-        contextp->timeInc(1);
+    while (cpu_dut->rootp->cpu__DOT__control_unit__DOT__state != 4) {
+        Verilated::timeInc(1);
         cpu_dut->eval();
-        tfp->dump(contextp->time());
+        tfp->dump(Verilated::time());
     }
     tfp->close();
 }
