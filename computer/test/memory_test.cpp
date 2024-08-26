@@ -45,14 +45,14 @@ TEST_F(Memory, TuringRequirement1321) {
                   .m_storage[ARBITRARY_WRITE_LOCATION << 1],
               ARBITRARY_DATA);  // << 1 because of data_word_selector
 
-#define ARBIRARY_READ_LOCATION 0b111010001
+#define ARBITRARY_READ_LOCATION 0b111010001
 
     // data_word_selector is still 0
 
     memory_dut->rootp->memory__DOT__cells
-        .m_storage[ARBIRARY_READ_LOCATION << 1] = ARBITRARY_DATA;
+        .m_storage[ARBITRARY_READ_LOCATION << 1] = ARBITRARY_DATA;
     memory_dut->rootp->memory__DOT__memory_address_register =
-        ARBIRARY_READ_LOCATION;
+        ARBITRARY_READ_LOCATION;
 
     memory_dut->op = memory_control::memory_op_e::READ;
 
