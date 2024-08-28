@@ -1,9 +1,10 @@
 #ifndef LIB_CONTROL_WORD_H
 #define LIB_CONTROL_WORD_H
 
-#include <microcode.h>
 #include <verilated.h>
 #define CONTROL_WORD_WIDTH 22
+#define MICRO_INSTRUCTION_WORD_WIDTH 14
+#define NUMBER_OF_FLAGS 4
 
 class ControlWord {
    private:
@@ -104,6 +105,7 @@ class ControlWord {
     }
 
     IData bin() {
+        std::cout << "nextisntr" << next_instr << std::endl;
         return ((alu_op) << (CONTROL_WORD_WIDTH - 4)) +
                ((alu_enable) << (CONTROL_WORD_WIDTH - 5)) +
                ((memory_op) << (CONTROL_WORD_WIDTH - 8)) +

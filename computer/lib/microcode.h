@@ -1,9 +1,9 @@
 #ifndef LIB_MICROCODE_H
 #define LIB_MICROCODE_H
 
-#include <control_word.h>
 #include <cpu_control.h>
-
+#include <control_word.hpp>
+#include <macro_instruction.hpp>
 #define ADDR_BUS_WIDTH 9
 #define MICRO_INSTRUCTION_WORD_WIDTH 14
 #define CONTROL_WORD_WIDTH 22
@@ -16,32 +16,25 @@
 
 class Microcode {
    private:
-    struct micro_instruction_state_t {
-        int resulting_control_word : CONTROL_WORD_WIDTH;
-        cpu_control::alu_flag_e flags[4];
-    };
-
-    struct microcode_t {
-        micro_instruction_state_t* microcode[1 << MICRO_INSTRUCTION_WORD_WIDTH];
-    };
-
     typedef IData microcode_bin_t[(1 << MICRO_INSTRUCTION_WORD_WIDTH) - 1];
 
     IData microcode_bin_instruction_state_t;
 
     microcode_bin_t microcode;
 
+    std::vector<MacroInstruction*> macro_instructions;
+
     void PrimeMicrocode();  // insert fetch decode
+    void ComputeMicrocodeForMacroInstruction(unsigned int opcode,
+                                             MacroInstruction* instruction);
 
    public:
-    struct macro_instruction_t {
-        const char* name;
-        micro_instruction_state_t states[4];
-    };
-
     Microcode() { PrimeMicrocode(); }
 
-    void AddMacroInstruction(const macro_instruction_t& macro_instruction);
+    void AddMacroInstruction(MacroInstruction* macro_instruction);
+    unsigned int GetMacroInstructionOpcode(const char name[4]);
+
+    std::map<std::string, unsigned int> ComputeOpCodes();
 
     void StoreMicrocodeIntoModel(IData* m_storage);
 };
