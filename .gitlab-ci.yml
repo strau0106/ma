@@ -23,10 +23,11 @@ verilate:
   stage: build
   image: ghcr.io/strau0106/verilator:master
   before_script: 
-    - cd computer
-    - make gtest || true
+    - mkdir computer/build
+    - cd computer/build
   script: 
-    - make
+    - cmake .. -G Ninja
+    - ninja
   artifacts:
     untracked: true
 
@@ -36,24 +37,24 @@ verilator-test:
   dependencies:
     - verilate
   before_script: 
-    - cd computer
+    - cd computer/build
   script:
     - export GTEST_OUTPUT="xml:reports/"
-    - make runtest || true
+    - ctest || true
   artifacts:
     expire_in: 10 weeks
     reports:
-      junit: computer/reports/*
+      junit: computer/build/reports/*
     when: always
 
-verilator-coverage:
-  stage: test
-  image: ghcr.io/strau0106/verilator:master
-  dependencies:
-    - verilate
-  before_script: 
-    - cd computer
-  script:
-    - make runtest || true
-    - make coverage
-  coverage: '/Total coverage: \d+\.\d+/'
+#verilator-coverage:
+#  stage: test
+#  image: ghcr.io/strau0106/verilator:master
+#  dependencies:
+#    - verilate
+#  before_script: 
+#    - cd computer/build
+#  script:
+#    - make runtest || true
+#    - make coverage
+#   coverage: '/Total coverage: \d+\.\d+/'
