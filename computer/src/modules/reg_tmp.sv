@@ -17,15 +17,15 @@ module reg_tmp (
 
     always_ff @(posedge clock) begin
         if (reset) begin
-            reg_tmp <= 8'h00;
+            reg_tmp = 8'h00;
         end else begin
             case (op)
                 default:
                     ; // no operation
                 ENABLE:
-                    tmp <= reg_tmp;
+                    tmp = reg_tmp;
                 LOAD:
-                    reg_tmp <= in;
+                    reg_tmp = in;
             endcase
         end
     end

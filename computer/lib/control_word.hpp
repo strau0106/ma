@@ -8,22 +8,37 @@
 
 class ControlWord {
    private:
-    unsigned int alu_op : 4;
-    unsigned int alu_enable : 1;
-    unsigned int memory_op : 3;
-    unsigned int data_word_selector : 1;
-    unsigned int memory_bus_selector : 1;
-    unsigned int rax_op : 2;
-    unsigned int rbx_op : 2;
-    unsigned int rcx_op : 2;
-    unsigned int rdx_op : 2;
-    unsigned int reset : 1;
-    unsigned int halt : 1;
-    unsigned int control_unit_load : 1;
-    unsigned int next_instr : 1;
+    /*unsigned int alu_op : 4 = 0;
+    unsigned int alu_enable : 1 = 0;
+    unsigned int memory_op : 3 = 0;
+    unsigned int data_word_selector : 1 = 0;
+    unsigned int memory_bus_selector : 1 = 0;
+    unsigned int rax_op : 2 = 0;
+    unsigned int rbx_op : 2 = 0;
+    unsigned int rcx_op : 2 = 0;
+    unsigned int rdx_op : 2 = 0;
+    unsigned int reset : 1 = 0;
+    unsigned int halt : 1 = 0;
+    unsigned int control_unit_load : 1 = 0;
+    unsigned int next_instr : 1 = 0;
+*/
+    unsigned int alu_op = 0;
+    unsigned int alu_enable = 0;
+    unsigned int memory_op = 0;
+    unsigned int data_word_selector = 0;
+    unsigned int memory_bus_selector = 0;
+    unsigned int rax_op = 0;
+    unsigned int rbx_op = 0;
+    unsigned int rcx_op = 0;
+    unsigned int rdx_op = 0;
+    unsigned int reset = 0;
+    unsigned int halt = 0;
+    unsigned int control_unit_load = 0;
+    unsigned int next_instr = 0;
 
    public:
     ControlWord() {
+        std::cout << "called" << std::endl;
         this->alu_op = 0;
         this->alu_enable = 0;
         this->memory_op = 0;
@@ -104,21 +119,43 @@ class ControlWord {
         return this;
     }
 
-    IData bin() {
-        std::cout << "nextisntr" << next_instr << std::endl;
-        return ((alu_op) << (CONTROL_WORD_WIDTH - 4)) +
-               ((alu_enable) << (CONTROL_WORD_WIDTH - 5)) +
-               ((memory_op) << (CONTROL_WORD_WIDTH - 8)) +
-               ((data_word_selector) << (CONTROL_WORD_WIDTH - 9)) +
-               ((memory_bus_selector) << (CONTROL_WORD_WIDTH - 10)) +
-               ((rax_op) << (CONTROL_WORD_WIDTH - 12)) +
-               ((rbx_op) << (CONTROL_WORD_WIDTH - 14)) +
-               ((rcx_op) << (CONTROL_WORD_WIDTH - 16)) +
-               ((rdx_op) << (CONTROL_WORD_WIDTH - 18)) +
-               ((reset) << (CONTROL_WORD_WIDTH - 19)) +
-               ((halt) << (CONTROL_WORD_WIDTH - 20)) +
-               ((control_unit_load) << (CONTROL_WORD_WIDTH - 21)) +
-               ((next_instr) << (CONTROL_WORD_WIDTH - 22));
+    unsigned int bin() {
+        //
+        //std::cout << "nextisntr" << next_instr << std::endl;
+
+        std::cout << "alu_op: " << this->alu_op << std::endl;
+        std::cout << "alu_enable: " << this->alu_enable << std::endl;
+        std::cout << "memory_op: " << this->memory_op << std::endl;
+        std::cout << "data_word_selector: " << this->data_word_selector << std::endl;
+        std::cout << "memory_bus_selector: " << this->memory_bus_selector << std::endl;
+        std::cout << "rax_op: " << this->rax_op << std::endl;
+        std::cout << "rbx_op: " << this->rbx_op << std::endl;
+        std::cout << "rcx_op: " << this->rcx_op << std::endl;
+        std::cout << "rdx_op: " << this->rdx_op << std::endl;
+        std::cout << "reset: " << this->reset << std::endl;
+        std::cout << "halt: " << this->halt << std::endl;
+        std::cout << "control_unit_load: " << this->control_unit_load << std::endl;
+        std::cout << "next_instr: " << this->next_instr << std::endl;
+
+        if (this->alu_op>5) {
+            throw std::runtime_error("asd");
+        }
+
+        /*unsigned int binary_control_word = ((this->alu_op) << (CONTROL_WORD_WIDTH - 4)) +
+               ((this->alu_enable) << (CONTROL_WORD_WIDTH - 5)) +
+               ((this->memory_op) << (CONTROL_WORD_WIDTH - 8)) +
+               ((this->data_word_selector) << (CONTROL_WORD_WIDTH - 9)) +
+               ((this->memory_bus_selector) << (CONTROL_WORD_WIDTH - 10)) +
+               ((this->rax_op) << (CONTROL_WORD_WIDTH - 12)) +
+               ((this->rbx_op) << (CONTROL_WORD_WIDTH - 14)) +
+               ((this->rcx_op) << (CONTROL_WORD_WIDTH - 16)) +
+               ((this->rdx_op) << (CONTROL_WORD_WIDTH - 18)) +
+               ((this->reset) << (CONTROL_WORD_WIDTH - 19)) +
+               ((this->halt) << (CONTROL_WORD_WIDTH - 20)) +
+               ((this->control_unit_load) << (CONTROL_WORD_WIDTH - 21)) +
+               next_instr;*/
+        //std::cout << binary_control_word << std::endl;
+        return 5;
     }
 };
 

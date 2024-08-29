@@ -8,41 +8,42 @@
 #include <timing_state.hpp>
 
 #define NUMBER_OF_FLAGS 4
-#define NUMBER_OF_DEFINABLE_STATES 14
+#define NUMBER_OF_DEFINABLE_STATES 13
 
 class MacroInstruction {
    private:
     std::string name;
-    unsigned int opcode;
-    TimingState* timing_states[NUMBER_OF_DEFINABLE_STATES];
-    char current_state = 0;
+    unsigned int opcode=0;
+    std::array<std::array<ControlWord *, NUMBER_OF_FLAGS>, NUMBER_OF_DEFINABLE_STATES> timing_states;
+    unsigned int current_state = 0;
 
    public:
     MacroInstruction(const char _name[4], TimingState* first_state) {
-
         this->name = std::string(_name);
-        this->timing_states[0] = first_state;
 
-        for (int i = 1; i < NUMBER_OF_DEFINABLE_STATES; i++) {
+        this->timing_states[0] = first_state->bin();
+
+        for (int i = 0; i < NUMBER_OF_DEFINABLE_STATES; i++) {
             this->timing_states[i] = (new TimingState(
-                ControlWord().set_next_instr(1)));  // NOP / next_instr
+                (new ControlWord())->set_next_instr(1)))->bin();  // NOP / next_instr
         }
     }
 
     MacroInstruction* add_timing_state(char state_number,
                                        TimingState* timing_state) {
-        this->timing_states[state_number] = timing_state;
+        this->timing_states[state_number] = timing_state->bin();
         return this;
     }
 
     MacroInstruction* set_next_state(TimingState* next_state) {
-        this->timing_states[++this->current_state] = next_state;
+        this->timing_states[++this->current_state] = next_state->bin();
         return this;
     }
 
-    MacroInstruction* set_remaing_states(TimingState* next_state) {
-        for (int i = this->current_state; i < NUMBER_OF_DEFINABLE_STATES; i++) {
-            this->timing_states[i] = next_state;
+    MacroInstruction* set_remaing_states(TimingState* state) {
+        this->current_state++;
+        for (unsigned int i = ++this->current_state; i < NUMBER_OF_DEFINABLE_STATES; i++) {
+            this->timing_states[i] = state->bin();
         }
         return this;
     }
@@ -56,19 +57,26 @@ class MacroInstruction {
 
     unsigned int get_opcode() { return this->opcode; }
 
-    std::map<unsigned int, unsigned int> bin_map() {
-        std::map<unsigned int, unsigned int> bin_map;
+    std::map<unsigned int, ControlWord *> bin_map() {
+        /*set_remaing_states(new TimingState(
+                ControlWord().set_next_instr(1)));*/
+
+        std::map<unsigned int, ControlWord *> bin_map;
+
         for (int i = 0; i < NUMBER_OF_DEFINABLE_STATES; i++) {
-            const unsigned int* bin_timing_state =
-                this->timing_states[i]->bin();
+
+            std::array<ControlWord *, NUMBER_OF_FLAGS> bin_timing_state =
+                this->timing_states[i];
+
             for (int j = 0; j < NUMBER_OF_FLAGS; j++) {
                 unsigned int micro_instruction_word =
                     MicroInstructionWord()
                         .set_flag(j)
-                        ->set_state(i + 2)
+                        ->set_state(i + 3)
                         ->set_opcode(this->get_opcode())
                         ->bin();
-                bin_map[micro_instruction_word] = bin_timing_state[j];
+                auto control_word = bin_timing_state[j];
+                bin_map[micro_instruction_word] = control_word;
             }
         }
         return bin_map;

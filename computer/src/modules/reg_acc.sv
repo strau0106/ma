@@ -15,15 +15,15 @@ module reg_acc (
 
     always_ff @(posedge clock) begin
         if (reset) begin
-            reg_direct <= 8'h00;
+            reg_direct = 8'h00;
         end else begin
             case (op)
                 default:
                     ; // no operation
                 ENABLE:
-                    tmp <= reg_direct;
+                    tmp = reg_direct;
                 LOAD:
-                    reg_direct <= in;
+                    reg_direct = in;
             endcase
         end
     end

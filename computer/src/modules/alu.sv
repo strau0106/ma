@@ -29,31 +29,31 @@ module alu(
     always_ff @(posedge clock) begin
     case (op)
       default:
-        tmp <= 0;
+        tmp = 0;
       ADD:
-        {is_carry, tmp} <= register1 + register2;
+        {is_carry, tmp} = register1 + register2;
       SUB:
-        tmp <= register1 - register2;
+        tmp = register1 - register2;
       MUL:
-        {is_carry, tmp} <= register1 * register2;
+        {is_carry, tmp} = register1 * register2;
       DIV:
-        tmp <= register1 / register2;
+        tmp = register1 / register2;
       SHL:
-        tmp <= register1 << 1;
+        tmp = register1 << 1;
       ROL:
-        tmp <= {register1[6:0], register1[7:7]};
+        tmp = {register1[6:0], register1[7:7]};
       SHR:
-        tmp <= register1 >> 1;
+        tmp = register1 >> 1;
       ROR:
-        tmp <= {register1[0:0], register1[7:1]};
+        tmp = {register1[0:0], register1[7:1]};
       AND:
-        tmp <= register1 & register2;
+        tmp = register1 & register2;
       OR:
-        tmp <= register1 | register2;
+        tmp = register1 | register2;
       XOR:
-        tmp <= register1 ^ register2;
+        tmp = register1 ^ register2;
       NOT:
-        tmp <= ~register1;
+        tmp = ~register1;
     endcase
   end
 endmodule

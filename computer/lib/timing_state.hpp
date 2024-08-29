@@ -6,12 +6,11 @@
 
 class TimingState {
    private:
-    ControlWord* control_words[NUMBER_OF_FLAGS];
-
+    std::array<ControlWord *, NUMBER_OF_FLAGS> control_words;
    public:
     TimingState() {
         for (int i = 0; i < NUMBER_OF_FLAGS; i++) {
-            this->control_words[i] = ControlWord().set_next_instr(1);
+            this->control_words[i] = (new ControlWord())->set_next_instr(1);
         }
     }
 
@@ -26,12 +25,8 @@ class TimingState {
         return this;
     }
 
-    const unsigned int* bin() {
-        unsigned int* bin = new unsigned int[NUMBER_OF_FLAGS];
-        for (int i = 0; i < NUMBER_OF_FLAGS; i++) {
-            bin[i] = this->control_words[i]->bin();
-        }
-        return bin;
+    const std::array<ControlWord *, NUMBER_OF_FLAGS> bin() {
+        return control_words;
     }
 };
 

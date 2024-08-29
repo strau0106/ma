@@ -21,32 +21,33 @@ module memory (
 
     bit[7:0] out_tmp;
 
-    assign out = (op == READ) ? out_tmp : 'z;
+    // assign out = (op == READ) ? out_tmp : 'z;
 
     always_ff @(posedge clock) begin
         if (reset) begin
-            memory_address_register <= 0;
-            programm_counter <= 0;
+            memory_address_register = 0;
+            programm_counter = 0;
         end else
         case (op)
             default:
                 ; // no operation
             READ:
-                out_tmp <= cells[{selected_bus, data_word_selector}];
+                out_tmp = cells[{selected_bus, data_word_selector}];
             WRITE:
-                cells[{selected_bus, data_word_selector}] <= in;
+                cells[{selected_bus, data_word_selector}] = in;
             ABSOLUTE:
-                if (bus_selector) programm_counter <= {1'b0, in};
-                else memory_address_register <= {1'b0, in};
+                if (bus_selector) programm_counter = {1'b0, in};
+                else memory_address_register = {1'b0, in};
             REL_SUB:
-                if (bus_selector) programm_counter <= programm_counter - {1'b0, in};
-                else memory_address_register <= memory_address_register - {1'b0, in};
+                if (bus_selector) programm_counter = programm_counter - {1'b0, in};
+                else memory_address_register = memory_address_register - {1'b0, in};
             REL_ADD:
-                if (bus_selector) programm_counter <= programm_counter + {1'b0, in};
-                else memory_address_register <= memory_address_register + {1'b0, in};
+                if (bus_selector) programm_counter = programm_counter + {1'b0, in};
+                else memory_address_register = memory_address_register + {1'b0, in};
             INC:
-                if(bus_selector) programm_counter <= programm_counter + 1;
-                else memory_address_register <= memory_address_register + 1;
+                if(bus_selector) programm_counter = programm_counter + 1;
+                else memory_address_register = memory_address_register + 1;
         endcase
+        out = (op == READ) ? out_tmp : 'z;
     end
 endmodule

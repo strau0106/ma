@@ -103,7 +103,6 @@ TEST_F(RegTmp, REQTBD3) {
     ASSERT_EQ(reg_tmp_dut->out, 0);
 }
 
-
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     testing::InitGoogleTest(&argc, argv);
