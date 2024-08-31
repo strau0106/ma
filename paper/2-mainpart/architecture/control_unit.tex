@@ -8,7 +8,7 @@ Fetch: Get Instr
 
 Decode: Makro to Micro instructions
 
-Execute: If MAR get second data word: 
+Execute: If MRI get second data word: 
 Otherwise go through timing states
 
 if instr jmp trigger jmp. 
@@ -18,6 +18,13 @@ Also is clock.
 Also is instruction register and program counter as per von Neumann.
 
 
+\begin{arch-requirement}
+  Must produce the clock signal. 
+\end{arch-requirement}
+
+\begin{arch-requirement}
+  Must count clock cycles to produce timing states.
+\end{arch-requirement}
 
 \begin{arch-requirement}
   Must produce the control word (micro instruction) from instruction and clock signal.
@@ -32,21 +39,23 @@ Also is instruction register and program counter as per von Neumann.
 \end{turing-requirement}
 
 \begin{feat-requirement}
-  Must, given a specific output of the microcode break out of the current instruction. 
+  Must, given a specific output of the microcode break out of the current instruction (reset state signal).
 \end{feat-requirement}
 
 \begin{feat-requirement}
-  Must halt the clock given micro/macrocode instruction to do so. 
-\end{feat-requirement}
-
-\begin{feat-requirement}
-  Must to halt given micro/macrocode instruction to do so. 
+  Must halt given micro/macrocode instruction to do so. 
 \end{feat-requirement}
 
 \begin{feat-requirement}
   Must reset given micro/macrocode instruction to do so. 
 \end{feat-requirement}
-
+// 1 clock cycles
+    // 2 state gen
+    // 3 state reset
+    // 4 microinstruction word
+    // 5 control word
+    // 6 control word decoding
+    
 List of requirements not final.
 
 
