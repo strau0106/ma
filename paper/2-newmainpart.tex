@@ -1,0 +1,64 @@
+\chapter{Mainpart lol idk title}
+
+First step is to establish a plan. 
+
+Planning is the first and most important step in a development process, defining the goals and.
+
+The first step is the definition of the computer architecture, establishing its requirements and defining the individual components. Then from each module's requirements write
+
+  he first step towards the completion of the simulation of this computer architecture is the definition of its precise and testable requirements. After establishing the requirements the next step will be the splitting of the architecture into individual modules. Modules shall be largely self-contained apart from control signals and the bus. Then, for each requirement write a unit test and then Verilog code to pass the tests and thus fulfill the requirements. Finally, connect the modules together and verify the architecture is working as intended. 
+
+Before any digital development of the architecture and its supporting code infrastructure, the development environment and operations must be setup to contiously test and build the code to ensure retraceability of the development.
+
+If time remains, make the architecture accessible, e.g., by allowing interaction, run it on physical hardware or visualizing each simulation step.
+
+
+\subsection{Requirements}
+Given the defined goals the requirements can be split into three categories (stakeholders): 
+
+Requirements resulting from the need for Turing completeness \cite{turing1936a}, from here on out refaered to as "Turing requirements". These requirements are based around the following concepts: increasable memory (thus infinite), ability to modify memor and the ability to execute conditionally. 
+
+"Architectural requirements" are a set of non-functional requirements given by the intended architecture \cite{vonneumann1945a}. They are by design only verifyable and not testable. 
+
+Finally, "feature requirements" are requirements defined by the author to expand the feature set to a more complex scenario. 
+
+\section{Development Environment}
+The development environment includes all tools and utilities require for a project. This project has two seperate development environments, signified by the two folders in the root of the git repository: `paper` and `computer`. 
+
+To reproduce these environments, the following packages need to be installed with the system package manager (e.g. apt or brew) 
+
+Computer: 
+\begin{itemize}
+  \item verilator@5.24
+  \item a C++ toolchain (e.g. gcc)
+  \item cmake
+  \item ninja
+\end{itemize}
+
+Paper:
+\begin{itemize}
+  \item texlive-full
+  \item latexmk
+  \item texlive-english
+\end{itemize}
+
+
+Finally, git hooks are setup to ensure that before comitting, all compilation steps complete and the commit message format complies with the conventional commit standard \cite{conventionalcommit}
+
+\section{Development Operations (DevOps)}
+The aim of DevOps, short for developer operations, is to shorten a development life cycle, by firstly providing fast feedback to developers on code (unit testing, static code analysis) and secondly continous deployment of the product. Additionally,   
+
+For the development of my computer architecture I have decided to implement such development operations, to speed up the development process and give consistency. The following shall be contiously run whenever a change is committed:  
+
+\begin{itemize}
+  \item Compilation of all code and of the paper.  
+  \item Execution of all test cases and logging of the results to the DevOps platform (GitLab CI)
+  \item Code coverage report generation
+\end{itemize}
+
+To do so I leveraged my version control system (git) and the GitLab CI/CD platform. Replicating the local environments, I wrote two debian based docker containers \cite{dockerVerilator} \cite{dockerLatex} to be used in the respective pipelines. One for compilation of the architecture and one for the compilation of the paper. The pipelines are setup to report code coverage and test results to the version control system (GitLab). 
+
+As the version control system infrastructure I can rely on does not provide any CI/CD runnner infrastructure, e.g. servers to run the docker containers, my own infrastructre does this.
+
+\include{2-mainpart/architecture}
+

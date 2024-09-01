@@ -1,0 +1,31 @@
+
+
+\chapter{Theory}
+
+\section{Idea}
+
+\section{Theory}
+
+Testdriven development, unit testing, reproducability, testing is important ;) no chance to produce working silicon other wise.
+
+\section{Tools}
+With the development of highly complex chip designs further and further abstraction of the process was required. Whilst the earliest chip designs were drawn by hand and transferred onto silicon by photolithography, chip designs nowadays are written in an abstract computer language; a "Hardware Description Language". Apart from allowing separation, modularity and reuseability of components, this description allows for simulation of the design and thus reduces errors in the final, on silicon, design 
+
+The most popular flavor of such an "HDL" is Verilog, as defined in \cite{10458102} and its extensions. Given widespread professional use of Verilog, more specifically a Verilog superset "SystemVerilog", I deem it the best option for this project, allowing me to rely on a large amount of information and guides on the topic. The terms "SystemVerilog" and "Verilog" will be used interchangeably. 
+
+As \cite{10458102} only defines the language's syntax, a Verilog tool suite is required. The pool to choose from is once again CHANGE large. Although I have previous in using Verilog, my expertise on the intricacies on Verilog simulation is still limited. I opted to choose my simulation and/or emulation tool suite based on its integration with other tooling.
+
+Finally, my choice fell on the Verilator suite. Verilators key feature is the compilation of the Verilog code to a binary and the 
+generation of an interface to C++. Apart from being able to rely on previous experience in C++, it also allows me to make use of a vast ecosystem of testing, code coverage and DevOps frameworks. I chose the GoogleTest framework for my unit testing. 
+
+I use Git and GitLab due to previous experience and existing infrastructure. 
+
+  \section{The Goal}
+
+- 8 bit -> limitation on complexity
+- Nostalgic
+- Still a lot of (fun things) that can be implemented even only with 8-bit bus width
+- Turing Complete and aligned with John von Neumann.
+
+
+
