@@ -13,6 +13,7 @@ paper:
     - cd paper
   script: 
     - latexmk main.tex
+    - latexmk main-journal.tex
   artifacts:
     paths:
       - paper/*.pdf
