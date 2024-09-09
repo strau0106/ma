@@ -1,13 +1,28 @@
 \subsection{Memory}
 
-\begin{feat-requirement}
+\begin{turing-requirement}
 Must allow writing to and reading from a memory location
-\end{feat-requirement}
+\end{turing-requirement}
+
+
+8.bit small
+only 4 bit addr and 4 bit operand? nah thats not enough
+thus introduction of a second data word is the only way to perserve the 8bit while increasing capability. 
+
+8bit instr 8bit operand that way. (and you dont need to acces 2nd data word)
+
+control signal for which flag. 
 
 \begin{feat-requirement}
 Must store, for each memory address, store two data words. 
 \end{feat-requirement}
 
+
+Non relative, so absolute, for scenarios, e.g. a relative call stack implementation.
+Where DW1 be relative address 
+and DW2 sign or something like that. 
+
+Call Stack implementation will be detailed later on. 
 \begin{feat-requirement}
 Must retrieve (reword, both retrieve and access) data with an absolute memory address. 
 \end{feat-requirement}
@@ -16,6 +31,26 @@ Must retrieve (reword, both retrieve and access) data with an absolute memory ad
 Must retrieve data with a relative memory address. 
 \end{feat-requirement}
 
+
+Given the larger than data bus addr bus, PC and MAR are stored not in registers connected to the main "bus" but in separate ones. 
+PC and MAR are split and are and non volatile over instructions to enable calcs and relative actions across board.
+
 \begin{feat-requirement}
-    Must be able to store the program counter and memory address register.
+Must be able to store the program counter and memory address register.
 \end{feat-requirement}
+
+With relative jumps of only 255 but bigger word counts. 
+Assembler could impl like jump over 
+
+PSEUDO
+NORMAL PROGRAM
+JMP2
+JPD 255 
+NORMAL PROGRAM RESUMES HERE
+.
+.
+.
+SOME OTHER PROGRAM THAT NEEDS TO JUMP MORE THAN ONE
+
+
+% \lstinputlisting[language=verilog]{../computer/src/modules/memory.sv}

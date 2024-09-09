@@ -1,21 +1,7 @@
 \subsection{Control Unit}
+Following the VNA the module orchestrating the interaction and operation of all modules is called the Control Unit. It is responsible for the generation of the control word, based on the macro program, the current state of the computer and current timing information. For every given combination of this input the control word must produce a specific output. In historic computer architectures this was achieved by carefully creating a net of logic gates, which would produce the correct output for every input. With the increasing complexity and the fact that once physically produced this control logic could not be changed, the concept of the microcode was invented \cite{cite.needed}. A storage, given enough address and data bus width, can represent any combination of logic gates, with the key advantage of being reprogrammable. Thus, nowadays, control units are often not more than a piece of storage and a timing unit. 
 
-The Control Unit:
 
-Responsible for fetch decode execute:  
-
-Fetch: Get Instr
-
-Decode: Makro to Micro instructions
-
-Execute: If MRI get second data word: 
-Otherwise go through timing states
-
-if instr jmp trigger jmp. 
-
-Also is clock. 
-
-Also is instruction register and program counter as per von Neumann.
 
 
 \begin{arch-requirement}
@@ -26,21 +12,32 @@ Also is instruction register and program counter as per von Neumann.
   Must count clock cycles to produce timing states.
 \end{arch-requirement}
 
-\begin{arch-requirement}
-  Must produce the control word (micro instruction) from instruction and clock signal.
-\end{arch-requirement}
+
+\begin{feat-requirement}
+  Must be reprogrammable for every computer run.
+\end{feat-requirement}
+
 
 \begin{arch-requirement}
-  Must be reprogrammable for every computer run.
+  Must produce the control word (micro instruction) from instruction and state.
 \end{arch-requirement}
+
+
+
+
+16 makes sense, 8 could under some circumstances not be enough so 4 bit.
+As most instructions however, would also work with about 4 states. redundant states shall be skippable.
+
+\begin{feat-requirement}
+  Must, given a specific output of the microcode break out of the current instruction (reset state signal).
+\end{feat-requirement}
+
 
 \begin{turing-requirement}
   Must produce the control word from flags.
 \end{turing-requirement}
 
-\begin{feat-requirement}
-  Must, given a specific output of the microcode break out of the current instruction (reset state signal).
-\end{feat-requirement}
+To let programs end in a way. Halt instruction
 
 \begin{feat-requirement}
   Must halt given micro/macrocode instruction to do so. 

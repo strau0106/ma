@@ -1,12 +1,18 @@
 \subsection{Registers}
 
-\begin{turing-requirement}
-  Ability to store a data word.
-\end{turing-requirement}
+Registers are technically speaking redundant, as the computer already has a form of memory. In practice regs still exist: 
+- Regs are in silicon accessible faster than memory. 
+- Storage acccess in case of this specific arch is simpler w/o relative addressing etc. 
+- ALU needs access to what it calculates, thus registers, unless directly connected to memory, which in practice is not possible (memory seperate silicon from chip). 
+Thus registers are considered feature requirements
 
-\begin{turing-requirement}
+\begin{feat-requirement}
+  Ability to store a data word.
+\end{feat-requirement}
+
+\begin{feat-requirement}
   Ability to output a data word.
-\end{turing-requirement}
+\end{feat-requirement}
 
 \begin{turing-requirement}
   Ability to load a data word for storage.

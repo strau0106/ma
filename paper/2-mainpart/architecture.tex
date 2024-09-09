@@ -1,17 +1,35 @@
 \section{Architecture}
 
-General things about the architecture. 
+Given the project goals, the architectures structure, so the architectures indivudal components, units, are largely already given. 
 
-8-bit shall refer to the length Data/Address-Bus
+  The requirement for turing completeness, also known as computationally universal, so the requirement to be able to exectue any algorithm \cite{cit.needed}, poses several restrictions. First of all, a computationally universal cannot exist, HALTING PROBLEMB
+
+  SO generally defined as:
+  
+  \cite{cit.needed}
+
+
+difference in bus lengths, 8-bit data cannot be infinite can it?
+,
+The Von-Neumann-Architecture \cite{vonneuman1945a} intends that the architecture is split up into 
+alu
+cu 
+memory 
+I/O
+bus 
+
+Given the requiremenmt for 8bit and infinite memory, a deviation is required. 
+
+data and addr bus will be split to a certainn extent. in a way the first 8bit of the data bus can be latched onto the addr bus\dots
+finally also the control bus will be external, as this is once again much wider. also from the component layout a control bus that is the same as the data bus would still make sense. 
+
+this however does not limit the architecture to still follow the single bus and data word at a time. (which is why the VNA is still promiinent today. no race conditions)
+
+Additionally there is no problem adhering to the VNC. 
+
 
 Onto bus at rising clock
 from bus at falling clock
-
-Turing Complete
-
-Von Neumann based architecture.
-
-Control bus is external to this bus, as longer and would require much wider bus.
 
 
 \input{2-mainpart/architecture/alu}

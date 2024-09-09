@@ -5,7 +5,7 @@
 \usepackage{fontspec}
 
 % serifenfreie Schriftart Arial festlegen
-% \setsansfont{}
+% \setsansfont{}ð
 
 % serifenfreie Schriftvariante verwenden
 \renewcommand{\familydefault}{\sfdefault}
@@ -18,9 +18,6 @@
 
 % Paket für korrekte Anführungszeichen
 \usepackage{csquotes}
-
-% Package for dirtree
-\usepackage{dirtree}
 
 % Paket für selbst definierte Kopf- und Fusszeilen
 \usepackage{scrlayer-scrpage}
@@ -47,3 +44,26 @@
 
 % Packge for code highlighting
 \usepackage{listings}
+
+
+\usepackage{courier}        % For monospace font
+\usepackage{xcolor}         % For background color
+
+\lstdefinestyle{customverilog}{
+    language=verilog,                    % Set language to Verilog/SystemVerilog
+    basicstyle=\ttfamily\scriptsize,                % Monospace font
+    breaklines=true,                     % Break long lines if necessary
+    numbers=left,                        % Line numbers on the left
+    numberstyle=\tiny,                   % Line numbers in tiny font
+    backgroundcolor=\color{gray!10},     % Light gray background
+}
+
+
+\lstset{style=customverilog}
+
+
+% Package for hyperlinks
+\usepackage{hyperref}
+
+% Package for float placement
+\usepackage{float}

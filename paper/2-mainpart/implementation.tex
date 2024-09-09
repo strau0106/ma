@@ -1,0 +1,38 @@
+  \section{Implementation}
+\label{sec:implementation}
+The implementation of the computer architecture is done in the hardware description language Verilog. The architecture shall be implemented in indivdual modules, each module being tested individually.    
+
+\subsection{Arithmetic Logic Unit}
+Deriving the netlist of the ALU from the requirements is straight forward.
+
+\begin{table}[H]
+\begin{tabular}{ccc}
+Type& Name & Purpose \\ \hline
+I   & Clock & Timing \\
+O   & Bus     & Data output         \\
+I   & Register A and B & Data input \\
+I   & ALU control word & Control \\
+O   & Status flag word & Control
+\end{tabular}
+\caption{}
+\label{tab:alu-i/o}
+\end{table}
+
+The first idea was to have one wire per possible operation and then a chain of if statements to select the correct operation. However, quickly it became clear that this would result in large amount of unreadable error-prone code, as most possible inputs would not be properly defined.
+
+Finally, I chose another approach. I defined an enum for every possible operation and then used a switch case to apply the correct operation. This does not only greatly increase code readability, allow for easy addition of new operations, but more importantly also result in a simpler hardware. 
+
+Not synthed to with one or gate in the end, bigger impedance on bus more connected to it less stable. 
+
+Finally, output is tri state  
+
+carry flag is calculated by lpadding the addition with one and then check if the first bit is 1. the remaing 8 bits are written on the bus. 
+
+zero flag is zero if 0 (and all regs)
+
+
+% \lstinputlisting[language=verilog]{../computer/src/modules/alu.sv}
+
+Only one bit rotations 
+
+Additionally, the implementation is much easier, if just one bit...
