@@ -52,5 +52,9 @@ NORMAL PROGRAM RESUMES HERE
 .
 SOME OTHER PROGRAM THAT NEEDS TO JUMP MORE THAN ONE
 
+When the program is executed the first micro instruction will always be to increment the PC to get the next instruction. As that one cannot come from the bus, as no instruction or memory is present, the PC must be able to be incremented without the bus.
+\begin{feat-requirement}
+    Must be able to increment the program counter by one with a specific control signal.
+\end{feat-requirement}
 
 % \lstinputlisting[language=verilog]{../computer/src/modules/memory.sv}
