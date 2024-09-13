@@ -20,7 +20,7 @@ paper:
     expire_in: 10 weeks
   when: on_success
 
-verilate:
+.verilate:
   stage: build
   image: ghcr.io/strau0106/verilator:master
   before_script: 
@@ -32,7 +32,7 @@ verilate:
   artifacts:
     untracked: true
 
-verilator-test:
+.verilator-test:
   stage: test
   image: ghcr.io/strau0106/verilator:master
   dependencies:
