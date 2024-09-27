@@ -63,15 +63,12 @@
 
 
 % Package for hyperlinks
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 
 % Package for float placement
 \usepackage{float}
 
-% CI variable stuff
-\newcommand{\includeip}[1]{
-%\IfFileExists{#1}{
-\input{#1}
-%} {\ignorespaces}
-}
-
+% noitemsep
+\usepackage{enumitem}
+\setlist{nolistsep}
+\setlist{noitemsep}

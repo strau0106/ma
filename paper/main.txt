@@ -1,0 +1,566 @@
+Maturapaper
+
+Designing and implementing an 8-bit Computer
+Architecture in Verilog
+Rufus Spyra
+Supervised by
+Stefan Rothe
+Corinne Sörensen
+September 7, 2024
+
+Gymnasium Kirchenfeld
+Divison MN
+
+Contents
+1 Introduction
+1.1 Idea and Goal . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.2 Theory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.3 Tools . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.4 Development Environment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.5 Development Operations (DevOps) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.5.1 Requirements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.5.2 Unit Testing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3
+3
+4
+4
+4
+5
+5
+6
+
+2 Mainpart lol idk title
+2.1 Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.1.1 Arithmetic Logic Unit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.1.2 Memory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.1.3 Registers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.1.4 Control Unit . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.1.5 Bus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+7
+8
+8
+11
+12
+12
+13
+
+2
+
+1 Introduction
+1.1 Idea and Goal
+- Idea: Computer cool, nostalgic.
+The goal of this project is to:
+• Have a functioning computer architecture that:
+1. Has an 8-bit bus width; and
+2. Is Turing complete; and
+3. Is based on the Von-Neumann-Architecture (VNA); and
+4. Implements the Von-Neumann-Cycle; and
+5. Implements features wanted by me; and
+6. Is kept as simple as possible; and
+7. Is, with supporting work, explainable graphically.
+• Have a simulation of this computer architecture that:
+1. Is fully tested; and
+2. Is kept as simple as possible; and
+3. Can be interacted with by a user; and
+4. Is programmable by a higher level language (assembly); and
+5. Is, with supporting work, explainable graphically.
+Whilst this paper functions as a process documentaion with the secondary function of explaining the
+architecture in a reasonable fashion.
+Additionally, the development of the computer architecture shall occur in requirement and test driven
+manner.
+
+3
+
+Maturapaper
+
+1.2 Theory
+Testdriven development, unit testing, reproducability, testing is important ;) no chance to produce working
+silicon other wise.
+
+1.3 Tools
+With the development of highly complex chip designs further and further abstraction of the process was
+required. Whilst the earliest chip designs were drawn by hand and transferred onto silicon by photolithography, chip designs nowadays are written in an abstract computer language; a ”Hardware Description
+Language”. Apart from allowing separation, modularity and reuseability of components, this description
+allows for simulation of the design and thus reduces errors in the final, on silicon, design
+The most popular flavor of such an ”HDL” is Verilog, as defined in [2] and its extensions. Given widespread
+professional use of Verilog, more specifically a Verilog superset ”SystemVerilog”, I deem it the best option
+for this project, allowing me to rely on a large amount of information and guides on the topic. The terms
+”SystemVerilog” and ”Verilog” will be used interchangeably.
+As [2] only defines the language’s syntax, a Verilog tool suite is required. The pool to choose from is
+once again CHANGE large. Although I have previous in using Verilog, my expertise on the intricacies on
+Verilog simulation is still limited. I opted to choose my simulation and/or emulation tool suite based on
+its integration with other tooling.
+Finally, I chose the Verilator suite. Its key feature is the compilation of the Verilog code to a binary and
+the generation of an interface to C++. Apart from being able to rely on previous experience in C++,
+it also allows me to make use of a vast ecosystem of testing, code coverage and DevOps frameworks. I
+chose the GoogleTest framework for my unit testing.
+I use Git and GitLab due to previous experience and existing infrastructure.
+
+1.4 Development Environment
+To reproduce the development environment for this work, the following packages need to be installed with
+the system package manager. It is suggested to use the GNU+Linux operating system.
+• verilator@5.24
+• a C++ toolchain (e.g. gcc)
+• cmake
+• ninja
+
+4
+
+Maturapaper
+Finally, git hooks are setup to ensure that before comitting, all compilation steps complete and the commit
+message format complies with the conventional commit standard [1]
+
+1.5 Development Operations (DevOps)
+Additionally to increase development velocity and traceability development operations (DevOps) were put
+intro place.
+The aim of DevOps, short for developer operations, is to shorten a development life cycle, by firstly
+providing fast feedback to developers on code (unit testing, static code analysis) and secondly continous
+deployment of the product. Additionally,
+For the development of my computer architecture I have decided to implement such development operations, to speed up the development process and give consistency. The following shall be contiously run
+whenever a change is committed:
+• Compilation of all code and of the paper.
+• Execution of all test cases and logging of the results to the DevOps platform (GitLab CI)
+• Code coverage report generation
+To do so I leveraged my version control system (git) and the GitLab CI/CD platform. Replicating the local
+environments, I wrote two debian based docker containers [5] [4] to be used in the respective pipelines.
+One for compilation of the architecture and one for the compilation of the paper. The pipelines are setup
+to report code coverage and test results to the version control system (GitLab).
+As the version control system infrastructure does not provide any CI/CD runnner infrastructure, e.g.
+servers to run the docker containers, my own infrastructure has been adapted to do this.
+
+1.5.1 Requirements
+Given the previously defined goals three destinct groups of feature requirements to the computer architecture can be differentiated:
+Requirements resulting from the need for Turing completeness [6], from here on out refered to as ”Turing
+requirements”, are based around the following concepts: increasable memory (thus infinite), ability to
+modify memor and the ability to execute conditionally.
+”Architectural requirements” are a set of non-functional requirements given by the intended computer
+architecture [3]. They are by design only verifiable and not testable.
+Finally, ”feature requirements” are requirements defined by my to expand the feature set to a more
+complex scenario. These requirements shall be justified, when put in place.
+
+5
+
+Maturapaper
+
+1.5.2 Unit Testing
+- Code coverage - Tests
+- 8 bit -> limitation on complexity - Nostalgic - Still a lot of (fun things) that can be implemented even
+only with 8-bit bus width - Turing Complete and aligned with John von Neumann.
+
+6
+
+2 Mainpart lol idk title
+First step is to establish a plan.
+Planning is the first and most important step in a development process, defining the goals and.
+The first step is the definition of the computer architecture, establishing its requirements and defining the
+individual components. Then from each module’s requirements write
+The first step towards the completion of the simulation of this computer architecture is the definition
+of its precise and testable requirements. After establishing the requirements the next step will be the
+splitting of the architecture into individual modules. Modules shall be largely self-contained apart from
+control signals and the bus. Then, for each requirement write a unit test and then Verilog code to pass the
+tests and thus fulfill the requirements. Finally, connect the modules together and verify the architecture
+is working as intended.
+Before any digital development of the architecture and its supporting code infrastructure, the development
+environment and operations must be setup to continously test and build the code to ensure retraceability
+of the development.
+If time remains, make the architecture accessible, e.g., by allowing interaction, run it on physical hardware
+or visualizing each simulation step.
+
+7
+
+Maturapaper
+
+2.1 Architecture
+Given the project goals, the architectures structure, so the architectures indivudal components, units, are
+largely already given.
+The requirement for turing completeness, also known as computationally universal, so the requirement to
+be able to exectue any algorithm [cit.needed], poses several restrictions. First of all, a computationally
+universal cannot exist, HALTING PROBLEMB
+SO generally defined as:
+[cit.needed]
+difference in bus lengths, 8-bit data cannot be infinite can it? , The Von-Neumann-Architecture [3]
+intends that the architecture is split up into alu cu memory I/O bus
+Given the requiremenmt for 8bit and infinite memory, a deviation is required.
+data and addr bus will be split to a certainn extent. in a way the first 8bit of the data bus can be latched
+onto the addr bus…finally also the control bus will be external, as this is once again much wider. also
+from the component layout a control bus that is the same as the data bus would still make sense.
+this however does not limit the architecture to still follow the single bus and data word at a time. (which
+is why the VNA is still promiinent today. no race conditions)
+Additionally there is no problem adhering to the VNC.
+Onto bus at rising clock from bus at falling clock
+
+2.1.1 Arithmetic Logic Unit
+The arithmetic logic unit, ALU, performs
+Turing Req. 2.1.1.1. Ability to add two data words.
+Turing reqs at least one flag ”generation of a signal that says if a condition is true or not” to conform to
+req for conditional. in the same run just add one more, because its easy.
+Turing Req. 2.1.1.2. Generation of status flags (carry, zero).
+Arch. Req. 2.1.1.1. Ability to take in data from 2 registers.
+Arch. Req. 2.1.1.2. Ability to output data to the bus.
+Arch. Req. 2.1.1.3. Ability to execute all calculations within one timing state.
+
+8
+
+Maturapaper
+Type
+I
+O
+I
+I
+O
+
+Name
+Clock
+Bus
+Register A and B
+ALU control word
+Status flag word
+
+Purpose
+Timinga
+Data output
+Data input
+Control
+Control
+Table 2.1:
+
+To extend the computers feature set subtract, shift, rotation and bitwise operations are also to be implemented. Unlike multiplication and divison these mathematical operations are completeable in a single
+time cycle.
+- The computer already impls timingcycles/repeatable stuff thus it seems more appropriate to have the
+divison/multiplication be done there. Given ”infinite memory” - additionally only one bit rotation and
+shift because everything else also cycle.
+Feat. Req. 2.1.1.1. Ability to subtract two data words.
+Feat. Req. 2.1.1.2. Ability to shift a data word bitwise.
+Feat. Req. 2.1.1.3. Ability to rotate a data word bitwise.
+Feat. Req. 2.1.1.4. Must not exert undefined behaviour in case of undefined control signals.
+Feat. Req. 2.1.1.5. Must not output unless control signals indicated to do so.
+Feat. Req. 2.1.1.6. Ability to AND, OR and XOR two data words.
+Feat. Req. 2.1.1.7. Ability to perform NOT on a data word.
+As per [3]
+Direct Register Access because wanting to save timing states and is more easier.
+Given those requirements a list of signals going into and out of the module can be compiled.
+Given this Netlist
+First idea was to have a wire per operation. Operation occurs whenever clock high, then result written
+to bus.
+However switching to an eunm and switch case made more sense for readability. For one less signals take
+space on control bus, and code readabiltiy is nicer.
+ENUMS used as much as possible.
+Verilog enums are normally 32 bits long, but shortend to make useability.
+
+9
+
+Maturapaper
+carry flag is calculated by lpadding the addition with one and then check if the first bit is 1. the remaing
+8 bits are written on the bus.
+zero flag is zero if 0 (and all regs)
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+
+// S e c t i o n 1 . 3 . 1 : Arithmetic Logic Unit
+import c o n t r o l : : * ;
+module alu (
+input b i t clock ,
+output wire [ 7 : 0 ] r e s u l t ,
+output alu_flag_e f l a g ,
+input b i t [ 7 : 0 ] r e g i s t e r 1 ,
+input b i t [ 7 : 0 ] r e g i s t e r 2 ,
+input b i t enable ,
+input alu_op_e op
+);
+b i t [ 7 : 0 ] tmp ;
+
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+
+b i t is _zero ;
+b i t is_carry ;
+b i t is_remainder ;
+a s s i g n is _zero = (tmp == 0) ;
+a s s i g n is_remainder = ( op == DIV) && (tmp* r e g i s t e r 2 != r e g i s t e r 1 ) ;
+a s s i g n f l a g = ( is _zero | ! enable ) ? ZERO :
+( ( is_carry & ( op==ADD | op==MUL) ) ? CARRY :
+( is_remainder ? REMAINDER : NONE) ) ;
+a s s i g n r e s u l t = enable ? tmp : ’ z ;
+always_ff @( posedge c l o c k ) begin
+c a s e ( op )
+default :
+tmp = 0 ;
+ADD:
+{ is_carry , tmp} = r e g i s t e r 1 + r e g i s t e r 2 ;
+SUB:
+tmp = r e g i s t e r 1 - r e g i s t e r 2 ;
+MUL:
+{ is_carry , tmp} = r e g i s t e r 1 * r e g i s t e r 2 ;
+DIV :
+tmp = r e g i s t e r 1 / r e g i s t e r 2 ;
+SHL:
+tmp = r e g i s t e r 1 << 1 ;
+ROL:
+tmp = { r e g i s t e r 1 [ 6 : 0 ] , r e g i s t e r 1 [ 7 : 7 ] } ;
+SHR:
+tmp = r e g i s t e r 1 >> 1 ;
+ROR:
+tmp = { r e g i s t e r 1 [ 0 : 0 ] , r e g i s t e r 1 [ 7 : 1 ] } ;
+AND:
+tmp = r e g i s t e r 1 & r e g i s t e r 2 ;
+OR:
+tmp = r e g i s t e r 1 | r e g i s t e r 2 ;
+XOR:
+tmp = r e g i s t e r 1 ^ r e g i s t e r 2 ;
+NOT:
+tmp = ~ r e g i s t e r 1 ;
+endcase
+end
+endmodule
+
+Only one bit rotations
+Additionally, the implementation is much easier, if just one bit...
+
+10
+
+Maturapaper
+
+2.1.2 Memory
+Turing Req. 2.1.2.1. Must allow writing to and reading from a memory location
+8.bit small only 4 bit addr and 4 bit operand? nah thats not enough thus introduction of a second data
+word is the only way to perserve the 8bit while increasing capability.
+8bit instr 8bit operand that way. (and you dont need to acces 2nd data word)
+control signal for which flag.
+Feat. Req. 2.1.2.1. Must store, for each memory address, store two data words.
+Non relative, so absolute, for scenarios, e.g. a relative call stack implementation. Where DW1 be relative
+address and DW2 sign or something like that.
+Call Stack implementation will be detailed later on.
+Feat. Req. 2.1.2.2. Must retrieve (reword, both retrieve and access) data with an absolute memory
+address.
+Feat. Req. 2.1.2.3. Must retrieve data with a relative memory address.
+Given the larger than data bus addr bus, PC and MAR are stored not in registers connected to the main
+”bus” but in separate ones. PC and MAR are split and are and non volatile over instructions to enable
+calcs and relative actions across board.
+Feat. Req. 2.1.2.4. Must be able to store the program counter and memory address register.
+With relative jumps of only 255 but bigger word counts. Assembler could impl like jump over
+PSEUDO NORMAL PROGRAM JMP2 JPD 255 NORMAL PROGRAM RESUMES HERE . . . SOME
+OTHER PROGRAM THAT NEEDS TO JUMP MORE THAN ONE
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+
+// S e c t i o n 1 . 3 . 1 : Memory
+import c o n t r o l : : * ;
+module memory (
+input b i t clock ,
+input b i t r e s e t ,
+input b i t [ 7 : 0 ] in ,
+output b i t [ 7 : 0 ] out ,
+input b i t data_word_selector ,
+input memory_bus_selector_e bus_selector , // 0 : MAR, 1 : PC
+input memory_op_e op
+);
+b i t [ (‘ADDR_BUS_WIDTH- 1 ) : 0 ] memory_address_register ;
+b i t [ (‘ADDR_BUS_WIDTH- 1 ) : 0 ] programm_counter ;
+b i t [ (‘ADDR_BUS_WIDTH- 1 ) : 0 ] selected_bus ;
+a s s i g n selected_bus = b u s _ s e l e c t o r ? programm_counter : memory_address_register ;
+b i t [ 7 : 0 ] c e l l s [(1<<‘ADDR_BUS_WIDTH+1) - 1 ] ;
+b i t [ 7 : 0 ] out_tmp ;
+
+11
+
+Maturapaper
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+
+a s s i g n out = ( op == READ) ? out_tmp : ’ z ;
+always_ff @( posedge c l o c k ) begin
+i f ( r e s e t ) begin
+memory_address_register = 0 ;
+programm_counter = 0 ;
+end e l s e
+c a s e ( op )
+default :
+; // no o p e r a t i o n
+READ:
+out_tmp = c e l l s [ { selected_bus , data_word_selector } ] ;
+WRITE:
+c e l l s [ { selected_bus , data_word_selector } ] = i n ;
+ABSOLUTE:
+i f ( b u s _ s e l e c t o r ) programm_counter = {1 ’ b0 , i n } ;
+e l s e memory_address_register = {1 ’ b0 , i n } ;
+REL_SUB:
+i f ( b u s _ s e l e c t o r ) programm_counter = programm_counter - {1 ’ b0 , i n } ;
+e l s e memory_address_register = memory_address_register - {1 ’ b0 , i n } ;
+REL_ADD:
+i f ( b u s _ s e l e c t o r ) programm_counter = programm_counter + {1 ’ b0 , i n } ;
+e l s e memory_address_register = memory_address_register + {1 ’ b0 , i n } ;
+INC :
+i f ( b u s _ s e l e c t o r ) programm_counter = programm_counter + 1 ;
+e l s e memory_address_register = memory_address_register + 1 ;
+endcase
+end
+endmodule
+
+2.1.3 Registers
+Registers are technically speaking redundant, as the computer already has a form of memory. In practice
+regs still exist: - Regs are in silicon accessible faster than memory. - Storage acccess in case of this specific
+arch is simpler w/o relative addressing etc. - ALU needs access to what it calculates, thus registers, unless
+directly connected to memory, which in practice is not possible (memory seperate silicon from chip). Thus
+registers are considered feature requirements
+Feat. Req. 2.1.3.1. Ability to store a data word.
+Feat. Req. 2.1.3.2. Ability to output a data word.
+Turing Req. 2.1.3.1. Ability to load a data word for storage.
+
+2.1.4 Control Unit
+The Control Unit:
+Responsible for fetch decode execute:
+Fetch: Get Instr
+Decode: Makro to Micro instructions
+
+12
+
+Maturapaper
+Execute: If MRI get second data word: Otherwise go through timing states
+if instr jmp trigger jmp.
+Also is clock.
+Also is instruction register and program counter as per von Neumann.
+Arch. Req. 2.1.4.1. Must produce the clock signal.
+Arch. Req. 2.1.4.2. Must produce the control word (micro instruction) from instruction and clock
+signal.
+Arch. Req. 2.1.4.3. Must be reprogrammable for every computer run.
+16 makes sense, 8 could under some circumstances not be enough so 4 bit. As most instructions however,
+would also work with about 4 states. redundant states shall be skippable.
+Arch. Req. 2.1.4.4. Must count clock cycles to produce timing states.
+Feat. Req. 2.1.4.1. Must, given a specific output of the microcode break out of the current instruction
+(reset state signal).
+Turing Req. 2.1.4.1. Must produce the control word from flags.
+To let programs end in a way. Halt instruction
+Feat. Req. 2.1.4.2. Must halt given micro/macrocode instruction to do so.
+Feat. Req. 2.1.4.3. Must reset given micro/macrocode instruction to do so.
+// 1 clock cycles // 2 state gen // 3 state reset // 4 microinstruction word // 5 control word // 6 control
+word decoding
+List of requirements not final.
+
+2.1.5 Bus
+
+13
+
+List of Figures
+
+14
+
+Bibliography
+[1] In: (). url: https://www.conventionalcommits.org/en/v1.0.0/.
+[2] “IEEE Standard for SystemVerilog–Unified Hardware Design, Specification, and Verification Language”. In: IEEE Std 1800-2023 (Revision of IEEE Std 1800-2017) (2024), pp. 1–1354. doi: 10.
+1109/IEEESTD.2024.10458102.
+[3] J. von Neumann. “First draft of a report on the EDVAC”. In: IEEE Annals of the History of Computing
+15.4 (1993). doi: 10.1109/85.238389.
+[4] Rufus Spyra. Docker image for LaTeX. 2024. url: https://github.com/strau0106/docker-latex.
+[5] Rufus Spyra. Docker image for Verilator. 2024. url: https : / / github . com / strau0106 / docker verilator.
+[6] Alan M. Turing. “On Computable Numbers, with an Application to the Entscheidungsproblem”. In:
+Proceedings of the London Mathematical Society 2.42 (1936), pp. 230–265. url: https://people.
+math.ethz.ch/~halorenz/4students/Literatur/TuringFullText.pdf.
+
+15
+
+
