@@ -1,6 +1,12 @@
-  \section{Implementation}
-\label{sec:implementation}
-The implementation of the computer architecture is done in the hardware description language Verilog. The architecture shall be implemented in indivdual modules, each module being tested individually.    
+\section{Implementation}
+
+
+
+The implementation of the simulation is done in the hardware description language Verilog. The architecture shall be implemented in indivdual modules, each module being tested individually.    
+\subsection{Timing}
+Neither is the timing governed by any leading principles nor does it have a direct impact on the architecture or its performance. It must be established nonetheless to ensure that the computer is able to function properly.
+
+The clock signal, an equally spaced pulse where $t_{high} = t_{low}$, is the only timing signal required. Given signals from the control unit modules shall latch data onto the bus at the rising edge of the clock signal, and the data shall be read at the falling edge.
 
 \subsection{Arithmetic Logic Unit}
 Deriving the netlist of the ALU from the requirements is straight forward.
@@ -43,6 +49,5 @@ Which op to perform, which address register to use, and which of the two data wo
 
 And bus in out. 
 
-and must 
-
+Two register
 
