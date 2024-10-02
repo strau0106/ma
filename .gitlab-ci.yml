@@ -15,8 +15,8 @@ paper:
     - echo $CI_COMMIT_SHORT_SHA > githash.tex
     - echo $CI_COMMIT_BRANCH > gitbranch.tex
     - echo $CI_JOB_ID > jobid.tex
-    - latexmk main.tex
-    - latexmk main-journal.tex
+    - latexmk main.tex -shell-escape
+    - latexmk main-journal.tex -shell-escape
   artifacts:
     paths:
       - paper/*.pdf
