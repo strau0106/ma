@@ -1,5 +1,7 @@
-\subsection{Arithmetic Logic Unit}
-The Arithmetic Logic Unit (ALU) is the module responsible for performing all arithmetic and logical operations on data. \cite{vonneuman1945a}
+ \subsection{Arithmetic Logic Unit}
+The Arithmetic Logic Unit is the module performing all arithmetic and logical operations on operands. \cite{vonneuman1945a}.
+
+
 As the computer needs to be able to modify memory, modification in this case meaning overwriting with something new, the ALU is a crucial part of the computer as it is responsible for the synthesis of new data.
 
 Generally the addition operation is regarded as the simplest operation and thus shall be the first operation to be implemented.
@@ -34,7 +36,7 @@ As the calculation results need to return to registers and memory, the ALU MUST 
   Ability to execute all calculations within one timing state.
 \end{arch-requirement}
 
-To extend the computers feature set subtraction, shift, rotation and bitwise operations SHALL be implemented. Multiplication and division SHALL NOT be implemented, as unlike multiplication and division, these mathematical operations are performable in a single iteration. 
+To extend the computers feature set subtraction, shift, rotation and bitwise operations shall be implemented. Multiplication and division shall not be implemented, as unlike multiplication and division, these mathematical operations are performable in a single iteration. 
 
 Binary multiplication is normally achieved by repeated addition of the multiplicand to itself, whilst counting the addition operations, stopping when the multiplier is reached \cite{cit.needed}. The simplest way of performing a division, specifically integer division, is by repeated subtraction of the divisor from the dividend until a number smaller than the divisor is reached.
 As the architecture as a whole already implements repeatable operations based on conditions and all calculations within the ALU must complete within one timing state, it seems more appropriate and simpler to perform multiplication and division from macro code. 
@@ -63,11 +65,14 @@ Likewise, rotation and shift operations MUST only be implemented for a single bi
 
 Finally, the ALU shall not exert undefined behaviour in case of undefined control signals, and shall not output unless control signals indicate to do so. 
 
-\begin{feat-requirement}
-  Must not exert undefined behaviour in case of undefined control signals. 
+\begin{feat-requirement} \label{req:alu-undef-behavior}
+  Must not exert undefined behaviours in case of undefined control signals. 
 \end{feat-requirement}
 
-\begin{feat-requirement}
+\begin{feat-requirement} \label{req:alu-no-output}
   Must not output unless control signals indicated to do so. 
 \end{feat-requirement}
 
+\begin{feat-requirement}
+  Flags must be independent of the enable signal. 
+\end{feat-requirement}

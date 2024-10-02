@@ -1,6 +1,19 @@
 \subsection{Control Unit}
-Following the VNA the module orchestrating the interaction and operation of all modules is called the Control Unit. It is responsible for the generation of the control word, based on the macro program, the current state of the computer and current timing information. For every given combination of this input the control word must produce a specific output. In historic computer architectures this was achieved by carefully creating a net of logic gates, which would produce the correct output for every input. With the increasing complexity and the fact that once physically produced this control logic could not be changed, the concept of the microcode was invented \cite{cite.needed}. A storage, given enough address and data bus width, can represent any combination of logic gates, with the key advantage of being reprogrammable. Thus, nowadays, control units are often not more than a piece of storage and a timing unit. 
+Following the VNA the module orchestrating the interaction and operation of all modules is called the Control Unit. It is responsible for the generation of the control word, based on the macro program, the current state of the computer and current timing information. For every given combination of input the control word must produce a specific output forming a truth table. In historic computer architectures this truth table was represented by carefully creating a net of logic gates, which would produce the correct output for every input, to satisfy the truth table. With the increasing complexity and the fact that once physically produced this control logic could not be changed, the concept of the microcode was invented \cite{cite.needed}. A storage, given enough address and data bus width, can represent any truth table, just like a combination of logic gates, with the key advantage of being reprogrammable. Thus, nowadays, control units are often not more than a piece of storage and a timing unit. If a silicon design is not intended to be micro-(re)-programmable, the storage/truth table can be minimized with certain algorithms and then hardwired into the silicon. As representing the truth table in a storage is the most flexible way, the control unit shall be implemented as a microcode storage.
 
+\begin{feat-requirement}
+  The microcode shall be implemented as storage.
+\end{feat-requirement}
+
+\begin{arch-requirement}
+  Must produce the control word (micro instruction) from instruction and state.
+\end{arch-requirement}
+
+To achieve Turing completeness, the control unit must be able to handle conditional operations based on the flags, as the flags represent all the architectures intended conditions.
+
+\begin{turing-requirement}
+  Must produce the control word from flags.
+\end{turing-requirement}
 
 
 
@@ -8,41 +21,28 @@ Following the VNA the module orchestrating the interaction and operation of all 
   Must produce the clock signal. 
 \end{arch-requirement}
 
-Each clock cycle shall be counted to produce a timing state. 
-The number of required timing states can only be determined once the exact instruction set is defined. Thus, the space needed in the control word for the timing state can only be estimated for now. I deem three bits not enough, as it would only allow for $2^3$ timing states. 
+Each clock cycle shall be counted to produce the \textit{timing state} count. A timing state is the time frame in which one micro instruction is executed. The number of timing states is determined by the number of micro instructions needed to execute an instruction. The number of required timing states, so the amount of microinstructions comprising one macro instruction, can only be determined once the exact instruction set is defined. Thus, the space needed in the control word for the timing state can only be estimated for now. Given that the instruction set is not yet defined, checking the seemingly most complex instruction, a jump instruction, is a good starting point. 
 
 The required states for a basic jump instruction already are: 
 \begin{enumerate}
   \item Increment PC
-  \item Fetch instruction
+  \item Fetch instruction (for certain jumps, only if the flags are set correctly)
   \item Fetch second data word (instruction argument) and increment program counter by it.
   \item Fetch instruction from new program counter
   \item Execute the new instruction
 \end{enumerate}
     
-As the execution of the final instruction will probably take more than one step, the total count of instructions is 6-7, which is to close to the maximum allow any flexibility. Thus four bits on the micro instruction word shall be dedicated.
+As the execution of the new jumped to instruction will probably take more than one step, the total count of timing states is thus is 6-8. Given that the timing state is represented in binary, the smallest number of bits needed to represent 8 states is 3. However, to ensure that the control unit coulf be used for more complex instructions, the number of timing states shall be set to 16 (4 bits).
 
 \begin{arch-requirement}
   Must count clock cycles to produce 16 timing states and reset to zero once 16 was reached or the control word indicated to do so.
 \end{arch-requirement}
 
-To compensate for any redundant timing states a bit to break out of the current instruction and skip to the next one is needed. 
+To compensate for any redundant timing states a microcode signal to break out of the current instruction and skip to the next one is needed. The 
+
 \begin{feat-requirement}
   Must, given a specific output of the microcode break out of the current instruction (reset state signal).
 \end{feat-requirement}
-
-
-
-- explain but kinda self explanatory?
-\begin{arch-requirement}
-  Must produce the control word (micro instruction) from instruction and state.
-\end{arch-requirement}
-
-Turing
-\begin{turing-requirement}
-  Must produce the control word from flags.
-\end{turing-requirement}
-
 
 
 Given that for the computer to function every instruction must be first pointed to my the program counter and then loaded into the control unit, the relevant control words must be setup in the microcode. 
@@ -56,31 +56,7 @@ Given that for the computer to function every instruction must be first pointed 
 
 
 \begin{feat-requirement}
-  Must be reprogrammable for every computer run.
-\end{feat-requirement}
-
-
-
-
-
-
-To let programs end in a way. Halt instruction
-
-\begin{feat-requirement}
   Must halt given micro/macrocode instruction to do so. 
 \end{feat-requirement}
-
-\begin{feat-requirement}
-  Must reset given micro/macrocode instruction to do so. 
-\end{feat-requirement}
-// 1 clock cycles
-    // 2 state gen
-    // 3 state reset
-    // 4 microinstruction word
-    // 5 control word
-    // 6 control word decoding
-    
-List of requirements not final.
-
 
 % end subsection Control Unit
