@@ -16,17 +16,19 @@ module reg_tmp (
     assign out = (op == ENABLE) ? tmp : 'z;
 
     always_ff @(posedge clock) begin
-        if (reset) begin
-            reg_tmp = 8'h00;
-        end else begin
-            case (op)
-                default:
-                    ; // no operation
-                ENABLE:
-                    tmp = reg_tmp;
-                LOAD:
-                    reg_tmp = in;
-            endcase
-        end
+        case (op)
+            default:
+                ; // no operation
+            ENABLE:
+                tmp = reg_tmp;
+        endcase
+    end
+    always_ff @(negedge clock) begin
+        case (op)
+            default:
+                ; // no operation
+            LOAD:
+                reg_tmp = in;
+        endcase
     end
 endmodule

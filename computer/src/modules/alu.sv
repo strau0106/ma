@@ -20,24 +20,18 @@ module alu(
     assign is_zero = (tmp == 0);
     assign is_remainder = (op == DIV) && (tmp*register2 != register1);
 
-    assign flag = (is_zero | !enable) ? ZERO :
-                  ((is_carry & (op==ADD | op==MUL)) ? CARRY :
-                  (is_remainder ? REMAINDER : NONE));
+    assign flag = (is_zero | !enable) ? ZERO : ((is_carry & (op==ADD)) ? CARRY : NONE);
 
     assign result = enable ? tmp : 'z;
 
     always_ff @(posedge clock) begin
     case (op)
       default:
-        tmp = 0;
+        ;
       ADD:
         {is_carry, tmp} = register1 + register2;
       SUB:
         tmp = register1 - register2;
-      MUL:
-        {is_carry, tmp} = register1 * register2;
-      DIV:
-        tmp = register1 / register2;
       SHL:
         tmp = register1 << 1;
       ROL:

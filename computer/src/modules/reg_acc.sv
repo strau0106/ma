@@ -14,17 +14,22 @@ module reg_acc (
     assign out = (op == ENABLE) ? tmp : 'z; // New data only at posedge clock
 
     always_ff @(posedge clock) begin
-        if (reset) begin
-            reg_direct = 8'h00;
-        end else begin
-            case (op)
-                default:
-                    ; // no operation
-                ENABLE:
-                    tmp = reg_direct;
-                LOAD:
-                    reg_direct = in;
-            endcase
-        end
+
+        case (op)
+            default:
+                ; // no operation
+            ENABLE:
+                tmp = reg_direct;
+        endcase
     end
+  
+    always_ff @(negedge clock) begin
+        case (op)
+            default:
+                ; // no operation
+            LOAD:
+                reg_direct = in;
+            endcase
+    end
+
 endmodule

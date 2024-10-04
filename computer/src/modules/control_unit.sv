@@ -47,20 +47,17 @@ module control_unit (
 
     // control_word decoding
     always_ff @(negedge clock) begin
+        if (load) begin
+           macro_instruction <= bus;
+        end
         {alu_op, alu_enable, memory_op, data_word_selector, bus_selector,
          rax_op, rbx_op, rcx_op, rdx_op, reset, halt, load, next_instr} <= control_word;
-         // $display("state: %d, macro_instruction: %u, control_word: %u, bus: %u, nextinstr: %u", state, macro_instruction, control_word, bus, next_instr);
-
-
     end
     bit state_tmp;
 
     // state generation
     always_ff @(posedge clock) begin
-        if (load) begin
-           macro_instruction <= bus;
-        end
-        if (reset || next_instr ) begin
+        if (next_instr && state != 0) begin
             state <= 4'h0;
         end else begin
             state_tmp <= ~state_tmp;
