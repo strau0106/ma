@@ -84,7 +84,7 @@ TEST_F(ALU, FreatureRequirement2112) {
     EXPECT_EQ(alu_dut->result, 0b01011010);  // 90
 }
 
-TEST_F(ALU, FreatureRequiremen21213) {
+TEST_F(ALU, FreatureRequirement2113) {
     alu_dut->register1 = 0b10110101;  // 181
 
     alu_dut->enable = 1;
