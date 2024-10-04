@@ -43,46 +43,18 @@ class ControlUnit : public ::testing::Test {
     }
 };
 
-TEST_F(ControlUnit, ArchRequirement1341) {
-    control_unit_dut->eval();
-
-    EXPECT_EQ(control_unit_dut->clock, 0);
-
-    MultipleCycles(5);
-
-    EXPECT_EQ(control_unit_dut->clock, 1);
-}
-
-TEST_F(ControlUnit, ArchRequirement1342) {
-    // state increments by 1 every cycle and resets after 0xF
-
-    control_unit_dut->eval();
-
-    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, 0);
-
-    MultipleCycles(5);
-
-    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, 1);
-
-    for (int i = 1; i < 15; i++) {
-        MultipleCycles(10);
-        EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, i + 1);
-    }
-
-    MultipleCycles(10);
-
-    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, 0);
-}
-
-TEST_F(ControlUnit, REQTBD) {
-    // Ensure ControlUnit loads macro instruction
+TEST_F(ControlUnit, ArchRequirement21421) {
     control_unit_dut->eval();
     control_unit_dut->rootp->bus = 0b10101011;
     control_unit_dut->rootp->control_unit__DOT__load = 1;
-    
+
+    MultipleCycles(10);
+
+    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__macro_instruction,
+              0b10101011);
 }
 
-TEST_F(ControlUnit, FunctionalTestControlWord) {
+TEST_F(ControlUnit, ArchRequirement21422) {
     control_unit_dut->eval();
 
     // Ensure all bits correctly of the control word are correctly translated and transfered into the model.
@@ -155,6 +127,33 @@ TEST_F(ControlUnit, FunctionalTestControlWord) {
     MultipleCyclesKeepingStateZero(10);
     EXPECT_EQ(control_unit_dut->rootp->halt, 0b1);
 
+}
+
+TEST_F(ControlUnit, ArchRequirement2143) {
+    EXPECT_EQ(control_unit_dut->clock, 0);
+    MultipleCycles(5);
+    EXPECT_EQ(control_unit_dut->clock, 1);
+}
+
+TEST_F(ControlUnit, ArchRequirement2144) {
+    // state increments by 1 every cycle and resets after 0xF
+
+    control_unit_dut->eval();
+
+    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, 0);
+
+    MultipleCycles(5);
+
+    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, 1);
+
+    for (int i = 1; i < 15; i++) {
+        MultipleCycles(10);
+        EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, i + 1);
+    }
+
+    MultipleCycles(10);
+
+    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__state, 0);
 }
 
 int main(int argc, char** argv) {
