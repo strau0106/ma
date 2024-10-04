@@ -1,47 +1,17 @@
- \subsection{Arithmetic Logic Unit}
-The Arithmetic Logic Unit is the module performing all arithmetic and logical operations on operands. \cite{vonneuman1945a}.
-
-
-As the computer needs to be able to modify memory, modification in this case meaning overwriting with something new, the ALU is a crucial part of the computer as it is responsible for the synthesis of new data.
-
+\subsection{Arithmetic Logic Unit}
+The Arithmetic Logic Unit is the module performing all arithmetic and logical operations on operands. \cite{vonneuman1945a}. The ALU is the centerpiece of the computer, as it is the only module that modifies, or synthesizes, new data.
 Generally the addition operation is regarded as the simplest operation and thus shall be the first operation to be implemented.
 
 \begin{turing-requirement}
   Ability to add two data words.
 \end{turing-requirement}
 
-Furthermore, the computer is required to be able to execute conditionally, thus requiring a data point indicating if a condition is true or not. In computer science this is generally referred to as a flag. A flag that is often used is the carry flag, which indicates whether or not an addition in the ALU has resulted in a number which is larger than the 8-bit data word size.
-
-
-\begin{turing-requirement}
-  Generation of a carry flag. 
-\end{turing-requirement}
-
-Additionally, the computer shall have a second flag, so a second condition to act upon, the zero flag. It shall indicate if the result of an operation is zero. Apart from being useful in loops and conditional jumps, a zero flag allows for easy determination if two data words are equal, by subtracting them. 
-\begin{feat-requirement}
-  Generation of a zero flag.
-\end{feat-requirement}
-
-Given the fact that the architecture has an 8-bit data bus, and the ALU performing 8-bit operations, the ALU will always need to buffer the data words to be operated in some way. As the architecture shall also be designed as simple as possible, the ALU shall, instead of introducing buffer registers inside the ALU component, have direct access to two of the registers.
-\begin{arch-requirement}
-  Ability to take in data from 2 registers.
-\end{arch-requirement}
-
-As the calculation results need to return to registers and memory, the ALU MUST have the ability to output data to the bus.
-\begin{arch-requirement}
-  Ability to output data to the bus. 
-\end{arch-requirement}
-
-\begin{arch-requirement}
-  Ability to execute all calculations within one timing state.
-\end{arch-requirement}
-
-To extend the computers feature set subtraction, shift, rotation and bitwise operations shall be implemented. Multiplication and division shall not be implemented, as unlike multiplication and division, these mathematical operations are performable in a single iteration. 
+To extend the computers feature set subtraction, shift, rotation and bit shift operations shall be implemented. Multiplication and division shall not be implemented, as unlike multiplication and division, these mathematical operations are performable in a single iteration. 
 
 Binary multiplication is normally achieved by repeated addition of the multiplicand to itself, whilst counting the addition operations, stopping when the multiplier is reached \cite{cit.needed}. The simplest way of performing a division, specifically integer division, is by repeated subtraction of the divisor from the dividend until a number smaller than the divisor is reached.
-As the architecture as a whole already implements repeatable operations based on conditions and all calculations within the ALU must complete within one timing state, it seems more appropriate and simpler to perform multiplication and division from macro code. 
+As the architecture implements repeatable operations based on conditions, multiplication and division can be performed in macro code. 
 
-Likewise, rotation and shift operations MUST only be implemented for a single bit, as any other shift or rotation can only be achieved by performing the shift multiple times or by having all the patterns set up in the ALU. % TODO: explain
+Likewise, rotation and shift operations shall only be implemented for a single bit, as any other shift or rotation can only be achieved by performing the shift multiple times or by having multiple shift and rotate circuits in series. 
 
 \begin{feat-requirement}
   Ability to subtract two data words.
@@ -63,6 +33,30 @@ Likewise, rotation and shift operations MUST only be implemented for a single bi
   Ability to NOT a data word.
 \end{feat-requirement}
 
+Furthermore, the computer is required to be able to execute conditionally, thus requiring a data point indicating if a condition is true or not. This indication is called a flag. The two most common flags are the zero flag and the carry flag, as they are easily generated mathematically. 
+
+The carry flag, which indicates whether or not an addition in the ALU has overflown, so resulted in a number which is larger than the 8-bit data word size. Apart from being useful in conditional jumps, the carry flag can also be used to detect if a calculation has overflown, and thus if the result is incorrect.
+
+\begin{turing-requirement}
+  Generation of a carry flag. 
+\end{turing-requirement}
+
+The zero flag indicates if the result of an operation is zero. This is not only useful for looping a fixed number of times, but also for comparing two data words. As the ALU is designed to subtract two data words, a zero flag allows for easy determination if two data words are equal, by subtracting them from each other. 
+
+\begin{feat-requirement}
+  Generation of a zero flag.
+\end{feat-requirement}
+
+Given the fact that the architecture has an 8-bit data bus, and the ALU performing 8-bit operations, the ALU will always need to buffer the two operands. Instead of having the ALU buffer the operands, with two additional registers, the ALU shall access two registers directly, that are otherwise, indepent of the ALU.
+\begin{arch-requirement}
+  Ability to take in data from 2 registers.
+\end{arch-requirement}
+
+As the calculation results need to return to registers and memory, the ALU must have the ability to output data to the bus.
+\begin{arch-requirement}
+  Ability to output operation results to the bus. 
+\end{arch-requirement}
+
 Finally, the ALU shall not exert undefined behaviour in case of undefined control signals, and shall not output unless control signals indicate to do so. 
 
 \begin{feat-requirement} \label{req:alu-undef-behavior}
@@ -73,6 +67,3 @@ Finally, the ALU shall not exert undefined behaviour in case of undefined contro
   Must not output unless control signals indicated to do so. 
 \end{feat-requirement}
 
-\begin{feat-requirement}
-  Flags must be independent of the enable signal. 
-\end{feat-requirement}

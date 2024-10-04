@@ -1,19 +1,16 @@
 \subsection{Registers}
-
-Registers are technically speaking redundant, as the computer already has a form of memory. In practice regs still exist: 
-- Regs are in silicon accessible faster than memory. 
-- Storage acccess in case of this specific arch is simpler w/o relative addressing etc. 
-- ALU needs access to what it calculates, thus registers, unless directly connected to memory, which in practice is not possible (memory seperate silicon from chip). 
-Thus registers are considered feature requirements
+As established in the architecture, the computer shall have a set of registers to store data words. The registers shall be able to store data words and output them to the bus.
 
 \begin{feat-requirement}
-  Ability to store a data word.
+  Ability to load a data word for storage.
 \end{feat-requirement}
 
 \begin{feat-requirement}
   Ability to output a data word.
 \end{feat-requirement}
 
-\begin{turing-requirement}
-  Ability to load a data word for storage.
-\end{turing-requirement}
+The registers must also directly interface with the ALU, by providing direct access without any control signals. 
+
+\begin{arch-requirement} \label{req:register-direct-access}
+  Must be able to be read by the ALU without any control signals.
+\end{arch-requirement}

@@ -30,7 +30,7 @@ The two registers A and B are connected to the ALU directly. The alu is connecte
   I   & ALU control word & Control & \texttt{alu\_op\_e}\\
 O   & Flag word & Control & \texttt{alu\_flag\_e}
 \end{tabular}
-\caption{}
+\caption{ALU netlist}
 \label{tab:alu-i/o}
 \end{table}
 
@@ -48,8 +48,10 @@ As the ALU only every outputs directly to the bus any operation is performed at 
 Following the principle of the ALU the memorys op code is an enum. Apart from the control signal for the operation, the operations require additional control signals. All operations, except for absolute memory access requires an indication of which address register, PC or MAR, to use. The read operation additionally requires the indication for the data word. The bus is connected as input and output. From this a netlist can be created.
 
 \begin{table}[H]
+
+  \centering
 \begin{tabular}{cccc}
- Type & Name               & Datatype                       & name                          \\
+ Type & Name               & Datatype                       & name                          \\ \hline
  I    & Bus input          & \texttt{bit{[}7:0{]}}          & \texttt{input}                \\
  O    & Bus output         & \texttt{bit{[}7:0{]}}          & \texttt{output}               \\
  I    & Operation          & \texttt{memory\_op\_e}         & \texttt{op}                   \\
@@ -57,7 +59,8 @@ Following the principle of the ALU the memorys op code is an enum. Apart from th
  I    & Bus Selector       & \texttt{address\_register\_selector\_e} & \texttt{address\_register\_selector}        \\
  I    & Clock              & \texttt{bit}                   & \texttt{clock}               
  \end{tabular}
- \caption{}
+
+ \caption{Memory netlist}
  \label{tab:memory-io}
 \end{table}
 
@@ -70,3 +73,79 @@ Read operations are performed on the rising edge of the clock signal. When speci
 As continous assignments are used for the selected address bus, operations on the address registers cannot be done on the selected address bus variable. Instead the address registers are modified directly with an \texttt{if} statement.
 
 
+\subsection{Register}
+The register will is implemented in two seperate modules, one complying with all requirements, the second one without \ref{req:register-direct-access} direct access for the alu. As they are four registers and only two are connected to the ALU, having direct access present in the other two would be redundant. The register implementing the direct access is named \texttt{reg\_acc}, the other \texttt{reg\_tmp}.
+
+The register module is the simplest of all modules. Only bus input and output, clock and a control signal are required. The bus is connected as input and output.
+
+\begin{table}[H]
+  
+  \begin{center}
+  \begin{tabular}{cccc}
+   Type & Name               & Datatype                       & name                          \\ \hline
+   I    & Bus input          & \texttt{bit{[}7:0{]}}          & \texttt{input}                \\
+   O    & Bus output         & \texttt{bit{[}7:0{]}}          & \texttt{output}               \\
+   I    & Operation          & \texttt{reg\_op\_e}         & \texttt{op}                   \\
+   I    & Clock              & \texttt{bit}                   & \texttt{clock}               \\
+   O    & ALU Direct Access               & \texttt{bit{[}7:0{]}}          & \texttt{reg\_direct}               \\
+   \end{tabular}
+  \end{center}
+   \caption{Register netlist}
+   \label{tab:reg-io}
+\end{table}
+
+The last entry is only present in the \texttt{reg\_acc} module. The test cases for the register module are implemented similarly to those for the ALU and memory. 
+
+For both modules, the module is split into two \texttt{always\_ff} blocks, one for reading and one for writing. The reading block is executed on the rising edge of the clock signal and the writing block on the falling edge. The reading block is a simple assignment of the output to the input. The writing block is a simple assignment of the input to the output. The direct access is implemented by a continous assignment.
+
+
+\subsection{Control Unit}
+The Control Units netlist can be derived from all the signals that are required on the other modules. 
+
+\begin{table}[H]
+  
+  \begin{center}
+  \begin{tabular}{cccc}
+   Type & Name               & Datatype                       & name                          \\ \hline
+   I    & Bus input          & \texttt{bit{[}7:0{]}}          & \texttt{input}                \\
+   O    & Clock              & \texttt{bit}                   & \texttt{clock}               \\
+   O    & Memory Operation   & \texttt{memory\_op\_e}         & \texttt{memory\_op}           \\
+   I    & ALU flag          & \texttt{alu\_flag\_e}          & \texttt{alu\_flag}            \\
+   O    & ALU control word & \texttt{alu\_op\_e}         & \texttt{alu\_op}                   \\
+   I    & 4x Reg Operation   & \texttt{reg\_op\_e}         & \texttt{r\*x\_op}                   \\
+    \end{tabular}
+  \end{center}
+   \caption{Control Unit netlist}
+   \label{tab:reg-io}
+\end{table}
+
+To implement testcases for the control unit additonal variabls internal to the control unit must be defined. To test generation of timing information, the timing state count variable must be defined. The test cases for microcode generation must have access to the microcode storage.
+
+\begin{table}[H]
+  \begin{center}
+  \begin{tabular}{ccc}
+    Name               & Datatype                       & name                          \\ \hline
+    Timing state count & \texttt{bit{[}3:0{]}}          & \texttt{state}                \\
+    Microcode          & \texttt{bit{[}(\`CW\_WIDTH\-1):0{]} {[}(1$<<$MIW\_WIDTH)\-1{]}} & \texttt{microcode}                \\
+  \end{tabular}
+
+\end{center}
+  \caption{Control Unit internal variables that are required for testing}
+   \label{tab:reg-io}
+
+  \end{table}
+
+All test related to timing are implemented by advancing time in the simulator and observing clock and timing state behaviour, including the state rolling over to zero. The test cases for microcode generation are implemented by loading single control words, generated by a helper library, into the microcode storage at address that are expected, then advancing time and checking if the correct control word is output and if all parts of the control word, generated by the helper library, are output to the correct output signals. 
+
+At every rising edge of the clock signal, the state is advanced. The microcode is read and written out to the control word at the falling edge of the clock. 
+
+\subsection{Integration}
+The integration of all modules is achieved by instantiaing all modules and connecting the ports. To test the integrated \texttt{CPU}, refered to as a \textit{unit}, whole macro programs are loaded. 
+
+A number of helper libraries are used to generate the microcode and macrocode. Given that the computers microcode is simply adaptable there is no standard microcode. Microcode is generated along side the assembled code: 
+
+The first step to a functioning macroprogram is to define the macro instruction. For each possible micro instruction word, so timing state and flag combination, a control word must be defined. To ease definition of control word and micro instruction word \texttt{lib\_control\_word} and \texttt{lib\_micro\_instruction\_word} are used. The macro instruction is then defined with the help of \texttt{lib\_macro\_instruction}. The \texttt{MicrocodeGenerator} from \texttt{lib\_microcode} then assigns each instruction an opcode and generates the microcode. The \texttt{Assembler} can then generate the macrocode from a list of instructions. All libraries implement a builder pattern to concisely define all of the required information.
+
+While
+
+The tests for the \texttt{CPU} are arbitrary programs that test all functionalities of the computer.
