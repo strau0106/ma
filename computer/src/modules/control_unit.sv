@@ -4,7 +4,6 @@ import control::*;
 
 module control_unit (
     output reg clock,
-    output bit reset,
     output bit halt,
 
     output memory_op_e memory_op,
@@ -23,6 +22,7 @@ module control_unit (
     input bit[7:0] bus
 );
 
+    bit reset;
     bit clock_tmp;
     always
         #5 clock_tmp = ~clock_tmp;

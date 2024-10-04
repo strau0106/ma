@@ -1,8 +1,6 @@
-// connect everything up. bus to everything. reg_direct from rax and rbx to alu. everything else to control_unit
-module cpu ();
 
+module cpu ();
     logic clock;
-    logic reset;
     logic halt;
 
     wire [7:0] bus;
@@ -25,7 +23,6 @@ module cpu ();
 
     reg_acc rax (
         .clock(clock),
-        .reset(reset),
         .in(bus),
         .out(bus),
         .op(rax_op),
@@ -34,7 +31,6 @@ module cpu ();
 
     reg_acc rbx (
         .clock(clock),
-        .reset(reset),
         .in(bus),
         .out(bus),
         .op(rbx_op),
@@ -43,7 +39,6 @@ module cpu ();
 
     reg_tmp rcx (
         .clock(clock),
-        .reset(reset),
         .in(bus),
         .out(bus),
         .op(rcx_op)
@@ -51,7 +46,6 @@ module cpu ();
 
     reg_tmp rdx (
         .clock(clock),
-        .reset(reset),
         .in(bus),
         .out(bus),
         .op(rdx_op)
@@ -69,7 +63,6 @@ module cpu ();
 
     control_unit control_unit (
         .clock(clock),
-        .reset(reset),
         .halt(halt),
         .memory_op(memory_op),
         .data_word_selector(data_word_selector),
@@ -86,7 +79,6 @@ module cpu ();
 
     memory memory (
         .clock(clock),
-        .reset(reset),
         .in(bus),
         .out(bus),
         .op(memory_op),

@@ -3,7 +3,6 @@ import control::*;
 
 module reg_acc (
     input bit clock,
-    input bit reset,
     input bit[7:0] in,
     output bit[7:0] out,
     input reg_op_e op,

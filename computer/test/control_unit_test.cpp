@@ -111,7 +111,7 @@ TEST_F(ControlUnit, ArchRequirement21422) {
 
     control_unit_dut->rootp->control_unit__DOT__microcode.m_storage[0] = ControlWord().set_reset(0b1)->bin();
     MultipleCyclesKeepingStateZero(10);
-    EXPECT_EQ(control_unit_dut->reset, 0b1);
+    EXPECT_EQ(control_unit_dut->rootp->control_unit__DOT__reset, 0b1);
 
     // skip halt for now because it is annoying to handle
 

@@ -3,7 +3,6 @@ import control::*;
 
 module memory (
     input bit clock,
-    input bit reset,
     input bit[7:0] in,
     output bit[7:0] out,
     input bit data_word_selector,
@@ -24,10 +23,6 @@ module memory (
     assign out = (op == READ) ? out_tmp : 'z;
 
     always_ff @(posedge clock) begin
-        if (reset) begin
-            memory_address_register = 0;
-            programm_counter = 0;
-        end else
         case (op)
             default:
                 ; // no operation
