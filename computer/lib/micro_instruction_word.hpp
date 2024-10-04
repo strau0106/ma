@@ -4,7 +4,6 @@
 #include <control_word.hpp>
 
 class MicroInstructionWord {
-   private:
     unsigned int flag : 2;
     unsigned int state : 4;
     unsigned int opcode : 8;
