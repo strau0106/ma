@@ -1,9 +1,14 @@
 \chapter{Introduction}
+With the invention and wide adoption of the microprocessor, it first became viable to use computers at home in the late 1970s. The release of the "1977 trinity" \cite, by Apple, Tandy and Commodore marked the early beginnings of the personal computer era. These machines convinced consumers with their ability to run software at an unprecedented performance and complexity level at home. Only thanks to the 8-bit microprocessors powerinig the machines, the personal computer revolutions was possible.
 
-\section{Idea and Goal} \label{goals}
-- Idea: Computer cool, nostalgic. 
+EXPAND ON THIS
 
-The goal of this project is to: 
+Apart from this advancement in the silicon industry, the computer as a whole was only possible due to work, fueled by the second world war, made by many mathematicians. Most significantly \cite{cit.needed} Alan Turing and John Von Neumann independently developed the theoretical frameworks for the computer. The Von Neumann architecture (VNA) is the basis for most modern computers.
+
+\section{Idea and Goal} \label{Goals}
+
+
+Motivated by reuniting the the technology that made the personal computing revolution a reality and the earliest theoretical framework of the computer, the goal of this project is to: 
 \begin{itemize}
   \item Have a functioning computer architecture that:
  \begin{enumerate}
@@ -17,29 +22,36 @@ The goal of this project is to:
   \end{enumerate}
   \item Have a simulation of this computer architecture that: 
   \begin{enumerate}
-    \item Is fully tested; and
+    \item Is fully tested, ensuring all requirements are met; and
     \item Is kept as simple as possible; and
     \item Can be interacted with by a user; and
     \item Is programmable by a higher level language (assembly); and
     \item Is, with supporting work, explainable graphically.
   \end{enumerate}
+  
 \end{itemize}
 
-Whilst this paper functions as a process documentation with the secondary function of explaining the architecture reasonably.
-  
-Additionally, the development of the computer architecture shall occur in requirement and test driven manner. 
+Finally the limitation on the bus width ensures that the complexity of the architecture is limited and can be grasped by a single person.
+
 
 \section{Theory}
+With the development of highly complex chip designs in the late 20th century further and further abstraction of the process was required, ensuring that all stakeholders knew the exact specifications of the design. \cite{1214355} Whilst the earliest chip designs were drawn by hand and transferred onto silicon by photolithography, chip designs nowadays are written in an abstract computer language; a Hardware Description Language. Apart from allowing separation, modularity and reusability of components, this description later also allowed for simulation of the design and thus a reduction of errors in the final physically built design. 
+
+To ensure that the design correctly implements all features, professional chip designs are fully and automatically tested, by simulating real world conditions as well as corner cases. 
+
+
+
 Test driven development, unit testing, reproducibility, testing is important ;) no chance to produce working silicon otherwise.
 
 \section{Tools}
-With the development of highly complex chip designs in the late 20th century further and further abstraction of the process was required, ensuring that all stakeholders knew the exact specifications of the design. \cite{1214355} Whilst the earliest chip designs were drawn by hand and transferred onto silicon by photolithography, chip designs nowadays are written in an abstract computer language; a Hardware Description Language. Apart from allowing separation, modularity and reusability of components, this description later also allowed for simulation of the design and thus a reduction of errors in the final physically built design. 
 
 The most popular flavor of such an "HDL" is Verilog, as defined in \cite{10458102} and its extensions. Given widespread professional use of Verilog, more specifically the Verilog superset SystemVerilog, seemed to be the best option for this project, a large amount of information and guides on the topic exist. The terms SystemVerilog and Verilog will be used interchangeably. 
 
 As \cite{10458102} only defines the language's syntax, a Verilog tool suite is required. Although previous experience in the usage of Verilog exists, expertise on the intricacies of Verilog simulation is still limited. It was thus decided based on the integration with other tooling, as to which suite is to be used. 
 
 The key feature of the chosen suite is the compilation of the Verilog code to a binary and the generation of an interface to C++. Apart from being able to rely on previous experience in C++, it also allows me to make use of a vast ecosystem of testing, code coverage and DevOps frameworks. I chose the GoogleTest framework for my unit testing. 
+
+Additionally, Verilator counts activations of specific lines of code which is used to produce a report that visualizes if all code paths are tested.
 
 Git and GitLab is used due to previous experience and existing infrastructure.
 
@@ -89,17 +101,4 @@ Requirements are inlined and numbered to provide a point of reference when imple
 \newtheorem{feat-requirement}{Feat. Req.}[subsection]
 
 The keywords "must", "must not", "required", "shall", "shall not", "should", "should not", "recommended",  "may", and "optional" in the requirements are to be interpreted as described in RFC 2119 \cite{rfc2119}.
-
-\subsection{Unit Testing}
-- Code coverage
-- Tests
-
-
-
-- 8 bit -> limitation on complexity
-- Nostalgic
-- Still a lot of (fun things) that can be implemented even only with 8-bit bus width
-- Turing Complete and aligned with John von Neumann.
-
-
 
