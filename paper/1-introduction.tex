@@ -1,3 +1,6 @@
+\begin{abstract}
+  abstract abstract abstract
+\end{abstract}
 \chapter{Introduction}
 With the invention and wide adoption of the microprocessor, it first became viable to use computers at home in the late 1970s. The release of the "1977 trinity" \cite, by Apple, Tandy and Commodore marked the early beginnings of the personal computer era. These machines convinced consumers with their ability to run software at an unprecedented performance and complexity level at home. Only thanks to the 8-bit microprocessors powerinig the machines, the personal computer revolutions was possible.
 
@@ -31,7 +34,7 @@ Motivated by reuniting the the technology that made the personal computing revol
   
 \end{itemize}
 
-Finally the limitation on the bus width ensures that the complexity of the architecture is limited and can be grasped by a single person.
+The limitation on the bus width ensures that the complexity of the architecture is limited and can be grasped by a single person.
 
 
 \section{Theory}
@@ -51,11 +54,35 @@ As \cite{10458102} only defines the language's syntax, a Verilog tool suite is r
 
 The key feature of the chosen suite is the compilation of the Verilog code to a binary and the generation of an interface to C++. Apart from being able to rely on previous experience in C++, it also allows me to make use of a vast ecosystem of testing, code coverage and DevOps frameworks. I chose the GoogleTest framework for my unit testing. 
 
-Additionally, Verilator counts activations of specific lines of code which is used to produce a report that visualizes if all code paths are tested.
+Additionally, Verilator counts activations of specific lines of code which is used to produce a report that visualizes all used lines of code. This report can help understand if and how tests cover all possible code behaviors. 
 
-Git and GitLab is used due to previous experience and existing infrastructure.
+\subsection{Verilog Crash Course - Change title}
+What differentciates simulated Verilog from other computer languages is its non linear execution and lacks the concept of a main function. Verilog files are not necessarily executed from top to bottom but execution is based on propagation of signals throught the interconnected modules. 
 
-% \include{1-introduction/verilog-crash-course}
+A module is declared with the \texttt{module} keyword. To complete a declaration the module must be named and ports specified. Ports are the connections going in and out of a module. They can either be an \texttt{input}, an \texttt{output} or bidirectional, denoted by \texttt{inout}. Ports are then specified like any other variable, by specifying the datatype, length and name. For this paper usage of datatypes shall be limited to, \texttt{wire}, \texttt{reg} and for readability reasons \texttt{enum}. After the declaration of the ports the body of the module is defined, which contains the module logic.
+\begin{lstlisting}
+module <module_name> (
+  input wire <input_name>,
+  output reg <output_name>
+);
+<module_body>
+endmodule
+\end{lstlisting}
+
+The following is not intended to be an exhaustive guide to Verilog, but just highlights the most important features and concepts. 
+
+Most digital circuits are based around a clock signal and thus have to exectue operations at every clock cycle. Verilog provides a way to model this with \texttt{always} blocks. Once the condition in the bracket is met, the code block is executed. Apart from simple boolean conditions, the block can also be executed at the rising and falling edge of a signal by using the \texttt{posedge} and \texttt{negedge} keywords.
+
+\begin{lstlisting}
+always @(<condition>) begin
+  <always_body>
+end
+
+\end{lstlisting}
+
+For logic the Verilog standard specifies comparable to other computer or programming languages if-blocks, loops, case statements and various logic and arithmetic operators. Unlike other languages, there are multiple types of assignments in Verilog. The easiest to understand is the continous assignment with the \texttt{assign} keyword. This continously assigns the value of the right hand side to the left hand side comparable to physical wires being connected together through logic gates. If the input changes, the output will change with it nearly instantaneously. The blocking assignment, denoted by the \texttt{=} operator, is used to assign values to variables instantaneously, like in other programming languages. The non-blocking assignment, denoted by the \texttt{<=} operator, only actually assigns the value to the left hand side once the timing step, so every calculation in the current time step, is finished. 
+
+The SystemVerilog standard also specifies a number of additional functions that are not sythesizable, so cannot be translated into hardware, but are useful for simulation, such as \texttt{\$display} and \texttt{\$finish}.
 
 \section{Development Environment}
 To reproduce the development environment for this work, the following packages need to be installed with the system package manager. It is suggested to use the GNU+Linux operating system. 
