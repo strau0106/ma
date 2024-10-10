@@ -1,3 +1,11 @@
+\chapter{Implementing the Simulation}
+
+\section{Development Operations }
+Implementation of the DevOps was realised by leveraging the version control system (git) and the GitLab CI/CD platform. Replicating the local environmenta, a Debian based docker container \cite{dockerVerilator} was used in the pipelines. The pipelines is also set up to report code coverage and test results to the version control system platform for easy reference
+
+As the version control system infrastructure does not provide any infrastructure to execute these pipelines, e.g. servers to run the docker containers, seperate machines were put in place and configured.
+
+
 \section{Implementation}
 
 
@@ -6,7 +14,7 @@ The implementation of the simulation is done in the hardware description languag
 
 Considering the schematic \ref{fig:vna-adapted} all modules will have control signals and a connection to the bus as their ports.  
 
-\subsection{Arithmetic Logic Unit}
+\section{Arithmetic Logic Unit}
 Considering all requirements the ALU must perform at a rising edge of the clock given a control signal an operation. 
 
 
@@ -36,7 +44,7 @@ As the ALU only every outputs directly to the bus any operation is performed at 
 
 % \lstinputlisting[language=verilog]{../computer/src/modules/alu.sv}
 
-\subsection{Memory}
+\section{Memory}
 
 Following the principle of the ALU the memorys op code is an enum. Apart from the control signal for the operation, the operations require additional control signals. All operations, except for absolute memory access requires an indication of which address register, PC or MAR, to use. The read operation additionally requires the indication for the data word. The bus is connected as input and output. From this a netlist can be created.
 
@@ -66,7 +74,7 @@ Read operations are performed on the rising edge of the clock signal. When speci
 As continous assignments are used for the selected address bus, operations on the address registers cannot be done on the selected address bus variable. Instead the address registers are modified directly with an \texttt{if} statement.
 
 
-\subsection{Register}
+\section{Register}
 The register will is implemented in two seperate modules, one complying with all requirements, the second one without \ref{req:register-direct-access} direct access for the alu. As they are four registers and only two are connected to the ALU, having direct access present in the other two would be redundant. The register implementing the direct access is named \texttt{reg\_acc}, the other \texttt{reg\_tmp}.
 
 The register module is the simplest of all modules. Only bus input and output, clock and a control signal are required. The bus is connected as input and output.
@@ -92,7 +100,7 @@ The last entry is only present in the \texttt{reg\_acc} module. The test cases f
 For both modules, the module is split into two \texttt{always\_ff} blocks, one for reading and one for writing. The reading block is executed on the rising edge of the clock signal and the writing block on the falling edge. The reading block is a simple assignment of the output to the input. The writing block is a simple assignment of the input to the output. The direct access is implemented by a continous assignment.
 
 
-\subsection{Control Unit}
+\section{Control Unit}
 The Control Units netlist can be derived from all the signals that are required on the other modules. 
 
 \begin{table}[H]
@@ -135,7 +143,7 @@ At every rising edge of the clock signal, the state is counted up, rolling back 
 
 The microcode is read and written out to the control word at the falling edge of the clock. 
 
-\subsection{Integration}
+\section{Integration}
 The integration of all modules is achieved by instantiaing all modules and connecting the ports. To test the integrated \texttt{CPU}, refered to as a \textit{unit}, whole macro programs are loaded. 
 
 A number of helper libraries are used to generate the microcode and macrocode. Given that the computers microcode is simply adaptable there is no standard microcode. Microcode is generated along side the assembled code: 
