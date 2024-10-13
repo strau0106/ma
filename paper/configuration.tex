@@ -43,24 +43,41 @@
 % End of code courtesy of chatgpt-4o
 
 % Packge for code highlighting
+
+
 \usepackage{listings}
+\renewcommand{\lstlistingname}{Listing}
+\renewcommand{\lstlistlistingname}{Listing}
+\usepackage{xcolor}
+\newcommand*{\listingFont}{\ttfamily}
+\newcommand*{\selectListingFont}{\listingFont\selectfont}
 
 
 \usepackage{courier}        % For monospace font
-\usepackage{xcolor}         % For background color
 
-\lstdefinestyle{customverilog}{
-    language=verilog,                    % Set language to Verilog/SystemVerilog
-    basicstyle=\ttfamily\scriptsize,                % Monospace font
-    breaklines=true,                     % Break long lines if necessary
-    numbers=left,                        % Line numbers on the left
-    numberstyle=\tiny,                   % Line numbers in tiny font
-    backgroundcolor=\color{gray!10},     % Light gray background
+%\lstdefinestyle{customverilog}{
+%    language=verilog,                    % Set language to Verilog/SystemVerilog
+%    basicstyle=\ttfamily\scriptsize,                % Monospace font
+%    breaklines=true,                     % Break long lines if necessary
+%    numbers=left,                        % Line numbers on the left
+%    numberstyle=\tiny,                   % Line numbers in tiny font
+%    backgroundcolor=\color{gray!10},     % Light gray background
+%}
+
+
+% \lstset{style=customverilog}
+
+\lstset{language=C++,
+                basicstyle=\ttfamily\footnotesize,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#},
+                frame=single,
+                frameround=tttt,
+                escapechar=\%
+                captionpos=b
 }
-
-
-\lstset{style=customverilog}
-
 
 % Package for hyperlinks
 \usepackage[hidelinks]{hyperref}
