@@ -1,3 +1,88 @@
 \chapter{Functional Demonstration}
+This chapter is intended to demonstrate the funciton of the computer as per defined in section \ref{goal} by running at first simple well known algorithms and finally demostrating turing equivalence by implementing a \textit{Brainfuck} interpreter with the help of ChatGPT.
+
+
+
+
 \section{Fibonacci Sequence}
-\section{Sum of first $n$ natural Numbers}
+The Fibonacci sequence is a simple sequence of natural numbers, where an element in the sequence is given by the sum of the perceding two elements.
+
+The required instructions for generating assembly are thus relatively simple. The only instructions required are those for moving data in and out of registers, initalizing them and adding them. A halt instruction is also added so that the simulation can stop when calculations are done. 
+
+For this demonstration the calculations do not yet happen in a loop but the instructions are just repeated a number of times. Loops and conditions are intended to be demostrated in section \ref{sec:n-num}.
+
+Creating the control words for the instructions is straight forward. For the load instructions, the memory is set to read the second data word, from the current instructions, either storing it into register A or register B. The move instructions set one of the registers to output and one to load. Finally the ADD instruction, activates the ALU, sets its operation to "ADD" and sets the C register to load. 
+
+The final macro programm then looks like this: 
+\begin{lstlisting}[language={[x86masm]Assembler}, caption=Assembly code to calculate assembly, label=lst:fib]
+LDA 0 ; Initalize register A with 0
+LDB 1 ; Initalize register B with 1
+ADD ; Add register A and B and store into register C
+MBA ; Move register B to A
+MCB ; Move register C to B
+... ; Repeat ADD, MBA, MCB n times to reach the (n+1)th element
+HLT ; Signal execution is complete
+\end{lstlisting}
+
+After generating the microcode and macro program, the following content of the three used registers can be observed during the execution of the programm, assuming that the three instructions are repeated 10 times:
+
+\begin{timingdiag}[!ht]
+\begin{tikztimingtable}
+    % clock               & 0.004L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H0.005L0.005H \\
+    % state               & 0.08L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.2D{4}0.2D{5}0.2L0.2D{1}0.2D{2}0.2D{3}0.1D{4} \\
+    macro\_instruction  & 0.58L1.2D{1}1.2D{2}1.2D{3}1.2D{4}1.2D{5}1.2D{3}1.2D{4}1.2D{5}1.2D{3}1.2D{4}1.2D{5}1.2D{3}1.2D{4}1.2D{5}1.2D{3}1.2D{4}1.2D{5}1.2D{3}1.2D{4}1.2D{5}1.2D{3}1.2D{4}1.2D{5}1.2D{3}1.2D{4}1.2D{5}1.2D{3}1.2D{4}1.2D{5}1.2D{3}1.2D{4}1.2D{5}0.2D{6} \\
+    reg\_a              & 4.58L7.2D{1}3.6D{2}3.6D{3}3.6D{5}3.6D{8}3.6D{13}3.6D{21}3.6D{34}2.2D{55} \\
+    reg\_b              & 2.18L7.2D{1}3.6D{2}3.6D{3}3.6D{5}3.6D{8}3.6D{13}3.6D{21}3.6D{34}3.6D{55}1.0D{89} \\
+    reg\_c              & 3.38L3.6D{1}3.6D{2}3.6D{3}3.6D{5}3.6D{8}3.6D{13}3.6D{21}3.6D{34}3.6D{55}3.4D{89} \\
+\end{tikztimingtable}
+\caption{Execution of Listing \ref{lst:fib}. Signal names adapted for readability.}
+\end{timingdiag}
+
+Manually calculation of the $11$th element leads to the same result of $89$.
+
+\section{Sum of first $n$ natural Numbers} \label{sec:n-num}
+The goal of this demonstration is to show the functioning of the conditional operation and thus also looping. The program shall continously add the next natural number until the sum would be greater than 255 and thus the carry flag triggered. The following python code illustrates the approach and can be used to calculate the expected result.
+
+\begin{lstlisting}[caption=Python code for the generation of the sequence]
+sum = 0
+num = 1
+while (sum+num) < 255:
+    sum += num
+    num +=1
+print(sum)
+print(num)
+\end{lstlisting}
+
+Executing this script results in $253$ for the expected sum and $23$ as the result for the number of iterations. 
+
+The assembly instructions required for this are limited to initalizing the registers, adding and moving around as well as a jump instruction, that is only performed when the carry flag is not set. 
+
+\begin{lstlisting}[caption=Assembly code for the generation of the sum of $n$ natural numbers below 255, label=lst:nsum]
+LDB 0
+LDC 0 ; Init the registers with 0
+LDA 1 ; Load 1 into register A
+ADB   ; Add registers A and B and store into B
+MCA   ; Move register C into A
+ADC   ; Add registers A and B and store into C
+JNC 5 ; Jump four instructions backward if carry not set. 
+; Jump is instructed to one beforehand so, it is 4 after the increment
+HLT   ; Halt computer
+\end{lstlisting}
+
+After configuring the microcode and assembler with these instructions, the sum, that is expected to be $253$ and the last summand $23$ can be observed in the timing diagrams generated during execution: 
+
+\begin{timingdiag}[!ht]
+\begin{tikztimingtable}
+is\_carry & 55.552L0.84H \\
+halt & 56.392LG \\
+reg\_a & 1.352L0.96D{1}1.44L3.36D{1}1.44D{3}0.96D{1}1.44D{6}0.96D{1}1.44D{10}0.96D{1}1.44D{15}0.96D{1}1.44D{21}0.96D{1}1.44D{28}0.96D{1}1.44D{36}0.96D{1}1.44D{45}0.96D{1}1.44D{55}0.96D{1}1.44D{66}0.96D{1}1.44D{78}0.96D{1}1.44D{91}0.96D{1}1.44D{105}0.96D{1}1.44D{120}0.96D{1}1.44D{136}0.96D{1}1.44D{153}0.96D{1}1.44D{171}0.96D{1}1.44D{190}0.96D{1}1.44D{210}0.96D{1}1.44D{231}0.96D{1}1.28D{253} \\
+reg\_b & 1.832L2.4D{1}2.4D{2}2.4D{3}2.4D{4}2.4D{5}2.4D{6}2.4D{7}2.4D{8}2.4D{9}2.4D{10}2.4D{11}2.4D{12}2.4D{13}2.4D{14}2.4D{15}2.4D{16}2.4D{17}2.4D{18}2.4D{19}2.4D{20}2.4D{21}2.4D{22}1.76D{23} \\
+reg\_c & 2.792L2.4D{1}2.4D{3}2.4D{6}2.4D{10}2.4D{15}2.4D{21}2.4D{28}2.4D{36}2.4D{45}2.4D{55}2.4D{66}2.4D{78}2.4D{91}2.4D{105}2.4D{120}2.4D{136}2.4D{153}2.4D{171}2.4D{190}2.4D{210}2.4D{231}2.4D{253}0.8D{20} \\
+\end{tikztimingtable}
+\caption{Execution of Listing \ref{lst:nsum}. Signal names adapted for readability}
+\end{timingdiag}
+
+
+
+\section{Brainfuck}
+
