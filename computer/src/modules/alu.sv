@@ -18,8 +18,6 @@ module alu(
 
     assign is_zero = (tmp == 0);
 
-    assign flag = (is_zero | !enable) ? ZERO : ((is_carry & (op==ADD)) ? CARRY : NONE);
-
     assign result = enable ? tmp : 'z;
 
     always_ff @(posedge clock) begin
@@ -47,5 +45,6 @@ module alu(
       NOT:
         tmp = ~register1;
     endcase
+    if (op != ALU_NOP) flag <= is_zero ? ZERO : ((is_carry & (op==ADD)) ? CARRY : NONE);
   end
 endmodule
