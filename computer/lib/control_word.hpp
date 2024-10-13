@@ -2,7 +2,7 @@
 #define LIB_CONTROL_WORD_H
 
 #include <verilated.h>
-#define CONTROL_WORD_WIDTH 22
+#define CONTROL_WORD_WIDTH 25
 #define MICRO_INSTRUCTION_WORD_WIDTH 14
 #define NUMBER_OF_FLAGS 4
 
@@ -11,6 +11,7 @@ class ControlWord {
     unsigned int alu_op : 4 = 0;
     unsigned int alu_enable : 1 = 0;
     unsigned int memory_op : 3 = 0;
+    unsigned int instruction_reg_op : 3 = 0;
     unsigned int data_word_selector : 1 = 0;
     unsigned int memory_bus_selector : 1 = 0;
     unsigned int rax_op : 2 = 0;
@@ -37,6 +38,12 @@ class ControlWord {
         this->memory_op = memory_op;
         return this;
     }
+
+    ControlWord* set_instruction_reg_op(unsigned int instruction_reg_op) {
+        this->instruction_reg_op = instruction_reg_op;
+        return this;
+    }
+
 
     ControlWord* set_data_word_selector(unsigned int data_word_selector) {
         this->data_word_selector = data_word_selector;
@@ -113,15 +120,16 @@ class ControlWord {
         return ((this->alu_op) << (CONTROL_WORD_WIDTH - 4)) +
                ((this->alu_enable) << (CONTROL_WORD_WIDTH - 5)) +
                ((this->memory_op) << (CONTROL_WORD_WIDTH - 8)) +
-               ((this->data_word_selector) << (CONTROL_WORD_WIDTH - 9)) +
-               ((this->memory_bus_selector) << (CONTROL_WORD_WIDTH - 10)) +
-               ((this->rax_op) << (CONTROL_WORD_WIDTH - 12)) +
-               ((this->rbx_op) << (CONTROL_WORD_WIDTH - 14)) +
-               ((this->rcx_op) << (CONTROL_WORD_WIDTH - 16)) +
-               ((this->rdx_op) << (CONTROL_WORD_WIDTH - 18)) +
-               ((this->reset) << (CONTROL_WORD_WIDTH - 19)) +
-               ((this->halt) << (CONTROL_WORD_WIDTH - 20)) +
-               ((this->control_unit_load) << (CONTROL_WORD_WIDTH - 21)) +
+               ((this->instruction_reg_op) << (CONTROL_WORD_WIDTH - 11)) +
+               ((this->data_word_selector) << (CONTROL_WORD_WIDTH - 12)) +
+               ((this->memory_bus_selector) << (CONTROL_WORD_WIDTH - 13)) +
+               ((this->rax_op) << (CONTROL_WORD_WIDTH - 15)) +
+               ((this->rbx_op) << (CONTROL_WORD_WIDTH - 17)) +
+               ((this->rcx_op) << (CONTROL_WORD_WIDTH - 19)) +
+               ((this->rdx_op) << (CONTROL_WORD_WIDTH - 21)) +
+               ((this->reset) << (CONTROL_WORD_WIDTH - 22)) +
+               ((this->halt) << (CONTROL_WORD_WIDTH - 23)) +
+               ((this->control_unit_load) << (CONTROL_WORD_WIDTH - 24)) +
                next_instr;
     }
 };

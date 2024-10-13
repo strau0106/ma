@@ -1,6 +1,6 @@
 `define ADDR_BUS_WIDTH 9
 `define MICRO_INSTRUCTION_WORD_WIDTH 14
-`define CONTROL_WORD_WIDTH 22
+`define CONTROL_WORD_WIDTH 25
 
 
 package control;
@@ -28,12 +28,15 @@ package control;
     typedef enum logic [2:0] {
         NOP,
         READ,
-        WRITE,
-        ABSOLUTE,
-        REL_SUB,
-        REL_ADD,
-        INC
+        WRITE
     } memory_op_e /*verilator public*/;
+    typedef enum logic [2:0] {
+            IR_NOP,
+            ABSOLUTE,
+            REL_SUB,
+            REL_ADD,
+            INC
+    } instruction_reg_op_e /*verilator public*/;
     typedef enum bit {
         MAR,
         PC

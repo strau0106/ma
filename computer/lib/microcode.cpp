@@ -10,7 +10,7 @@ void Microcode::PrimeMicrocode() {
     // state_0 for all 00000000000000 00001111111111
     // state_1 for all 00010000000000 00011111111111
     ControlWord* INC_CONTROL_WORD = new ControlWord();
-    INC_CONTROL_WORD->set_memory_op(cpu_control::memory_op_e::INC)
+    INC_CONTROL_WORD->set_instruction_reg_op(cpu_control::instruction_reg_op_e::INC)
         ->set_memory_bus_selector(cpu_control::memory_bus_selector_e::PC);
 
     ControlWord* FETCH_CONTROL_WORD = new ControlWord();

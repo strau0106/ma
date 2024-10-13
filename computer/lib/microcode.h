@@ -6,7 +6,7 @@
 #include <control_word.hpp>
 #define ADDR_BUS_WIDTH 9
 #define MICRO_INSTRUCTION_WORD_WIDTH 14
-#define CONTROL_WORD_WIDTH 22
+#define CONTROL_WORD_WIDTH 25
 
 #define ALL_FLAGS                                                              \
     {                                                                          \

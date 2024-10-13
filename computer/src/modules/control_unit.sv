@@ -7,6 +7,7 @@ module control_unit (
     output bit halt,
 
     output memory_op_e memory_op,
+    output instruction_reg_op_e instruction_reg_op,
     output bit data_word_selector,
     output bit bus_selector,
 
@@ -50,14 +51,14 @@ module control_unit (
         if (load) begin
            macro_instruction <= bus;
         end
-        {alu_op, alu_enable, memory_op, data_word_selector, bus_selector,
+        {alu_op, alu_enable, memory_op, instruction_reg_op, data_word_selector, bus_selector,
          rax_op, rbx_op, rcx_op, rdx_op, reset, halt, load, next_instr} <= control_word;
     end
     bit state_tmp;
 
     // state generation
     always_ff @(posedge clock) begin
-        if (next_instr && state != 0) begin
+        if (next_instr) begin
             state <= 4'h0;
         end else begin
             state_tmp <= ~state_tmp;

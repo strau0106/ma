@@ -6,6 +6,7 @@ module cpu ();
     wire [7:0] bus;
 
     memory_op_e memory_op;
+    instruction_reg_op_e instruction_reg_op;
     bit data_word_selector;
     bit bus_selector;
 
@@ -65,6 +66,7 @@ module cpu ();
         .clock(clock),
         .halt(halt),
         .memory_op(memory_op),
+        .instruction_reg_op(instruction_reg_op),
         .data_word_selector(data_word_selector),
         .bus_selector(bus_selector),
         .alu_op(alu_op),
@@ -82,6 +84,7 @@ module cpu ();
         .in(bus),
         .out(bus),
         .op(memory_op),
+        .instruction_reg_op(instruction_reg_op),
         .data_word_selector(data_word_selector),
         .bus_selector(bus_selector)
     );
