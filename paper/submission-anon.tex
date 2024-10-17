@@ -1,0 +1,50 @@
+\documentclass[parskip=full]{scrreprt}
+\input{configuration}
+
+% Schmale Seitenränder festlegen
+\KOMAoption{DIV}{15}
+
+% Text auf Titelseite festlegen
+\subject{Maturapaper}
+\title{Designing and Implementing an 8-bit Computer Architecture in SystemVerilog}
+\author{Author Author}
+
+\date{}
+
+\publishers{Publisher Publisher}
+
+% selbst definierte Kopf- und Fusszeile
+\lohead{Matura paper}
+%\rohead{\input{jobid}, \input{gitbranch.tex}@\input{githash}}
+\rohead{Author Author}
+\cofoot{\thepage}
+
+% Zeilenabstand festlegen
+\singlespacing
+%\onehalfspacing
+%\doublespacing
+
+% Trennlinie für Kopfzeile
+\KOMAoption{headsepline}{off} % oder on
+
+% Trennlinie für Fusszeile
+\KOMAoption{footsepline}{on} % oder on
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\input{1-introduction.tex}
+\input{2-arch.tex}
+\input{3-implementation.tex}
+\input{4-demo.tex}
+\input{5-conclusion.tex}
+\
+\listoffigures
+\listoftables
+\lstlistoflistings
+\printbibliography
+
+\end{document}

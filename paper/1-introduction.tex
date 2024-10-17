@@ -86,6 +86,7 @@ This section is not intended to be an exhaustive guide to Verilog, but only high
 What differentiates simulated Verilog from other computer languages is its non-linear execution and lacks the concept of a main function. Verilog files are not necessarily executed from top to bottom, but execution is based on propagation of signals throughout the interconnected modules. 
 
 A module is declared with the \texttt{module} keyword. To complete a declaration the module must be named and ports specified. Ports are the connections going in and out of a module. They can either be an \texttt{input}, an \texttt{output} or bidirectional, denoted by \texttt{inout}. Ports are then specified like any other variable, by specifying the datatype, length and name. For this paper usage of data types shall be limited to, \texttt{wire}, \texttt{reg}, \texttt{logic} and for readability reasons \texttt{enum}. After the declaration of the ports the body of the module is defined, which contains the module logic.
+
 \begin{lstlisting}[language=Verilog, caption=Module definition]
 module <module_name> (
   input wire <input_name>,
