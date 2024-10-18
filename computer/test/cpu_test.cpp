@@ -36,7 +36,8 @@ class CPU : public ::testing::Test {
         cpu_dut->trace(tfp, 99);
         tfp->open(dumpfile);
         while (!cpu_dut->rootp->cpu__DOT__halt) {
-            if (contextp->time()>100000) FAIL();
+            if (contextp->time() > 100000)
+                FAIL();
             contextp->timeInc(1);
             cpu_dut->eval();
             tfp->dump(contextp->time());
@@ -259,16 +260,21 @@ TEST_F(CPU, DemoSection42) {
 
     NSumMicrocode->AddMacroInstruction(
         (new MacroInstruction("JNC"))
-            ->set_next_state((new TimingState(
-                (new ControlWord())
-                    ->set_memory_bus_selector(
-                        cpu_control::memory_bus_selector_e::PC)
-                    ->set_instruction_reg_op(
-                        cpu_control::instruction_reg_op_e::REL_SUB)
-                    ->set_data_word_selector(1)
+            ->set_next_state(
+                (new TimingState(
+                     (new ControlWord())
+                         ->set_memory_bus_selector(
+                             cpu_control::memory_bus_selector_e::PC)
+                         ->set_instruction_reg_op(
+                             cpu_control::instruction_reg_op_e::REL_SUB)
+                         ->set_data_word_selector(1)
 
-                    ->set_memory_op(cpu_control::memory_op_e::READ)))
-                                 ->override_control_word_for_flag(cpu_control::alu_flag_e::CARRY, ((new ControlWord())->set_next_instr(1)->set_alu_op(9)))));
+                         ->set_memory_op(cpu_control::memory_op_e::READ)))
+                    ->override_control_word_for_flag(
+                        cpu_control::alu_flag_e::CARRY,
+                        ((new ControlWord())
+                             ->set_next_instr(1)
+                             ->set_alu_op(9)))));
 
     NSumMicrocode->AddMacroInstruction(
         (new MacroInstruction("HLT"))
@@ -282,8 +288,7 @@ TEST_F(CPU, DemoSection42) {
 
     auto NSumAssembler = new Assembler(NSumMicrocode);
 
-    NSumAssembler
-        ->next("LDB", 0)
+    NSumAssembler->next("LDB", 0)
         ->next("LDC", 0)
         ->next("LDA", 1)
         ->next("ADB")
@@ -297,11 +302,10 @@ TEST_F(CPU, DemoSection42) {
 
     cpu_dut->eval();
 
-
     VerilatedFstC* tfp = new VerilatedFstC;
     cpu_dut->trace(tfp, 99);
     tfp->open("nsum.fst");
-    while (!cpu_dut->rootp->cpu__DOT__halt && contextp->time()!=10000) {
+    while (!cpu_dut->rootp->cpu__DOT__halt && contextp->time() != 10000) {
         contextp->timeInc(1);
         cpu_dut->eval();
         tfp->dump(contextp->time());
@@ -310,6 +314,172 @@ TEST_F(CPU, DemoSection42) {
     EXPECT_EQ(cpu_dut->rootp->cpu__DOT__rax_direct, 253);
     EXPECT_EQ(cpu_dut->rootp->cpu__DOT__rbx_direct, 23);
 }
+
+TEST_F(CPU, DemoSection43) {
+    contextp->time(0);
+    Verilated::time(0);
+    contextp->traceEverOn(true);
+    Verilated::traceEverOn(true);
+
+    auto BrainfuckMicrocode = (new Microcode());
+
+    BrainfuckMicrocode->AddMacroInstruction(
+        (new MacroInstruction("LDA"))
+            ->set_next_state((new TimingState(
+                (new ControlWord())
+                    ->set_data_word_selector(1)
+                    ->set_memory_bus_selector(
+                        cpu_control::memory_bus_selector_e::MAR)
+                    ->set_memory_op(cpu_control::memory_op_e::READ)
+                    ->set_rax_op(cpu_control::reg_op_e::LOAD)))));
+
+    BrainfuckMicrocode->AddMacroInstruction(
+        (new MacroInstruction("LDB"))
+            ->set_next_state(new TimingState(
+                (new ControlWord())
+                    ->set_data_word_selector(1)
+                    ->set_memory_bus_selector(
+                        cpu_control::memory_bus_selector_e::PC)
+                    ->set_memory_op(cpu_control::memory_op_e::READ)
+                    ->set_rbx_op(cpu_control::reg_op_e::LOAD))));
+
+    BrainfuckMicrocode->AddMacroInstruction(
+        (new MacroInstruction("ADS"))
+            ->set_next_state(new TimingState(
+                (new ControlWord())
+                    ->set_alu_op(cpu_control::alu_op_e::ADD)
+                    ->set_alu_enable(1)
+                    ->set_memory_op(cpu_control::memory_op_e::WRITE)
+                    ->set_data_word_selector(1)
+                    ->set_memory_bus_selector(
+                        cpu_control::memory_bus_selector_e::MAR))));
+
+    BrainfuckMicrocode->AddMacroInstruction(
+        (new MacroInstruction("SUS"))
+            ->set_next_state(new TimingState(
+                (new ControlWord())
+                    ->set_alu_enable(1)
+                    ->set_alu_op(cpu_control::alu_op_e::SUB)
+                    ->set_memory_op(cpu_control::memory_op_e::WRITE)
+                    ->set_data_word_selector(1)
+                    ->set_memory_bus_selector(
+                        cpu_control::memory_bus_selector_e::MAR))));
+
+    BrainfuckMicrocode->AddMacroInstruction(
+        (new MacroInstruction("SUB"))
+            ->set_next_state(new TimingState(
+                (new ControlWord())->set_alu_op(cpu_control::alu_op_e::SUB))));
+
+    BrainfuckMicrocode->AddMacroInstruction(
+        (new MacroInstruction("REA"))
+            ->set_next_state(new TimingState(
+                (new ControlWord())
+                    ->set_rbx_op(cpu_control::reg_op_e::ENABLE)
+                    ->set_instruction_reg_op(cpu_control::instruction_reg_op_e::REL_ADD)
+                    ->set_data_word_selector(1)
+                    ->set_memory_bus_selector(
+                        cpu_control::memory_bus_selector_e::MAR))));
+
+    BrainfuckMicrocode->AddMacroInstruction(
+        (new MacroInstruction("RES"))
+            ->set_next_state(new TimingState(
+                (new ControlWord())
+                    ->set_rbx_op(cpu_control::reg_op_e::ENABLE)
+                    ->set_instruction_reg_op(cpu_control::instruction_reg_op_e::REL_SUB)
+                    ->set_data_word_selector(1)
+                    ->set_memory_bus_selector(
+                        cpu_control::memory_bus_selector_e::MAR))));
+
+    BrainfuckMicrocode->AddMacroInstruction(
+        (new MacroInstruction("JNE"))
+            ->set_next_state(
+                (new TimingState(
+                     (new ControlWord())
+                         ->set_rbx_op(cpu_control::reg_op_e::ENABLE)
+                         ->set_instruction_reg_op(
+                             cpu_control::instruction_reg_op_e::REL_SUB)
+                         ->set_memory_bus_selector(
+                             cpu_control::memory_bus_selector_e::PC)))
+                    ->override_control_word_for_flag(
+                        cpu_control::alu_flag_e::ZERO, ((new ControlWord())
+                                                            ->set_next_instr(1)
+                                                            ->set_alu_op(9)))));
+
+    BrainfuckMicrocode->AddMacroInstruction(
+        (new MacroInstruction("HLT"))
+            ->set_next_state(
+                new TimingState((new ControlWord())->set_halt(1))));
+    BrainfuckMicrocode->ComputeMicrocodeFromMacroInstructions();
+    BrainfuckMicrocode->StoreMicrocodeIntoModel(cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
+    BrainfuckMicrocode->ComputeOpCodes();
+
+    auto BrainfuckAssembler = (new Assembler(BrainfuckMicrocode));
+    BrainfuckAssembler->next("LDB", 150)->next("REA")->next("REA")->next("REA"); // Move MAR away from 0 so that it does not interfere.
+
+    std::string brainfuck_program = "++>>+++++[-]>>+++";
+    // set address 0 to 2
+    // move ptr two to the right
+    // set to 5
+    // repeatedly subtract 1 until 0
+    // move ptr two to the right
+    // set address to 3
+
+    unsigned int opening_brackets[10] = {0};
+    unsigned int ptr = 0;
+    for (char& instr : brainfuck_program) {
+        switch (instr) {
+            case '+':
+                BrainfuckAssembler->next("LDA")->next("LDB", 1)->next("ADS");
+                break;
+            case '-':
+                BrainfuckAssembler->next("LDA")->next("LDB", 1)->next("SUS");
+                break;
+            case '>':
+                BrainfuckAssembler->next("LDB", 1)->next("REA");
+                break;
+            case '<':
+                BrainfuckAssembler->next("LDB", 1)->next("RES");
+                break;
+            case '[':
+                opening_brackets[++ptr] = BrainfuckAssembler->GetCurrentInstructionAddress();
+                break;
+            case ']':
+                BrainfuckAssembler->next("LDA")
+                    ->next("LDB", 0)
+                    ->next("SUB")
+                    ->next("LDB",(BrainfuckAssembler->GetCurrentInstructionAddress()-opening_brackets[ptr--]) + 2)
+                    ->next("JNE");
+                break;
+        }
+    }
+
+    BrainfuckAssembler->next("HLT");
+    BrainfuckAssembler->StoreIntoModel(
+        cpu_dut->rootp->cpu__DOT__memory__DOT__cells.m_storage);
+
+    cpu_dut->eval();
+
+    VerilatedFstC* tfp = new VerilatedFstC;
+    cpu_dut->trace(tfp, 99);
+    tfp->open("brainfuck.fst");
+    while (!cpu_dut->rootp->cpu__DOT__halt && contextp->time() != 100000
+           ) {
+        contextp->timeInc(1);
+        cpu_dut->eval();
+        tfp->dump(contextp->time());
+    }
+    tfp->close();
+
+    const auto memory_address_register =
+        cpu_dut->rootp->cpu__DOT__memory__DOT__memory_address_register;
+    const auto& memory = cpu_dut->rootp->cpu__DOT__memory__DOT__cells;
+
+    EXPECT_EQ(memory[(memory_address_register<<1)+1], 3);
+    EXPECT_EQ(memory[((memory_address_register - 2) << 1) + 1], 0);
+    EXPECT_EQ(memory[((memory_address_register - 4) << 1) + 1], 2);
+}
+
+TEST_F(CPU, DemoSection44) {}
 
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
