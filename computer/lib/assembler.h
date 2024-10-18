@@ -33,6 +33,10 @@ class Assembler {
     void StoreIntoModel(CData* m_storage) {
         std::copy(memory, memory + (1 << 9) - 1, m_storage);
     }
+
+    const unsigned int GetCurrentInstructionAddress() {
+        return ptr/2;
+    }
 };
 
 #endif  // LIB_ASSEMBLER_H
