@@ -416,7 +416,7 @@ TEST_F(CPU, DemoSection43) {
     auto BrainfuckAssembler = (new Assembler(BrainfuckMicrocode));
     BrainfuckAssembler->next("LDB", 150)->next("REA")->next("REA")->next("REA"); // Move MAR away from 0 so that it does not interfere.
 
-    std::string brainfuck_program = "++>>+++++[-]>>+++";
+    std::string brainfuck_program = "++>>+++++[-[-]]>>+++";
     // set address 0 to 2
     // move ptr two to the right
     // set to 5
