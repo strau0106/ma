@@ -265,8 +265,8 @@ TEST_F(CPU, DemoSection42) {
                      (new ControlWord())
                          ->set_memory_bus_selector(
                              cpu_control::memory_bus_selector_e::PC)
-                         ->set_instruction_reg_op(
-                             cpu_control::instruction_reg_op_e::REL_SUB)
+                         ->set_address_reg_op(
+                             cpu_control::address_reg_op_e::REL_SUB)
                          ->set_data_word_selector(1)
 
                          ->set_memory_op(cpu_control::memory_op_e::READ)))
@@ -375,7 +375,7 @@ TEST_F(CPU, DemoSection43) {
             ->set_next_state(new TimingState(
                 (new ControlWord())
                     ->set_rbx_op(cpu_control::reg_op_e::ENABLE)
-                    ->set_instruction_reg_op(cpu_control::instruction_reg_op_e::REL_ADD)
+                    ->set_address_reg_op(cpu_control::address_reg_op_e::REL_ADD)
                     ->set_data_word_selector(1)
                     ->set_memory_bus_selector(
                         cpu_control::memory_bus_selector_e::MAR))));
@@ -385,7 +385,7 @@ TEST_F(CPU, DemoSection43) {
             ->set_next_state(new TimingState(
                 (new ControlWord())
                     ->set_rbx_op(cpu_control::reg_op_e::ENABLE)
-                    ->set_instruction_reg_op(cpu_control::instruction_reg_op_e::REL_SUB)
+                    ->set_address_reg_op(cpu_control::address_reg_op_e::REL_SUB)
                     ->set_data_word_selector(1)
                     ->set_memory_bus_selector(
                         cpu_control::memory_bus_selector_e::MAR))));
@@ -396,8 +396,8 @@ TEST_F(CPU, DemoSection43) {
                 (new TimingState(
                      (new ControlWord())
                          ->set_rbx_op(cpu_control::reg_op_e::ENABLE)
-                         ->set_instruction_reg_op(
-                             cpu_control::instruction_reg_op_e::REL_SUB)
+                         ->set_address_reg_op(
+                             cpu_control::address_reg_op_e::REL_SUB)
                          ->set_memory_bus_selector(
                              cpu_control::memory_bus_selector_e::PC)))
                     ->override_control_word_for_flag(

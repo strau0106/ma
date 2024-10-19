@@ -11,7 +11,7 @@ class ControlWord {
     unsigned int alu_op : 4 = 0;
     unsigned int alu_enable : 1 = 0;
     unsigned int memory_op : 3 = 0;
-    unsigned int instruction_reg_op : 3 = 0;
+    unsigned int address_reg_op : 3 = 0;
     unsigned int data_word_selector : 1 = 0;
     unsigned int memory_bus_selector : 1 = 0;
     unsigned int rax_op : 2 = 0;
@@ -39,8 +39,8 @@ class ControlWord {
         return this;
     }
 
-    ControlWord* set_instruction_reg_op(unsigned int instruction_reg_op) {
-        this->instruction_reg_op = instruction_reg_op;
+    ControlWord* set_address_reg_op(unsigned int address_reg_op) {
+        this->address_reg_op = address_reg_op;
         return this;
     }
 
@@ -120,7 +120,7 @@ class ControlWord {
         return ((this->alu_op) << (CONTROL_WORD_WIDTH - 4)) +
                ((this->alu_enable) << (CONTROL_WORD_WIDTH - 5)) +
                ((this->memory_op) << (CONTROL_WORD_WIDTH - 8)) +
-               ((this->instruction_reg_op) << (CONTROL_WORD_WIDTH - 11)) +
+               ((this->address_reg_op) << (CONTROL_WORD_WIDTH - 11)) +
                ((this->data_word_selector) << (CONTROL_WORD_WIDTH - 12)) +
                ((this->memory_bus_selector) << (CONTROL_WORD_WIDTH - 13)) +
                ((this->rax_op) << (CONTROL_WORD_WIDTH - 15)) +

@@ -36,7 +36,7 @@ package control;
             REL_SUB,
             REL_ADD,
             INC
-    } instruction_reg_op_e /*verilator public*/;
+    } address_reg_op_e /*verilator public*/;
     typedef enum bit {
         MAR,
         PC

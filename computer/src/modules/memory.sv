@@ -8,7 +8,7 @@ module memory (
     input bit data_word_selector,
     input memory_bus_selector_e bus_selector, // 0: MAR, 1: PC
     input memory_op_e op,
-    input instruction_reg_op_e instruction_reg_op
+    input address_reg_op_e address_reg_op
 );
 
     bit[(`ADDR_BUS_WIDTH-1):0] memory_address_register;
@@ -38,7 +38,7 @@ module memory (
             WRITE:
                 cells[{selected_bus, data_word_selector}] = in;
         endcase
-        case (instruction_reg_op)
+        case (address_reg_op)
             default:
                 ; // no operation
             REL_SUB:

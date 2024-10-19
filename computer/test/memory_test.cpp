@@ -104,19 +104,19 @@ TEST_F(Memory, TuringRequirementt2122) {
     memory_dut->rootp->memory__DOT__cells.m_storage[290 << 1] = 0b11111110;
 
     memory_dut->in = 127;
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::ABSOLUTE;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::ABSOLUTE;
 
     AdvanceClock();
 
     ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 127);
 
     memory_dut->in = 173;
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::REL_ADD;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::REL_ADD;
 
     AdvanceClock();
 
     ASSERT_EQ(memory_dut->rootp->memory__DOT__memory_address_register, 300);
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::IR_NOP;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::IR_NOP;
 
     memory_dut->op = memory_control::memory_op_e::READ;
 
@@ -126,7 +126,7 @@ TEST_F(Memory, TuringRequirementt2122) {
 
 
     memory_dut->in = 10;
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::REL_SUB;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::REL_SUB;
 
     AdvanceClock();
 
@@ -141,19 +141,19 @@ TEST_F(Memory, TuringRequirementt2122) {
     memory_dut->bus_selector = 1;
 
     memory_dut->in = 127;
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::ABSOLUTE;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::ABSOLUTE;
 
     AdvanceClock();
 
     ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 127);
 
     memory_dut->in = 173;
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::REL_ADD;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::REL_ADD;
 
     AdvanceClock();
 
     ASSERT_EQ(memory_dut->rootp->memory__DOT__programm_counter, 300);
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::IR_NOP;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::IR_NOP;
 
     memory_dut->op = memory_control::memory_op_e::READ;
 
@@ -162,7 +162,7 @@ TEST_F(Memory, TuringRequirementt2122) {
     ASSERT_EQ(memory_dut->out, 0b11111111);
 
     memory_dut->in = 10;
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::REL_SUB;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::REL_SUB;
 
     AdvanceClock();
 
@@ -179,7 +179,7 @@ TEST_F(Memory, TuringRequirement2123) {
     memory_dut->in = 123;
     memory_dut->bus_selector = 0;
 
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::ABSOLUTE;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::ABSOLUTE;
 
     AdvanceClock();
 
@@ -196,7 +196,7 @@ TEST_F(Memory, TuringRequirementt2124) {
     memory_dut->rootp->memory__DOT__cells.m_storage[127 << 1] = 0b11111111;
 
     memory_dut->in = 127;
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::ABSOLUTE;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::ABSOLUTE;
 
     AdvanceClock();
 
@@ -210,7 +210,7 @@ TEST_F(Memory, TuringRequirementt2124) {
 }
 
 TEST_F(Memory, FeatureRequirement2125) {
-    memory_dut->instruction_reg_op = memory_control::instruction_reg_op_e::INC;
+    memory_dut->address_reg_op = memory_control::address_reg_op_e::INC;
     memory_dut->bus_selector = 1;
 
     AdvanceClock();
