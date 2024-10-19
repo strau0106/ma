@@ -152,7 +152,7 @@ The Control Units port list can be derived from all the signals that are require
     \end{tabular}
   \end{center}
    \caption{Control Unit port list}
-   \label{tab:reg-io}
+   \label{tab:reg-net-list}
 \end{table}
 
 To implement testcases for the control unit additonal variabls internal to the control unit must be defined. To test generation of timing information, the timing state count variable must be defined. The test cases for microcode generation must have access to the microcode storage.
@@ -236,7 +236,7 @@ The integration of all modules is achieved by instantiaing all modules and conne
 
 After initial tests however, the computer did not function. During close analysis of the timing diagrams created during the tests, it became clear that the macro instruction was not correctly loaded into the instruction register in the control unit. 
 
-\subsection{Timing Issues}
+\section{Timing Issues}
 After the first instruction in the assembly is read from the memory at state 0x3, the load signal goes high, which should trigger a latch into the register, given the module code. 
 
 \begin{lstlisting}[caption=Instruction Register Code]
