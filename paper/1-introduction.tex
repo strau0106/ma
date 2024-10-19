@@ -14,7 +14,7 @@ At some point these requirements then reach the point where, they specify functi
 As previously stated, this project shall treat all steps up until and with "Verification and Validation". The collection of this process is sometimes also referred to \textit{front end design}.
 
 \subsection{Requirements}
-Requirements engineering describes the process of not only establishing high level requirements, e.g. the project goals, but also the translation into more specific and precise low level requirements. The formulation of useful requirements is essential to the success of a project. The value of a requirement lies in its ability to translate what the author wanted into what an engineer made of it. This means requirements must be unambiguous, correct and ideally precise and concise.
+Requirements engineering describes the process of not only establishing high level requirements, e.g. the project goals, but also the translation into more specific and precise low level requirements. The formulation of useful requirements is essential to the success of a project. The value of a requirement lies in its ability to translate what the author wanted into what an engineer made of it. This means requirements must be unambiguous, correct and ideally precise and concise. \cite{cite.needed}
 
 MORE
 
@@ -26,7 +26,10 @@ Nowadays, this automated testing process is handled by software frameworks desig
 
 While requirements should cover all of an architectures' logic design implementation some pieces of code could be not covered by tests. To ensure that all code is tested, testing frameworks provide \textit{code coverage analysis tools}. The tools count activations of specific lines of code. This activation count can then be used to produce a visual report that shows all used lines of code, highlighting areas that aren't covered by code.
 
-Exhaustive testing vs non exhaustive testing.
+Automated test benches can be generally be split into two categories: exhaustive testing and directed testing. Exhaustive test benches test by supplying every possible test input to the design under test. 
+
+\cite{verilogtestbenches} \cite{exhaustivetesting} \cite{directedtesting}
+
 
 \subsection{Development Operations and Version Control Systems}
 To track development over time \textit{version control systems} are used in basically every software project. Closely tied to most version control systems are \textit{development operations}. The goal of development operations is to connect the software development closer to its operations. In many projects these operations are e.g. the continuous deployment of code changes and the execution of the automated tests. Applied to this project, the development operations signify the execution of automatic testing of code changes as soon as changes are registered with the version control system. 
@@ -56,7 +59,7 @@ In 1945 John von Neumann, an American mathematician, developed a concept for a c
 
 The truly pioneering approach of the von Neumann Architecture was to store the instructions in the same physical memory, thus accessed in the same way, as the data which simplified the programming process by allowing other programs (compilers, interpreters) to translate from more abstract languages. As instructions and data are stored in the same memory, they must also share the same physical bus. This however leads  to a phenomenon known as the \textit{von Neumann bottleneck}, where the bus and memory are the limiting factor in the speed of the computer. It arises because both the instruction fetch, and all data operations must share the same bus and can only occur one after the other, creating a point of congestion. 
 
-The architecture is split up into four modules, that each serve a distinct purpose. The \textit{arithmetic logic unit} (ALU) handles all mathematical operations on data. All data is stored in the \textit{memory}. Interaction with users and/or other systems occur through the \textit{input/output unit}. All modules are orchestrated by the \textit{control unit} which controls the modules through the \textit{control bus}. The modules then exchange data through the \textit{data and address bus} \cite{vonneumann1}.
+The architecture is split up into four modules, that each serve a distinct purpose. The \textit{arithmetic logic unit} (ALU) handles all mathematical operations on data. All data is stored in the \textit{memory}. Interaction with users and/or other systems occur through the \textit{input/output unit}. All modules are orchestrated by the \textit{control unit} which controls the modules through the \textit{control bus}. The modules then exchange data through the \textit{data and address bus} \cite{vonneumann1} \cite{vonneumann2}.
 
 \begin{figure}[H]
   \begin{center}
@@ -66,7 +69,7 @@ The architecture is split up into four modules, that each serve a distinct purpo
 \end{figure}
 
 \subsection{Instruction Hierarchy}
-The control unit controls the computer based on a \textit{program}. Each program serves a distinct purpose, e.g. calculating a series of numbers. It consists of multiple \textit{macro instructions}, which in return consist of multiple \textit{micro instructions}. Macro instructions perform, aligned with the von Neumann Architecture, an operation on a single \textit{data word}, such as overwriting it, or storing it somewhere else. A Micro instructions refers to the state of all control signals, e.g. if a component is reading or writing to the bus. Although it is possible to program a computer solely with micro instructions, it would be extremely inefficient, as the program code would be extremely repetitive.
+The control unit controls the computer based on a \textit{program}. Each program serves a distinct purpose, e.g. calculating a series of numbers. It consists of multiple \textit{macro instructions}, which in return consist of multiple \textit{micro instructions}. Macro instructions perform, aligned with the von Neumann Architecture, an operation on a single \textit{data word}, such as overwriting it, or storing it somewhere else. A Micro instructions refers to the state of all control signals, e.g. if a component is reading or writing to the bus. Although it is possible to program a computer solely with micro instructions, it would be extremely inefficient, as the program code would be extremely repetitive. \cite{malvino1983a}
 
 \section{Tools} \label{sec:tools}
 
@@ -74,9 +77,9 @@ The most popular flavor of such an \textit{HDL} is Verilog, as defined in \texti
 
 As the IEEE Standard only defines the language's syntax, a Verilog tool suite is required. Although previous experience in the usage of Verilog exists, expertise on the intricacies of Verilog simulation is still limited. It was thus decided based on the integration with other tooling, as to which suite is to be used. 
 
-The key feature of the chosen suite is the compilation of the Verilog code to a binary and the generation of an interface to C++. Having an interface to C++ enables much more complex behaviors to be modeled simpler, such as reading test data from a file. Additionally, apart from being able to rely on previous experience in C++, it also allows me to make use of a vast ecosystem of testing, code coverage and development operations frameworks. I chose the GoogleTest framework for my unit testing. 
+The key feature of the chosen suite, which is called \textit{Verilator}, is the compilation of the Verilog code to a binary and the generation of an interface to C++. Having an interface to C++ enables much more complex behaviors to be modeled simpler, such as reading test data from a file. Additionally, apart from being able to rely on previous experience in C++, it also allows me to make use of a vast ecosystem of testing, code coverage and development operations frameworks. Furthermore, the suite is available under the LGPL license, allowing me to use it free of charge. I chose the GoogleTest framework for automated testing procedures. Most testing frameworks in essence do the same thing, although there are small nuances that differ from one to the other. 
 
-Verilator also provides interfaces to coverage analysis tools and can generate \textit{dumpfiles}. Dumpfiles contain the data of all signal values across time and can be read by "digital oscilloscopes" like \texttt{GTKWave} and are essential to be able to debug and understand the simulation.
+Verilator also provides interfaces to coverage analysis tools by generating \textit{dumpfiles}. Dumpfiles contain the data of all signal values in the simulation across time and can be read by "digital oscilloscopes" like \texttt{GTKWave}. These can then be used to debug and understand the simulation, in case errors exist \cite{verilatoroverview}.
 
 Git and GitLab are used as the version control system and development operations platform.
 
@@ -110,18 +113,19 @@ For logic the Verilog standard specifies comparable to other computer or program
 
 The SystemVerilog standard also specifies a number of additional functions that are not synthesizable, so cannot be translated into hardware, but are useful for simulation, such as \texttt{\$display} and \texttt{\$finish}. As they are not synthesizable, they shall not be used, for this project. These features can be handled by the \texttt{C++} testbenches.
 
+\cite{verilogcourse}
+
 \subsection{Development Environment}
-To reproduce the development environment for this project, the following packages need to be installed. I suggest to use Debian 12. 
+To reproduce the development environment for this project, the following packages need to be available in \texttt{PATH}. I suggest to use Debian 12. 
 
 \begin{itemize}
   \item verilator@5.24
   \item a C++ tool chain (e.g. GCC)
   \item CMake
-  \item ninja
-\end{itemize}
-  
-\section{Idea and Goal} \label{sec:goal}
+  \item a CMake generator (e.g. ninja)
+\end{itemize}  
 
+\section{Idea and Goal} \label{sec:goal}  
 The following list can be understood as the "high(est) level requirements" to this project:
 \begin{itemize}
   \item Have a functioning computer architecture that:
@@ -147,4 +151,4 @@ Additionally, the process shall occur in a traceable process, that is aligned to
 
 Implementation and execution of these goals shall be analyzed in chapter \ref{chap:conclusion}.
 
-Features that are wanted by me are intended to increase the feature set of the architecture to make it more useable and may or may not be based on my subjectivity. HMM weiss ja nicht
+Features that are wanted by me are intended to increase the feature set of the architecture to make it more useable and may or may not be based on my subjectivity.
