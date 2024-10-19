@@ -85,14 +85,18 @@ All operations, except for absolute memory access requires an indication of whic
 For all tests, involving read operations, a value must be stored directly into the array that represents the physical memory cells in the simulation, this variable must also be defined already. To verify correct calculation of the different address modes the two address registers must also be defined. 
 
 \begin{table}[H]
+  \begin{center}
 \begin{tabular}{ccc}
     Name               & Datatype                       & name                          \\ \hline
     Cells              & \texttt{bit{[}7:0{]} {[}1-ADDR\_BUS\_WIDTH+1{]}-1} & \texttt{cells} \\
     MAR                & \texttt{bit{[}(ADDR\_BUS \_WIDTH-1:0{]}} & \texttt{memory\_address\_register} \\
     PC                & \texttt{bit{[}(ADDR\_BUS\_WIDTH-1:0{]}} & \texttt{program\_counter} \\
     \end{tabular}
+  \end{center}
     \caption{Memory internal net list}
     \label{tab:memory-internal-nets}
+
+    
    \end{table}
    
 
@@ -223,8 +227,9 @@ FibAssembler->next("HLT"); // Finally halt the computer
 FibAssembler->StoreIntoModel(cpu_dut->rootp->cpu__DOT__memory__DOT__cells.m_storage); 
 \end{lstlisting}
 
-At first, these libraries did not function correctly. Both binaries, micro code and macro program, were seemingly random. After some investigation, the root cause turned out to be unallocated memory. In an attempt to increase the readability I forgot allocating all of the different objects. During one late programming session I was under the impression that the allocation would be performed by the constructor and omitted the new. \texttt{ControlWord()->set\_data\_word\_selector()} is in fact much more readable, than\texttt{{new ControlWord()}->set\_data\_word\_selector()}, however sadly not functions correctly.
+At first, these libraries did not function correctly. Both binaries, microcode and macro program, were seemingly random. After some investigation, the root cause turned out to be unallocated memory. In an attempt to increase the readability I forgot allocating all of the different objects. During one late programming session I was under the impression that the allocation would be performed by the constructor and omitted the new. \texttt{ControlWord()->set\_data\_word\_selector()} is in fact much more readable, than\texttt{{new ControlWord()}->set\_data\_word\_selector()}, however sadly not functions correctly.
 
+A test case was introduced, to ensure, that during programming of the helper libraries, no errors were introduced in the binary arithmetics for control word and microcode generation.
 
 \section{Integration of all modules}
 The integration of all modules is achieved by instantiaing all modules and connecting the ports. To test the integrated \texttt{CPU}, refered to as a \textit{unit}, whole macro programs are loaded. This was straightforward. 
@@ -246,6 +251,7 @@ end
 
 A timing diagram however clearly shows, that the register remains empty.
 \begin{timingdiag}[!ht]
+\begin{center}
 \begin{tikztimingtable}
     clock              & L H L H L H \\ 
     load               & L L H H L L \\
@@ -253,6 +259,7 @@ A timing diagram however clearly shows, that the register remains empty.
     bus[7:0]           & 2D{00} 2D{01} 2D{00} \\
     macro\_instruction[7:0] & 6L \\ 
 \end{tikztimingtable}
+\end{center}
 \caption{Execution of primer micro instructions.}
 \end{timingdiag}
 

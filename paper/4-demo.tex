@@ -1,5 +1,5 @@
 \chapter{Functional Demonstration}
-This chapter is intended to demonstrate the funciton of the computer as per defined in section \ref{goal} by running at first simple well known algorithms and finally demostrating turing equivalence by implementing a \textit{Brainfuck} interpreter with the help of ChatGPT.
+This chapter is intended to demonstrate the function of the computer as per defined in section \ref{goal} by running at first simple well known algorithms and finally demonstrating Turing equivalence by implementing a \textit{Brainfuck} interpreter. % Nope it wasn't chatgpt, it was THC.
 
 
 
@@ -55,7 +55,7 @@ print(num)
 
 Executing this script results in $253$ for the expected sum and $23$ as the result for the number of iterations. 
 
-The assembly instructions required for this are limited to initalizing the registers, adding and moving around as well as a jump instruction, that is only performed when the carry flag is not set. 
+The assembly instructions required for this are limited to initializing the registers, adding and moving around as well as a jump instruction, that is only performed when the carry flag is not set. 
 
 \begin{lstlisting}[caption=Assembly code for the generation of the sum of $n$ natural numbers below 255, label=lst:nsum]
 LDB 0
@@ -65,7 +65,7 @@ ADB   ; Add registers A and B and store into B
 MCA   ; Move register C into A
 ADC   ; Add registers A and B and store into C
 JNC 5 ; Jump four instructions backward if carry not set. 
-; Jump is instructed to one beforehand so, it is 4 after the increment
+; Jump is instructed to one beforehand so, it points to ADB after the increment
 HLT   ; Halt computer
 \end{lstlisting}
 
@@ -85,4 +85,57 @@ reg\_c & 2.792L2.4D{1}2.4D{3}2.4D{6}2.4D{10}2.4D{15}2.4D{21}2.4D{28}2.4D{36}2.4D
 
 
 \section{Brainfuck}
+Proving computational universality or Turing completeness can become very convoluted. The simplest way to prove it is to demonstrate Turing equivalence to a Turing machine, by simulating one. Directly simulating a Turing machine is a valid and feasible method to do so. However, Turing machines have the concept of "states" in which the machine can be. As this architectures' concept of states is limited complex additional logic would need to be programmed. A Turing complete language that is more easily interpretable by this architecture is \textit{Brainfuck}. Brainfuck is an esoteric language that generally consists only of six instructions for logic, and two for input and output. It is however not standardized by any governing authority, and thus has a vast number of inscrutable definitions, standards and extensions. Apart from not implementing the input and output instructions (\texttt{.} and \texttt{;}), deviating from, what seems to me the given standard, the loop is implemented as a \texttt{do-while} loop instead of a normal \texttt{while} loop. This significantly eases implementation, as the compiler or interpreter doesn't have to look ahead in the program, but only back. This has no impact on Turing equivalence. 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ccc}
+Instruction    & Purpose                  & C++ equivalent                       \\ \hline
+\texttt{+}             & Increment at the pointer & \texttt{ptr*++;}                   \\
+\texttt{-}               & Decrement at the pointer & \texttt{ptr*--;}                   \\
+\texttt{\textgreater{}} & Increment the pointer    & \texttt{ptr++;}                    \\
+\texttt{\textless{}}   & Decrement the pointer    & \texttt{ptr--;}                    \\
+\texttt{{[}}            & Begin loop               & \texttt{do \{}                     \\
+\texttt{{]}}            & End loop              & \texttt{\} while(ptr*);}
+\end{tabular}
+\end{center}
+\caption{Brainfuck instruction table}
+\label{tab:brainfuck-instructions}
+\end{table}
+
+All instructions are logically split up in multiple macro instructions. Both \texttt{+} and \texttt{-} are structured the same way, first the content of the current cell is loaded into register A and register 2 is loaded with one. Then, depending on the instruction, either an addition or a subtraction is performed by the ALU and stored back into the current cell. For \texttt{\textgreater} and \texttt{\textless} a one is once again loaded into the B register and a relative addition or subtraction is preformed on the \texttt{memory\_address\_register}. For the \texttt{{[}} no macro instructions are set. Instead, the current instruction count is stored temporarily. Once the corresponding \texttt{{]}} is reached, the current memory cell is compared against zero. If the cell content is larger than zero a jump backwards is performed. The jump back is calculated with the previously stored instruction count and the current instruction count.
+
+The following instruction set was thus developed:
+\begin{table}[]
+    \begin{centering}
+    \begin{tabular}{cc}
+    Instruction & Purpose                                                                  \\ \hline
+    LDA         & Load value, pointed to by memory address register, into register A       \\
+    LDB         & Load second data word into register B                                    \\
+    ADS         & Add register A and B and store into current memory address               \\
+    SUS         & Subtract register A and B and store into current memory address          \\
+    REA         & Add to the memory address register, what is currently in register B      \\
+    RES         & Subtract to the memory address register, what is currently in register B \\
+    JNE         & Jump back if not equal, as much as register B specifies                  \\
+    HLT         & Halt computer                                                           
+    \end{tabular}
+\end{centering}
+    \caption{Brainfuck macro instruction set.}
+    \label{tab:brainfuck-macro-instructions}
+    \end{table}
+
+Before any of the Brainfuck program is converted to these macro instructions. The memory address register is first moved away from zero, such that it does not interfere with the program code.
+
+Finally, in a loop the macro instructions for the following program are computed: 
+
+\begin{lstlisting}[caption=Brainfuck program, label=lst:brainfuck]
+    ++>>+++++[-[-]]>>+++
+\end{lstlisting}
+
+This program first increments the first memory cell by two, then moves two to the right, and increments this by 5, and then preforms two loops. The outer loop only performs one subtraction, before another loop is started that is executed four times, such that the cell is zero, which also causes the second loop to exit. Finally, the pointer is incremented twice again and then the cell is incremented thrice. 
+
+The test bench then checks if the first address is at zero, and if the fourth address is 3.
+
+The program is written arbitrarily, has each instruction once, and has nested loops, to ensure, that nesting functions. 
+
 
