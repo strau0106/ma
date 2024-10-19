@@ -30,10 +30,17 @@
 % Trennlinie für Fusszeile
 \KOMAoption{footsepline}{on} % oder on
 
+\usepackage{comment}
+\excludecomment{figure}
+\let\endfigure\relax
+
 \begin{document}
 
-\maketitle
 
+\maketitle
+\textcopyright Rufus Spyra. 2024.
+
+PERMISSION IS HEREBY GRANTED SOLELY FOR THE PURPOSE OF PLAGIARISM CHECKS ON IT. I DO NOT CONSENT TO ANY FURTHER STORAGE OR USAGE OF THIS DOCUMENT AFTER THE CHECK HAS BEEN COMPLETED. I DO NOT CONSENT TO ANY ANONYMIZATION.
 \tableofcontents
 
 \input{1-introduction.tex}

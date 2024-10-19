@@ -34,9 +34,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.5596854"
-     inkscape:cx="398.79838"
-     inkscape:cy="238.50964"
+     inkscape:zoom="2.1059198"
+     inkscape:cx="421.19362"
+     inkscape:cy="276.36379"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -45,7 +45,7 @@
      inkscape:window-width="2256"
      inkscape:window-height="1435"
      inkscape:window-x="0"
-     inkscape:window-y="32"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      showguides="false"
      inkscape:guide-bbox="true"
@@ -228,7 +228,7 @@
          id="tspan2866-48-4-1"
          x="236.20555"
          y="586.95209"
-         style="font-size:40px;line-height:1.25;font-family:Verdana;-inkscape-font-specification:Verdana">Data bus</tspan></text>
+         style="font-size:40px;line-height:1.25;font-family:Verdana;-inkscape-font-specification:Verdana">Operand bus</tspan></text>
     <rect
        style="fill:none;stroke:#000000;stroke-width:1.53645;stroke-miterlimit:4;stroke-dasharray:3.07291, 3.07291;stroke-dashoffset:0;stroke-opacity:1"
        id="rect6265"
@@ -239,15 +239,15 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;line-height:0%;font-family:'Bitstream Vera Sans';fill:#000000;fill-opacity:1;stroke:none"
-       x="-572.12506"
+       x="-626.12506"
        y="699.11066"
        id="text7707"
        transform="rotate(-90)"><tspan
          sodipodi:role="line"
          id="tspan7709"
-         x="-572.12506"
+         x="-626.12506"
          y="699.11066"
-         style="font-size:40px;line-height:1.25;font-family:Verdana;-inkscape-font-specification:Verdana">Bus</tspan></text>
+         style="font-size:40px;line-height:1.25;font-family:Verdana;-inkscape-font-specification:Verdana">Data Bus</tspan></text>
     <g
        transform="matrix(4.946192,0,0,4.1914614,-476.09057,-47.639859)"
        id="g9944">
