@@ -181,7 +181,7 @@ The microcode is read and written out to the control word at the falling edge of
 \section{Build system switch}
 The original build system turned out to be extremely limited as soon as additional libraries needed to be included. I thus decided to switch away from Make to CMake because I had previous experience with it.
 
-As the build system is not necessarily part of the product, EXPAND, I decided to employ ChatGPT to write the new build system. At first, ChatGPT incorrecctly used Verilator inside of the CMake file, instead of using the Verilator plugin, it called Verilator as a binary. After providing it with Verilator's documentation, ChatGPT fixed the mistake and provided a functioning build system. 
+As the build system is not necessarily part of the product, EXPAND, I decided to employ ChatGPT \cite{chatgptbuildsystem} to write the new build system. At first, ChatGPT incorrecctly used Verilator inside of the CMake file, instead of using the Verilator plugin, it called Verilator as a binary. After providing it with Verilator's documentation, ChatGPT fixed the mistake and provided a functioning build system. 
 
 Some additional modifications were made, to correctly include and fetch the GoogleTest library, such that it can be compiled against. 
 
