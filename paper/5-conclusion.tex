@@ -1,8 +1,59 @@
 \chapter{Conclusion} \label{chap:conclusion}
 This chapter concludes this project by first evaluating the product and process based on the goals defined in \ref{sec:goals} and then comparing to the inspiration.
 \section{Evaluation}
+
+The most important requirement to me, of having an 8-bit bus width is complied with quite
+
+Turing equivalence was demonstrated by implementing/simulating a Brainfuck interpreter. Although the interpretation is not performed by the architecture, the architecture can still execute Brainfuck programs. 
+
+Adherence to the von Neumann Architecture is given by the applied modularization, naming schemes and memory structure. Discussion potential is given by the usage of registers and memory bus width. 
+
+The goal of the features given by me was to enable further usability. How can I measure success of this?? This was achieved measured by what following metrics?
+
+Simpleness, also difficult to judge. But I would say I did a good job?
+
+Test coverage lies at  98.5 excl. CPU Demo and testing. Including this would give a result of 20. Why I dont know probably a bug. 
+Simulation is very clean, and compact, only 137 lines of code, many of which could be minimised.
+
+Programmability is given as demoed in section 4.
+
+The requirements of graphic explanation, given the aforementioned supporting work, is only to be done at last.
+
+The process, lacked. 
+
+Multiple errors occured during development at various functional levels. 
+can be categorised as requirements that werent ever made
+and requirements that werent broken down enough.
+
+
+
 - Check all HLR 
+    - Has an 8-bit bus width
+    - Is Turing equivalent
+    - Based on von Neumann
+        - Register, kinda harvard
+    - features by me, comparison
+    - simple as possible.
+
+    - Test coverage analysis, errors in testcoverage??
+    - simple as possible
+    - user interaction?
+    - is programmable
+    - graphically
 - Check process
+    - 
 \section{Comparison}
 - Compare to 8-bit eater and SAP-1/SAP-2/SAP-3
-\section{Reflection and }
+Comparison based on feature set would only make sense when also comparing complexity. This is difficult, no systemverilog counterparts exist. 
+
+What can be compared however is useability. 
+This architecture usability physically would be limited, as all results would be directly in memory, and one cannot easily access them.
+
+Generally however none of these comparable architectures to have any sort of usage opportunities.
+\section{Reflection}
+Requirements not broken down enough, because doing before thinking. In the end development process was not actually so linarized, but developmment followed an approach like modeled by RUP,  where everything occured bit by bit. 
+
+In the end also not clear howww useful devops were, as they were, for code not as useful as for the paper, they brought no advantage. Many errors were observed that were not directly related to development/were unclear. 
+
+\section{What's next?}
+
