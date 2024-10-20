@@ -1,59 +1,41 @@
 \chapter{Conclusion} \label{chap:conclusion}
-This chapter concludes this project by first evaluating the product and process based on the goals defined in \ref{sec:goals} and then comparing to the inspiration.
+This chapter concludes this project by first evaluating the product and process based on the goals defined in \ref{sec:goals}.
+
 \section{Evaluation}
+The most important requirement to me, of having an 8-bit bus width is complied with, all data, be it operands or addresses always travels over 8-bit at some point. The requirement of Turing equivalence to a Turing machine was demonstrated successfully, by demonstrating the ability to perform Brainfuck. Which is. 
 
-The most important requirement to me, of having an 8-bit bus width is complied with quite
+Implementation of the von Neumann Architecture was done on best effort basis. Naming schemes and the applied modularization adhere to it. Deviations from it occured by introducing registers. The extended memory bus width is not considered to be one, as the von Neumann doesn't specify that they need to be the same bus, but only, that they are stored in same memory, which in return also means same bus, kinda.
 
-Turing equivalence was demonstrated by implementing/simulating a Brainfuck interpreter. Although the interpretation is not performed by the architecture, the architecture can still execute Brainfuck programs. 
+The focus on simplicity during development
 
-Adherence to the von Neumann Architecture is given by the applied modularization, naming schemes and memory structure. Discussion potential is given by the usage of registers and memory bus width. 
-
-The goal of the features given by me was to enable further usability. How can I measure success of this?? This was achieved measured by what following metrics?
-
-Simpleness, also difficult to judge. But I would say I did a good job?
-
-Test coverage lies at  98.5 excl. CPU Demo and testing. Including this would give a result of 20. Why I dont know probably a bug. 
-Simulation is very clean, and compact, only 137 lines of code, many of which could be minimised.
-
-Programmability is given as demoed in section 4.
-
-The requirements of graphic explanation, given the aforementioned supporting work, is only to be done at last.
-
-The process, lacked. 
-
-Multiple errors occured during development at various functional levels. 
-can be categorised as requirements that werent ever made
-and requirements that werent broken down enough.
+The requirements of the possibility graphic explanation, given the aforementioned supporting work, is only to be done for a presentation.
 
 
+The test report shows a coverage of 98.5\% of the 137 lines of code \ref{lst:build}, in fact only two lines are not reported to be not covered. The two lines are a port definition and a line concerning macro instruction decoding. Interesting enough, these lines of code are not explicitly covered by any requirements. The only requirement defining it, is \ref{req:cw-from-instr}. It only states, that control word must be generated from flags. The implementation now however also implements a register to store the current macro instruction, such that the instruction can be decoded over several steps. 
 
-- Check all HLR 
-    - Has an 8-bit bus width
-    - Is Turing equivalent
-    - Based on von Neumann
-        - Register, kinda harvard
-    - features by me, comparison
-    - simple as possible.
+This coincides with the errors that were discovered and rectified in sections \ref{sec:timing-issues} through \ref{sec:flag-latching}. These problems all can be traced back to the first design steps, where either a requirement was not broken down enough or the exact behavior was never specified. This is confirmed by the fact that before programming for \ref{chap:demo} the entire test suite for individual components passed.
 
-    - Test coverage analysis, errors in testcoverage??
-    - simple as possible
-    - user interaction?
-    - is programmable
-    - graphically
-- Check process
-    - 
-\section{Comparison}
-- Compare to 8-bit eater and SAP-1/SAP-2/SAP-3
-Comparison based on feature set would only make sense when also comparing complexity. This is difficult, no systemverilog counterparts exist. 
-
-What can be compared however is useability. 
-This architecture usability physically would be limited, as all results would be directly in memory, and one cannot easily access them.
-
-Generally however none of these comparable architectures to have any sort of usage opportunities.
 \section{Reflection}
-Requirements not broken down enough, because doing before thinking. In the end development process was not actually so linarized, but developmment followed an approach like modeled by RUP,  where everything occured bit by bit. 
+This inevitably leads to the insight that the process of low level requirement definition failed. Early in the process, after defining the feature set, I was under the impression that the architectures' logic design was sufficiently specified. After development this was confirmed by test reports showing near full coverage, indicating that the requirements should theoretically be "good" enough.
 
-In the end also not clear howww useful devops were, as they were, for code not as useful as for the paper, they brought no advantage. Many errors were observed that were not directly related to development/were unclear. 
+In hindsight, further specification especially towards timing, and interaction between the modules, should have been performed.
 
-\section{What's next?}
+Furthermore, the reliance on test coverage reports, to judge the level of specification, was suboptimal. Functional tests of functional and feature requirements will produce high test coverage. 
+
+In essence, way more architectural requirements should have been defined.
+
+The return on time invested into development operations was limited 
+
+\section{Comparison}
+
+    - Compare to 8-bit eater and SAP-1/SAP-2/SAP-3
+    Comparison based on feature set would only make sense when also comparing complexity. This is difficult, no systemverilog counterparts exist. 
+
+    What can be compared however is useability. 
+    This architecture usability physically would be limited, as all results would be directly in memory, and one cannot easily access them.
+
+    Generally however none of these comparable architectures to have any sort of usage opportunities.
+
+
+\section{What's next}
 

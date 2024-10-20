@@ -26,9 +26,9 @@ Nowadays, this automated testing process is handled by software frameworks desig
 
 While requirements should cover all of an architectures' logic design implementation some pieces of code could be not covered by tests. To ensure that all code is tested, testing frameworks provide \textit{code coverage analysis tools}. The tools count activations of specific lines of code. This activation count can then be used to produce a visual report that shows all used lines of code, highlighting areas that aren't covered by code.
 
-Automated test benches can be generally be split into two categories: exhaustive testing and directed testing. Exhaustive test benches test by supplying every possible test input to the design under test. 
+Automated test benches can be generally be split into two categories: exhaustive testing and directed testing. Exhaustive test benches test by supplying every possible test input to the design under test. Most of the time this is not required, as if it works for one input it should work for any other input. Exhaustive testing does also require significantly more time. Consequently, test benches shall be written in a directed fashion. 
 
-\cite{verilogtestbenches} \cite{exhaustivetesting} \cite{directedtesting}
+\cite{verilogtestbench} \cite{exhaustivetesting} \cite{directedtesting}
 
 
 \subsection{Development Operations and Version Control Systems}
@@ -37,7 +37,6 @@ To track development over time \textit{version control systems} are used in basi
 This combination allows for tracking and tracing the development process over time and provides quick feedback to engineers on problems arising in the code.
 
 \section{Computer Architecture Design}
-Ben Eater and SAP-1/2/3
 \subsection{Turing equivalence}
 One of the most important concepts in computer science was established in 1936 by British mathematician Alan Turing. He described algorithm that is \texttt{computationally universal}. To be computationally universal an algorithm needs to be able to execute any other algorithm. \cite{britannicaturing} 
 
@@ -130,6 +129,28 @@ To reproduce the development environment for this project, the following package
   \item a CMake generator (e.g. ninja)
 \end{itemize}  
 
+\begin{lstlisting}[caption=Build instruction, language=bash, label=lst:build]
+# Make a new folder in the source directory
+mkdir build
+cd build
+# Initalize CMake with the chosen generator. Here: ninja
+cmake .. -GNinja
+# Execute it
+ninja
+
+# To perfrom the tests execute ctest.
+ctest
+
+# To generate coverage info execute verilator_coverage
+verilator_coverage --annotate logs/annotate --annotate-all --annotate-min 1 -write-info logs/merged.info logs/*.dat
+
+# Run gcov to produce a visual report
+genhtml logs/merged.info --output-directory logs/html
+
+# Open report
+open logs/html/index.html
+\end{lstlisting}
+
 \section{Idea and Goal} \label{sec:goals}  
 The following list can be understood as the "high(est) level requirements" to this project:
 \begin{itemize}
@@ -156,6 +177,6 @@ Additionally, the process shall occur in a traceable process, that is aligned to
 
 Implementation and execution of these goals shall be analyzed in chapter \ref{chap:conclusion}.
 
-Input and output capabilites are not intended to be developed. The goal is to work with logic not i/o EXPLAIN
+Input and output capabilities are not intended to be developed, for this project, test benches shall handle this.
 
-Features that are wanted by me are intended to increase the feature set of the architecture to make it more useable and may or may not be based on my subjectivity.
+Features that are wanted by me are intended to increase the feature set of the architecture to make it more useable and may or may not be based on my subjectivity. As such they shall not be evaluated.
