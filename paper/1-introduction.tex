@@ -54,7 +54,7 @@ Generally speaking, to be Turing equivalent to a Turing machine, an architecture
 \end{itemize}
 
 
-\subsection{The von Neumann Architecture}
+\subsection{The von Neumann Architecture} \label{subsec:vna}
 In 1945 John von Neumann, an American mathematician, developed a concept for a computing device. What made this concept prevail into modern computing was its general purpose design. The executing program is intended to be exchangeable to fit the problem that is to be solved.
 
 The truly pioneering approach of the von Neumann Architecture was to store the instructions in the same physical memory, thus accessed in the same way, as the data which simplified the programming process by allowing other programs (compilers, interpreters) to translate from more abstract languages. As instructions and data are stored in the same memory, they must also share the same physical bus. This however leads  to a phenomenon known as the \textit{von Neumann bottleneck}, where the bus and memory are the limiting factor in the speed of the computer. It arises because both the instruction fetch, and all data operations must share the same bus and can only occur one after the other, creating a point of congestion. 
@@ -161,7 +161,6 @@ The following list can be understood as the "high(est) level requirements" to th
     \item Is based on the von Neumann Architecture
     \item Implements features wanted by me
     \item Is kept as simple as possible
-    \item Is, with supporting work, explainable graphically
   \end{enumerate}
   \item Have a simulation of this computer architecture that: 
   \begin{enumerate}
@@ -169,7 +168,6 @@ The following list can be understood as the "high(est) level requirements" to th
     \item Is kept as simple as possible
     \item Can be interacted with by a user
     \item Is programmable by a higher level language (assembly)
-    \item Is, with supporting work, explainable graphically.
   \end{enumerate}
 \end{itemize}
 

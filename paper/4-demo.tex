@@ -1,9 +1,6 @@
 \chapter{Functional Demonstration} \label{chap:demo}
 This chapter is intended to demonstrate the function of the computer as per defined in section \ref{goal} by running at first simple well known algorithms \cite{chatgptalgoidea}, and finally demonstrating Turing equivalence by implementing a \textit{Brainfuck} interpreter. % Nope it wasn't chatgpt, it was THC.
 
-
-
-
 \section{Fibonacci Sequence}
 The Fibonacci sequence is a simple sequence of natural numbers, where an element in the sequence is given by the sum of the perceding two elements.
 
@@ -104,7 +101,7 @@ Instruction    & Purpose                  & C++ equivalent                      
 All instructions are logically split up in multiple macro instructions. Both \texttt{+} and \texttt{-} are structured the same way, first the content of the current cell is loaded into register A and register 2 is loaded with one. Then, depending on the instruction, either an addition or a subtraction is performed by the ALU and stored back into the current cell. For \texttt{\textgreater} and \texttt{\textless} a one is once again loaded into the B register and a relative addition or subtraction is preformed on the \texttt{memory\_address\_register}. For the \texttt{{[}} no macro instructions are set. Instead, the current instruction count is stored temporarily. Once the corresponding \texttt{{]}} is reached, the current memory cell is compared against zero. If the cell content is larger than zero a jump backwards is performed. The jump back is calculated with the previously stored instruction count and the current instruction count.
 
 The following instruction set was thus developed:
-\begin{table}[]
+\begin{table}[H]
     \begin{centering}
     \begin{tabular}{cc}
     Instruction & Purpose                                                                  \\ \hline

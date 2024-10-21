@@ -231,7 +231,7 @@ At first, these libraries did not function correctly. Both binaries, microcode a
 
 A test case was introduced, to ensure, that during programming of the helper libraries, no errors were introduced in the binary arithmetics for control word and microcode generation.
 
-\section{Integration of all modules}
+\section{Integration of all modules} \label{sec:integration}
 The integration of all modules is achieved by instantiaing all modules and connecting the ports. To test the integrated \texttt{CPU}, refered to as a \textit{unit}, whole macro programs are loaded. This was straightforward. 
 
 After initial tests however, the computer did not function. During close analysis of the timing diagrams created during the tests, it became clear that the macro instruction was not correctly loaded into the instruction register in the control unit. 

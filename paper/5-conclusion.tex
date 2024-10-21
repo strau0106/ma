@@ -2,40 +2,34 @@
 This chapter concludes this project by first evaluating the product and process based on the goals defined in \ref{sec:goals}.
 
 \section{Evaluation}
-The most important requirement to me, of having an 8-bit bus width is complied with, all data, be it operands or addresses always travels over 8-bit at some point. The requirement of Turing equivalence to a Turing machine was demonstrated successfully, by demonstrating the ability to perform Brainfuck. Which is. 
+The most important requirement to me, of having an 8-bit bus width is complied with. All data, be it operands or addresses always travels over 8-bit at some point. The requirement of Turing equivalence to a Turing machine was demonstrated successfully by first demonstrating the ability to interpret Brainfuck. Which is in return Turing complete.
 
-Implementation of the von Neumann Architecture was done on best effort basis. Naming schemes and the applied modularization adhere to it. Deviations from it occured by introducing registers. The extended memory bus width is not considered to be one, as the von Neumann doesn't specify that they need to be the same bus, but only, that they are stored in same memory, which in return also means same bus, kinda.
+Implementation of the von Neumann Architecture was done on best effort basis. Naming schemes and the applied modularization adhere to it. Deviations from it occured by introducing registers. Registers as such do not follow von Neumann's idea of having a unified memory for instructions and operands. Nonetheless, the registers are considered essential.
 
-The focus on simplicity during development
+Furthermore, the augmentation of the address bus is not considered to be a deviation from the von Neumann architecture. The intention behind the idea that all data (cf. section \ref{subsec:vna}) travels over the same bus is to ensure that the data and instructions can be stored in the same memory.
 
-The requirements of the possibility graphic explanation, given the aforementioned supporting work, is only to be done for a presentation.
+The requirement of a four bit timing state and its justification have been disproved by the demonstations in section \ref{chap:demo}. None of the instructions have more than one state. Although there exists optimization potential for some instructions, by combining them, none of them would come close to the maximum of 16. The provided jump example lost its validity, by simply jumping one more or less instruction, such that execution of the target instruction can be achieved by normal execution flow (e.g. increment of program counter and loading of instruction into control unit). A reduction of timing states to three or even two bits would be valid.
 
+Analysing the simulation, the generated coverage report (report generation cf. section \ref{lst:build}) indicates that only $52.6\%$ of the code is covered. Many of the supposedly uncovered lines, are however clearly covered. For example, all operations apart from the addition are reported to be untested, however the tests for requirements \ref{req:sub} to \ref{req:not} clearly test these operations (cf. \texttt{alu\_test.cpp}). This test report is thus considered to be faulty and disregarded. A test report that is only based on tests from modules and not on entire \texttt{CPU} tests shows a coverage of $98.5\%$.
 
-The test report shows a coverage of 98.5\% of the 137 lines of code \ref{lst:build}, in fact only two lines are not reported to be not covered. The two lines are a port definition and a line concerning macro instruction decoding. Interesting enough, these lines of code are not explicitly covered by any requirements. The only requirement defining it, is \ref{req:cw-from-instr}. It only states, that control word must be generated from flags. The implementation now however also implements a register to store the current macro instruction, such that the instruction can be decoded over several steps. 
+Which leaves only two lines uncovered. These two lines are a port definition and a line concerning macro instruction decoding. Interesting enough, these lines of code are not explicitly covered by any requirements. The only requirement defining it, is \ref{req:cw-from-instr}. It only states, that control word must be generated from flags. The simulation now however also implements a register to store the current macro instruction, such that the instruction can be decoded over several steps. A feature essential to the operation of the simulation. 
 
-This coincides with the errors that were discovered and rectified in sections \ref{sec:timing-issues} through \ref{sec:flag-latching}. These problems all can be traced back to the first design steps, where either a requirement was not broken down enough or the exact behavior was never specified. This is confirmed by the fact that before programming for \ref{chap:demo} the entire test suite for individual components passed.
+This coincides with the errors that were discovered and rectified in sections \ref{sec:timing-issues} through \ref{sec:flag-latching}. These problems all can be traced back to the first design steps, where either a requirement was not broken down enough or the exact behavior was never specified. This is confirmed by the fact that before programming for section \ref{chap:demo}, so after section \ref{sec:integration} the entire test suite for individual components passed.
 
 \section{Reflection}
-This inevitably leads to the insight that the process of low level requirement definition failed. Early in the process, after defining the feature set, I was under the impression that the architectures' logic design was sufficiently specified. After development this was confirmed by test reports showing near full coverage, indicating that the requirements should theoretically be "good" enough.
+This inevitably leads to the insight that the process of low level requirement definition failed. 
+Early in the process, after defining the feature set, I was under the impression that the architectures' logic design was sufficiently specified and begun development. Finalizing the module development, this was at first confirmed by the test reports showing near full coverage, indicating that the requirements theoretically specified enough. In hindsight, further specification especially towards timing, and interaction between the modules, should have been performed. The reliance on test coverage reports to judge to not only judge implementation but also the depth of specification, was not ideal. Functional tests of functional and feature requirements will always produce high test coverage results. The implementation of architectural requirements is not testable but only verifiable, as already stated in \ref{chap:arch}, but also disregarded.
 
-In hindsight, further specification especially towards timing, and interaction between the modules, should have been performed.
-
-Furthermore, the reliance on test coverage reports, to judge the level of specification, was suboptimal. Functional tests of functional and feature requirements will produce high test coverage. 
-
-In essence, way more architectural requirements should have been defined.
-
-The return on time invested into development operations was limited 
+Finally, the return on time invested into development operations was very limited. Numerous pipeline runs failed due to issues unrelated to the project code, but because of bugs and improperly configured tools. Nonetheless, the pipelines are considered essential for a proper process and were kept in place. Marginal time costs were close to zero for any additional development time.
 
 \section{Comparison}
+Comparison to the inspiration, the 8-bit Computer from Ben Eater \cite{beneater} and the "Simple As Possible" architectures from \cite{malvino1983a}, proves to be difficult. The most apparent qualitative metric to compare between these architectures is the feature set. Comparison based on quantitive metrics such as performance or complexity is not possible, as simulation performance figures are based on the simulator hardware, and as the other architectures authors have either not provided any implementation or any SystemVerilog implementation. Comparing the feature set without considering any quantitative metric appears to lack purpose.
 
-    - Compare to 8-bit eater and SAP-1/SAP-2/SAP-3
-    Comparison based on feature set would only make sense when also comparing complexity. This is difficult, no systemverilog counterparts exist. 
+Comparison is however possible based on the useability of potential implementations of the other architectures. Crucially, unlike this architecture, both comparison targets specify input and output capabilities. They do this with special displays (e.g. decoding to decimal) and human interface devices. As specified in \ref{sec:goals} this system does not have any explicit input and output capabilities, can and is however interacted with over memory. Interaction over memory is however limited to before and after execution of a program. This makes this architecture, compared to the others which allow input and output during execution, unfit for any interfaced programs. These interfaced programs are not only limited to user interface programs but also include any interface to other machines, limiting useability even further.
 
-    What can be compared however is useability. 
-    This architecture usability physically would be limited, as all results would be directly in memory, and one cannot easily access them.
-
-    Generally however none of these comparable architectures to have any sort of usage opportunities.
-
+From a developer perspective useability does not seem to differ grately. Considering all features, the lack of a fixed instruction set gives great flexibility to implement esoteric instructions that are extremely specific, or even implement often repeated routines. Consequently, this also creates a substantial inital development effort, as all instructions must be developed first. With adequate preprocessing, relative addressing should not create any additional development efforts. Under specific circumstances it may even ease development.
 
 \section{What's next}
+The unsuitability of this computer architecture for any interactive programs leaves a desire for extension. One solution would be to extend the memory bus and repurposing part of it to introduce peripherals into the system. This \textit{memory-mapped I/O} could be employed to add peripherals such as screens or communication channels with other devices. 
 
+To adequately use these peripherals, additional means of memory address handling would have to be implemented, as ease of programmability for these features would suffer grately. This could be given by other addressing modes, where absolute addresses are used, but the first bits aren't overwritten with zeros, or introduction of additional memory address registers.

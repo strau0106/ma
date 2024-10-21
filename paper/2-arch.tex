@@ -1,4 +1,4 @@
-\chapter{Designing the Architecture}
+\chapter{Designing the Architecture} \label{chap:arch}
 Following The Von Neumann the architecture shall be structured in a number of modules, the arithmetic logic unit, the control unit, memory, input and output. The modules interact with each over the three buses, sharing data, address and control signals. All actions are orchestrated by the control unit, signalling the other modules when to read or write data, when to perform calculations, and when to output data, based on the micro instructions stored in the control unit.
 
 When taking into account that (random access) memory retrieval takes significantly longer than any other operation the von Neumann bottleneck can be alleviated to a certain extent by introducing a secondary, faster, form of memory. Deviating from the von Neumann Architecture the memory module shall be split up into to two modules, a random access memory, storing data and instructions referenced by addresses and the registers, storing only a single bus width (a data word). As well as a number of registers, storing operand data for the arithmetic logic unit. The registers function without an address and are directly operated by the control unit.
@@ -41,7 +41,7 @@ To source ideas for additional features and operations ChatGPT was harnessed to 
 Binary multiplication is normally achieved by repeated addition of the multiplicand to itself, whilst counting the addition operations, stopping when the multiplier is reached. The simplest way of performing a division, specifically integer division, is by repeated subtraction of the divisor from the dividend until a number smaller than the divisor is reached. As the architecture implements repeatable operations based on conditions, multiplication and division can be performed in macro code. This would be redundant.
 
 Likewise, rotation and shift operations shall only be implemented for a single bit, as any other shift or rotation can only be achieved by performing the shift multiple times or by having multiple shift and rotate circuits in series.
-\begin{feat-requirement}
+\begin{feat-requirement} \label{req:sub}
   Ability to subtract two data words.
 \end{feat-requirement}
 
@@ -57,7 +57,7 @@ Likewise, rotation and shift operations shall only be implemented for a single b
   Ability to AND, OR and XOR two data words.
 \end{feat-requirement}
 
-\begin{feat-requirement}
+\begin{feat-requirement} \label{req:not}
   Ability to NOT a data word.
 \end{feat-requirement}
 
