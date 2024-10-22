@@ -2,16 +2,16 @@
 This chapter is intended to demonstrate the function of the computer as per defined in section \ref{goal} by running at first simple well known algorithms \cite{chatgptalgoidea}, and finally demonstrating Turing equivalence by implementing a \textit{Brainfuck} interpreter. % Nope it wasn't chatgpt, it was THC.
 
 \section{Fibonacci Sequence}
-The Fibonacci sequence is a simple sequence of natural numbers, where an element in the sequence is given by the sum of the perceding two elements.
+The Fibonacci sequence is a simple sequence of natural numbers, where an element in the sequence is given by the sum of the preceding two elements.
 
-The required instructions for generating assembly are thus relatively simple. The only instructions required are those for moving data in and out of registers, initalizing them and adding them. A halt instruction is also added so that the simulation can stop when calculations are done. 
+The required instructions for generating assembly are thus relatively simple. The only instructions required are those for moving data in and out of registers, initializing them and adding them. A halt instruction is also added so that the simulation can stop when calculations are done. 
 
-For this demonstration the calculations do not yet happen in a loop but the instructions are just repeated a number of times. Loops and conditions are intended to be demostrated in section \ref{sec:n-num}.
+For this demonstration the calculations do not yet happen in a loop, but the instructions are just repeated a number of times. Loops and conditions are intended to be demonstrated in section \ref{sec:n-num}.
 
-Creating the control words for the instructions is straight forward. For the load instructions, the memory is set to read the second data word, from the current instructions, either storing it into register A or register B. The move instructions set one of the registers to output and one to load. Finally the ADD instruction, activates the ALU, sets its operation to "ADD" and sets the C register to load. 
+Creating the control words for the instructions is straight forward. For the load instructions, the memory is set to read the second data word, from the current instructions, either storing it into register A or register B. The move instructions set one of the registers to output and one to load. Finally, the ADD instruction, activates the ALU, sets its operation to "ADD" and sets the C register to load. 
 
-The final macro programm then looks like this: 
-\begin{lstlisting}[language={[x86masm]Assembler}, caption=Assembly code to calculate assembly, label=lst:fib]
+The final macro program then looks like this: 
+\begin{lstlisting}[language={[x86masm]Assembler}, caption=Assembly code to calculate the fibonacci series, label=lst:fib]
 LDA 0 ; Initalize register A with 0
 LDB 1 ; Initalize register B with 1
 ADD ; Add register A and B and store into register C
@@ -21,7 +21,7 @@ MCB ; Move register C to B
 HLT ; Signal execution is complete
 \end{lstlisting}
 
-After generating the microcode and macro program, the following content of the three used registers can be observed during the execution of the programm, assuming that the three instructions are repeated 10 times:
+After generating the microcode and macro program, the following content of registers can be observed during execution of the program, assuming that the three instructions are repeated 10 times:
 
 \begin{timingdiag}[!ht]
 \begin{tikztimingtable}
@@ -36,7 +36,7 @@ After generating the microcode and macro program, the following content of the t
 Manually calculation of the $11$th element leads to the same result of $89$.
 
 \section{Sum of first $n$ natural Numbers} \label{sec:nth-sum}
-The goal of this demonstration is to show the functioning of the conditional operation and thus also looping. The program shall continously add the next natural number until the sum would be greater than 255 and thus the carry flag triggered. The following python code illustrates the approach and can be used to calculate the expected result.
+The goal of this demonstration is to show the functioning of the conditional operation and thus also looping. The program shall continuously add the next natural number until the sum would be greater than 255 and thus the carry flag triggered. The following python code illustrates the approach and can be used to calculate the expected result.
 
 \begin{lstlisting}[caption=Python code for the generation of the sequence]
 sum = 0
@@ -98,12 +98,12 @@ Instruction    & Purpose                  & C++ equivalent                      
 \label{tab:brainfuck-instructions}
 \end{table}
 
-All instructions are logically split up in multiple macro instructions. Both \texttt{+} and \texttt{-} are structured the same way, first the content of the current cell is loaded into register A and register 2 is loaded with one. Then, depending on the instruction, either an addition or a subtraction is performed by the ALU and stored back into the current cell. For \texttt{\textgreater} and \texttt{\textless} a one is once again loaded into the B register and a relative addition or subtraction is preformed on the \texttt{memory\_address\_register}. For the \texttt{{[}} no macro instructions are set. Instead, the current instruction count is stored temporarily. Once the corresponding \texttt{{]}} is reached, the current memory cell is compared against zero. If the cell content is larger than zero a jump backwards is performed. The jump back is calculated with the previously stored instruction count and the current instruction count.
+All instructions are logically split up in multiple macro instructions. Both \texttt{+} and \texttt{-} are structured the same way, first the content of the current cell is loaded into register A and register B is loaded with a one. Then, depending on the instruction, either an addition or a subtraction is performed by the ALU and stored back into the current cell. For \texttt{\textgreater} and \texttt{\textless} a one is once again loaded into the B register and a relative addition or subtraction is preformed on the \texttt{memory\_address\_register}. For the \texttt{{[}} no macro instructions are appended to the program. Instead, the current instruction count is stored temporarily. Once the corresponding \texttt{{]}} is reached, the current memory cell is compared against zero. If the cell content is larger than zero a jump backwards is performed. The jump back is calculated with the previously stored instruction count and the current instruction count.
 
 The following instruction set was thus developed:
 \begin{table}[H]
-    \begin{centering}
-    \begin{tabular}{cc}
+    \begin{center}
+    \begin{tabular}{rl}
     Instruction & Purpose                                                                  \\ \hline
     LDA         & Load value, pointed to by memory address register, into register A       \\
     LDB         & Load second data word into register B                                    \\
@@ -114,12 +114,12 @@ The following instruction set was thus developed:
     JNE         & Jump back if not equal, as much as register B specifies                  \\
     HLT         & Halt computer                                                           
     \end{tabular}
-\end{centering}
+\end{center}
     \caption{Brainfuck macro instruction set.}
     \label{tab:brainfuck-macro-instructions}
     \end{table}
 
-Before any of the Brainfuck program is converted to these macro instructions. The memory address register is first moved away from zero, such that it does not interfere with the program code.
+To initialize the environment the address in the memory address register is first moved away to zero, as to not interfere with the storage of the Brainfuck code.
 
 Finally, in a loop the macro instructions for the following program are computed: 
 
@@ -131,6 +131,6 @@ This program first increments the first memory cell by two, then moves two to th
 
 The test bench then checks if the first address is at zero, and if the fourth address is 3.
 
-The program is written arbitrarily, has each instruction once, and has nested loops, to ensure, that nesting functions. 
+Given that the test passes and that this program demonstrates each instruction and nested looping, this can be seen as a functioning Brainfuck interpretation.
 
-
+Therefore, as this computer can execute Turing complete Brainfuck, it in return is also Turing complete.
