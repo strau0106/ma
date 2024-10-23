@@ -1,14 +1,14 @@
 \chapter{Designing the Architecture} \label{chap:arch}
 
-ASDASDA
+This chapter treats the process steps of system specification and architectural design, with initial steps in logic design, as described in section \ref{sec:chip-design}.
 
-Given the previously defined goal \ref{sec:goals} three distinct groups of requirements to the computer architecture can be differentiated. Requirements resulting from the need for Turing equivalence are from here on out referred to as "Turing requirements".
+Given the previously defined goals in section \ref{sec:goals}, three distinct groups of requirements to the computer architecture can be differentiated. Requirements resulting from the need for Turing equivalence are from here on out referred to as "Turing requirements".
 
 Architectural requirements are a set of non-functional requirements given by the intended computer architecture. They are by design only verifiable and not testable.
 
 Finally, feature requirements are requirements that are arbitrarily defined by me to expand the feature set. These requirements shall be justified, when put in place and tested.
 
-Requirements are inlined and numbered to provide a point of reference when implementing and testing the requirements in the simulation. 
+Requirements are inlined and numbered to provide a point of reference to the text when implementing and testing them in the simulation. 
 
 \newtheorem{turing-requirement}{Turing Req.}[section]
 \newtheorem{arch-requirement}{Arch. Req.}[section]
@@ -22,7 +22,7 @@ Following The Von Neumann the architecture shall be structured in a number of mo
 
 When taking into account that (random access) memory retrieval takes significantly longer than any other operation the von Neumann bottleneck can be alleviated to a certain extent by introducing a secondary, faster, form of memory. Deviating from the von Neumann Architecture the memory module shall be split up into to two modules, a random access memory, storing data and instructions referenced by addresses and the registers, storing only a single bus width (a data word). As well as a number of registers, storing operand data for the arithmetic logic unit. The registers function without an address and are directly operated by the control unit.
 
-The modules, in which this architecture is split up to, thus are the ALU, the CU, the memory, the register
+The modules, in which this architecture is split up to, thus are the arithmetic logic unit, the control unit, the memory, the register
 and the input and output.
 \begin{figure}[H]
   \begin{center}
@@ -40,9 +40,9 @@ The most commonly used and implemented arithmetic operation is addition and thus
   Ability to add two data words.
 \end{turing-requirement}
 
-To source ideas for additional features and operations ChatGPT \cite{chatgptalu} was harnessed to generate ideas. From a number of suggestions, I decided to implement subtraction, shift, rotation and bit shift operations shall be implemented. 
+To source ideas for additional features and operations ChatGPT \cite{chatgptalu} was harnessed to generate ideas. From a number of suggestions, I decided to implement subtraction, shift, rotation and bit shift operations.
 
-It additionally suggested features such as floating point maths, vector maths, multiplication and division. Multiplication and division however shall not be implemented, as these operations are not performable in a single iteration. Binary multiplication is normally achieved by repeated addition of the multiplicand to itself, whilst counting the addition operations, stopping when the multiplier is reached. The simplest way of performing a division, specifically integer division, is by repeated subtraction of the divisor from the dividend until a number smaller than the divisor is reached. As the architecture implements repeatable operations based on conditions, multiplication and division can be performed in macro code. This would be redundant. This also applies to any additional complex operations, such as vectors or logarithms; these will not be implemented.
+It additionally suggested features such as floating point maths, vector maths, multiplication and division. Multiplication and division however shall not be implemented, as these operations are not performable in a single iteration. Binary multiplication is normally achieved by repeated addition of the multiplicand to itself, whilst counting the addition operations, stopping when the multiplier is reached. The simplest way of performing a division, specifically integer division, is by repeated subtraction of the divisor from the dividend until a number smaller than the divisor is reached. As the architecture implements repeatable operations based on conditions, multiplication and division can be performed in macro code. This would be redundant. This also applies to any complex operations, such as vectors or logarithms; these will not be implemented.
 
 Likewise, rotation and shift operations shall only be implemented for a single bit, as any other shift or rotation can only be achieved by performing the shift multiple times or by having multiple shift and rotate circuits in series.
 \begin{feat-requirement} \label{req:sub}
@@ -82,7 +82,7 @@ The zero flag indicates if the result of an operation is zero. This is not only 
 Given the fact that the architecture has an 8-bit data bus and the arithmetic logic unit performs 8-bit operations, it will always need to buffer the two operands. Instead of having the ALU buffer the operands with two additional registers. It shall access two registers directly, that are otherwise, independent of the ALU.
 
 \begin{arch-requirement}
-  Ability to take in data from 2 registers.
+  Ability to take in data from two registers.
 \end{arch-requirement}
 
 As the calculation results need to return to registers and memory, the ALU must have the ability to output data to the bus.
@@ -96,7 +96,7 @@ Finally, the ALU shall not exert undefined behaviour in case of undefined contro
 \begin{feat-requirement} \label{req:alu-no-output}
   Must not output unless control signals indicated to do so. 
 \end{feat-requirement}
-
+\pagebreak
 \section{Memory}
 
 \begin{turing-requirement}
@@ -131,14 +131,14 @@ To allow for relative addressing, the program counter must be stored in full len
 Must store the program counter and memory address register.
 \end{feat-requirement}
 
-For certain features, such as a call stack, it is nonetheless useful to allow for absolute addressing. Additionally, first 8-bit of the PC and MAR shall be over writeable for absolute access.
+For certain features, such as a call stack, it is nonetheless useful to allow for absolute addressing. Additionally, first 8-bit of the program counter and memory address register shall be over writeable for absolute access.
 
 \begin{feat-requirement}
 Must retrieve data with an absolute memory address. 
 \end{feat-requirement}
 
 
-When the program is executed the first micro instruction will always be to increment the program counter to get the next instruction. As that one cannot come from the bus, as no instruction or memory is present for the first steps, the program counter must be able to be incremented without the bus.
+When the program is executed the first micro instruction will always be to increment the program counter to get the next instruction. As that "1" cannot come from the bus, as no instruction or memory is present for the first steps, the program counter must be able to be incremented without the bus.
 \begin{feat-requirement}
     Must be able to increment the program counter by one with a specific control signal.
 \end{feat-requirement}
@@ -178,7 +178,11 @@ The registers that directly interface with the arithmetic logic unit must provid
 
 
 \section{Control Unit}
-Following the von Neumann Architecture, the module orchestrating the interaction and operation of all modules is called the Control Unit. It is responsible for the generation of the control word, based on the macro program, the current state of the computer and current timing information. For every given combination of input the control word must produce a specific output forming a truth table. In historic computer architectures this truth table was represented by carefully creating a net of logic gates, which would produce the correct output for every input, to satisfy the truth table. With the increasing complexity and the fact that once physically produced this control logic could not be changed, the concept of the microcode was invented \cite{malvino1983a}. A storage, given enough address and data bus width, can represent any truth table, just like a combination of logic gates, with the key advantage of being reprogrammable. Thus, nowadays, control units are often not more than a piece of storage and a timing unit. If a silicon design is not intended to be micro-(re)-programmable, the storage/truth table can be minimized with certain algorithms and then hardwired into the silicon. As representing the truth table in a storage is the most flexible way, the control unit shall be implemented as a microcode storage.
+Following the von Neumann Architecture, the module orchestrating the interaction and operation of all modules is called the Control Unit. It is responsible for the generation of the control word, based on the macro program, the current state of the computer and current timing information. 
+
+For every given combination of input the control word must produce a specific output forming a truth table. In historic computer architectures this truth table was represented by carefully creating a net of logic gates, which would produce the correct output for every input, to satisfy the truth table. 
+
+With the increasing complexity and the fact that once physically produced this control logic could not be changed, the concept of the microcode was invented \cite{malvino1983a}. A storage, given enough address and data bus width, can represent any truth table, just like a combination of logic gates, with the key advantage of being reprogrammable. Thus, nowadays, control units are often not more than a piece of storage and a timing unit. If a silicon design is not intended to be micro-(re)-programmable, the storage/truth table can be minimized with certain algorithms and then hardwired into the silicon. As representing the truth table in a storage is the most flexible way, the control unit shall be implemented as a microcode storage.
 \begin{arch-requirement}
   The microcode shall be implemented as storage.
 \end{arch-requirement}

@@ -1,5 +1,5 @@
 \chapter{Introduction}
-My fascination of retro computers sparked when I watched an online show about building an 8-bit computer on a breadboard. After countless hours of explanations, the viewer was rewarded with a blinking monster of wires and chips, functioning together to reach a goal. Ever since I watched this show \cite{beneater}, I wanted to design and build a computer like this. Over a couple of years I got further invested in the topic, fascinated by the initial impact of the first introduction of 8-bit computers in the 1970s and the sheer complexity of computer chips, I wanted to design my own computer architecture and simulation - just like if it was a real chip design, that is supposed to be physically manufactured on silicon. Unfortunately, physical construction, be it in silicon, or any other medium, was quickly ruled out due to overwhelming time efforts and costs. Manufacturing a chip in silicon not only requires physical manufacturing capabilities but also highly specialized software, that is proprietary and not intended for amateur usage. 
+My fascination of retro computers sparked when I watched an online show about building an 8-bit computer on a breadboard. After countless hours of explanations, the viewer was rewarded with a blinking monster of wires and chips, functioning together to reach a goal. Ever since I watched this show \cite{beneater}, I wanted to design and build a computer like this. Over a couple of years I got further invested in the topic, fascinated by the initial impact of the first introduction of 8-bit computers in the 1970s and the sheer complexity of computer chips, I wanted to design my own computer architecture and simulation - just like if it was a real chip design, that is supposed to be physically manufactured on silicon. Physical construction, be it in silicon or any other medium, was quickly ruled out due to overwhelming time efforts and costs. Manufacturing a chip in silicon not only requires physical manufacturing capabilities but also highly specialized software, that is proprietary and not intended for amateur usage. 
 
 The goal of this project is to design a computer architecture following the process and constraints of a chip design up until silicon or hardware design and manufacturing.
 
@@ -7,7 +7,7 @@ Following my inspiration, the architecture that is to be designed shall be kept 
 
 
 \section{Chip Design} \label{sec:chip-design}
-To move from idea to a finished product, chip designs follow a specific flow. Although different sources may describe this process differently. It is clear however, that this process is intended to be highly sequential and linearized.
+To move from idea to a finished product, chip designs follow a specific flow. Although different sources describe this process differently. All indicate that it is highly sequential and linearized.
 
 At first, all top level requirements must be clearly established, which are then further broken down in smaller and smaller requirements. This step is referred to as "System specification and architectural design".
 
@@ -19,14 +19,14 @@ As previously stated, this project shall treat all steps up until and with "Veri
 \textit{Requirements engineering} describes the process of not only establishing high level requirements, e.g. the project goals, but also the translation into more specific and precise low level requirements. The formulation of useful requirements is essential to the success of a project. The value of a requirement lies in its ability to translate what the author wanted into what an engineer made of it. This means requirements must be unambiguous, correct and ideally precise and concise \cite{requirementsengineering}.
 
 \subsection{Hardware Description Languages}
-With the development of highly complex chip designs in the late 20th century, further and further abstraction of the logic design process was required, ensuring that all stakeholders knew the exact specifications of the design at any point. Whilst the earliest chip designs were drawn by hand and later transferred onto silicon by photolithography, chip designs nowadays are first written in an abstract computer language; a Hardware Description Language. This hardware description can then be transferred into silicon either manually or automatically.  Apart from also allowing separation, modularity and reusability of components, this description later also allowed for simulation of the design. This simulation brought the key advantage of being able to be tested against requirements to check for errors \cite{histverilog} \cite{1214355}.
+With the development of highly complex chip designs in the late 20th century, further and further abstraction of the logic design process was required, ensuring that all stakeholders knew the exact specifications of the design at any point. Whilst the earliest chip designs were drawn by hand and later transferred onto silicon by photolithography, chip designs nowadays are first written in an abstract computer language; a Hardware Description Language. This hardware description can then be transferred into silicon either manually or automatically.  Apart from allowing separation, modularity and reusability of components, this description later also allowed for simulation of the design. This simulation brought the key advantage of being able to test it against requirements, to check for errors in the design \cite{histverilog} \cite{1214355}.
 
 \subsection{Automated Testing}
 Nowadays, this automated testing process is handled by software frameworks designed for this purpose. These software frameworks instantiate and execute the simulation of the \textit{design under test} on top of \textit{testbench} code. The testbench models behaviour of external components which is applied onto the design under test. The response of it is then compared to expected results and validated to ensure the design meets all requirements.
 
 While requirements should cover all of an architectures' logic design implementation, some pieces of code could be not covered by tests. To ensure that all code is tested, testing frameworks provide \textit{code coverage analysis tools}. The tools count activations of specific lines of code. This activation count can then be used to produce a visual report that shows all used lines of code, highlighting areas that aren't covered by test.
 
-Automated testbenches can be generally be split into two categories: exhaustive testing and directed testing. Exhaustive testbenches test by supplying every possible test input to the design under test. Most of the time this is not required, as if it works for one input it should work for any other input. Exhaustive testing does also require significantly more time. Consequently, testbenches shall be written in a directed fashion. 
+Automated testbenches can be generally be split into two categories: exhaustive testing and directed testing. Exhaustive testbenches test by supplying every possible test input to the design under test. Most of the time this is not required, as if it works for one input it should work for any other input. Exhaustive testing does also require significantly more time. Consequently, testbenches shall be written in a directed fashion, by just testing operations once.
 
 \cite{verilogtestbench} \cite{exhaustivetesting} \cite{directedtesting}
 
@@ -92,7 +92,7 @@ This section is not intended to be an exhaustive guide to Verilog, but only high
 What differentiates simulated Verilog from other computer languages is its non-linear execution and its lack of a main function. Verilog files are not necessarily executed from top to bottom, but execution is based on propagation of signals throughout the interconnected modules. 
 
 A module is declared with the \texttt{module} keyword. To complete a declaration the module must be named and ports specified. Ports are the connections going in and out of a module. They can either be an \texttt{input}, an \texttt{output} or bidirectional, denoted by \texttt{inout}. Ports are then specified like any other variable, by specifying the data type, length and name. For this paper usage of data types shall be limited to, \texttt{wire}, \texttt{reg}, \texttt{bit}, \texttt{logic} and for readability reasons \texttt{enum}. After the declaration of the ports the body of the module is defined, which contains the module logic.
-
+\pagebreak
 \begin{lstlisting}[language=Verilog, caption=Module definition]
 module <module_name> (
   input wire <input_name>,
@@ -128,8 +128,8 @@ To reproduce the development environment for this project, the following package
   \item CMake
   \item a CMake generator (e.g. ninja)
 \end{itemize}  
-
-\begin{lstlisting}[caption=Build instruction, language=bash, label=lst:build]
+\pagebreak
+\begin{lstlisting}[caption=Build instructions, language=bash, label=lst:build]
 # Make a new folder in the source directory
 mkdir build
 cd build

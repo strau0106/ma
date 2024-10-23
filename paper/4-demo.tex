@@ -1,5 +1,5 @@
 \chapter{Functional Demonstration} \label{chap:demo}
-This chapter is intended to demonstrate the function of the computer as per defined in section \ref{sec:goal} by running at first simple well known algorithms \cite{chatgptalgoidea}, and finally demonstrating Turing equivalence by implementing a \textit{Brainfuck} interpreter. % Nope it wasn't chatgpt, it was THC.
+This chapter is intended to demonstrate the function of the computer as per defined in section \ref{sec:goals} and verify its functionality according to section \ref{sec:chip-design} by running at first simple well known algorithms \cite{chatgptalgoidea}, and finally demonstrating Turing equivalence by implementing a \textit{Brainfuck} interpreter. % Nope it wasn't chatgpt, it was THC.
 
 \section{Fibonacci Sequence}
 The Fibonacci sequence is a simple sequence of natural numbers, where an element in the sequence is given by the sum of the preceding two elements.
@@ -79,7 +79,7 @@ reg\_c & 2.792L2.4D{1}2.4D{3}2.4D{6}2.4D{10}2.4D{15}2.4D{21}2.4D{28}2.4D{36}2.4D
 
 
 
-\section{Brainfuck}
+\section{Brainfuck Interpreter}
 Proving computational universality or Turing completeness can become very convoluted. The simplest way to prove it is to demonstrate Turing equivalence to a Turing machine, by simulating one. Directly simulating a Turing machine is a valid and feasible method to do so. However, Turing machines have the concept of "states" in which the machine can be. As this architectures' concept of states is limited complex additional logic would need to be programmed. A Turing complete language that is more easily interpretable by this architecture is \textit{Brainfuck}. Brainfuck is an esoteric language that generally consists only of six instructions for logic, and two for input and output. It is however not standardized by any governing authority, and thus has a vast number of inscrutable definitions, standards and extensions. Apart from not implementing the input and output instructions (\texttt{.} and \texttt{;}), deviating from, what seems to me the given standard, the loop is implemented as a \texttt{do-while} loop instead of a normal \texttt{while} loop. This significantly eases implementation, as the compiler or interpreter doesn't have to look ahead in the program, but only back. This has no impact on Turing equivalence. 
 
 \begin{table}[H]
@@ -103,7 +103,7 @@ All instructions are logically split up in multiple macro instructions. Both \te
 The following instruction set was thus developed:
 \begin{table}[H]
     \begin{center}
-    \begin{tabular}{rl}
+    \begin{tabular}{cc}
     Instruction & Purpose                                                                  \\ \hline
     LDA         & Load value, pointed to by memory address register, into register A       \\
     LDB         & Load second data word into register B                                    \\
@@ -133,4 +133,4 @@ The testbench then checks if the first address is at zero, and if the fourth add
 
 Given that the test passes and that this program demonstrates each instruction and nested looping, this can be seen as a functioning Brainfuck interpretation.
 
-Therefore, as this computer can execute Turing complete Brainfuck, it in return is also Turing complete.
+Therefore, as this computer can execute Turing complete Brainfuck, it in return is Turing equivalent to a Turing machine.
