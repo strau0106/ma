@@ -113,7 +113,7 @@ Increasing the size of the instruction or operand is no option either as the oth
 
 A solution to this problem is the introduction of a second data word that is stored in memory alongside, essentially increasing the address bus width by one. But instead of running this wire as part of the control bus. The indication of which data word is thus tied to the instruction's microprogramming and is not intended to be chosen at runtime. Additionally, this way of increasing the address bus does not require running a wire to every component, keeping the physical layout simple. Finally, the size of the stored program is also smaller, as the indication of the used data word is only stored once in the microcode contrary to repetitively storing it in the program code.  
 
-As the selected data word must be configured per microinstruction in microcode before computer execution. Each data word is assigned a purpose. The first one storing the instruction and the second storing the operand.    
+As the selected data word must be configured per micro instruction in microcode before computer execution. Each data word is assigned a purpose. The first one storing the instruction and the second storing the operand.    
 
 \begin{feat-requirement}
 Must store, for each memory address, store two data words. A control signal shall indicate which data word to access. The first data word shall be intended for instructions and the second for operands.
@@ -237,4 +237,4 @@ Given that for the computer to function every instruction must be first pointed 
 \end{feat-requirement}
 
 \section{Input and Output}
-This architecture shall not specifically implement any input and output capabilities, as they are not required as per \ref{sec:goals}. Any input or output can be handled by test benches, either by storing directly into memory cells or into registers.
+This architecture shall not specifically implement any input and output capabilities, as they are not required as per \ref{sec:goals}. Any input or output can be handled by testbenches, either by storing directly into memory cells or into registers.

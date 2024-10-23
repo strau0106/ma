@@ -1,12 +1,12 @@
 \chapter{Functional Demonstration} \label{chap:demo}
-This chapter is intended to demonstrate the function of the computer as per defined in section \ref{goal} by running at first simple well known algorithms \cite{chatgptalgoidea}, and finally demonstrating Turing equivalence by implementing a \textit{Brainfuck} interpreter. % Nope it wasn't chatgpt, it was THC.
+This chapter is intended to demonstrate the function of the computer as per defined in section \ref{sec:goal} by running at first simple well known algorithms \cite{chatgptalgoidea}, and finally demonstrating Turing equivalence by implementing a \textit{Brainfuck} interpreter. % Nope it wasn't chatgpt, it was THC.
 
 \section{Fibonacci Sequence}
 The Fibonacci sequence is a simple sequence of natural numbers, where an element in the sequence is given by the sum of the preceding two elements.
 
 The required instructions for generating assembly are thus relatively simple. The only instructions required are those for moving data in and out of registers, initializing them and adding them. A halt instruction is also added so that the simulation can stop when calculations are done. 
 
-For this demonstration the calculations do not yet happen in a loop, but the instructions are just repeated a number of times. Loops and conditions are intended to be demonstrated in section \ref{sec:n-num}.
+For this demonstration the calculations do not yet happen in a loop, but the instructions are just repeated a number of times. Loops and conditions are intended to be demonstrated in section \ref{sec:nth-sum}.
 
 Creating the control words for the instructions is straight forward. For the load instructions, the memory is set to read the second data word, from the current instructions, either storing it into register A or register B. The move instructions set one of the registers to output and one to load. Finally, the ADD instruction, activates the ALU, sets its operation to "ADD" and sets the C register to load. 
 
@@ -129,7 +129,7 @@ Finally, in a loop the macro instructions for the following program are computed
 
 This program first increments the first memory cell by two, then moves two to the right, and increments this by 5, and then preforms two loops. The outer loop only performs one subtraction, before another loop is started that is executed four times, such that the cell is zero, which also causes the second loop to exit. Finally, the pointer is incremented twice again and then the cell is incremented thrice. 
 
-The test bench then checks if the first address is at zero, and if the fourth address is 3.
+The testbench then checks if the first address is at zero, and if the fourth address is 3.
 
 Given that the test passes and that this program demonstrates each instruction and nested looping, this can be seen as a functioning Brainfuck interpretation.
 
