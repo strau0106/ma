@@ -17,6 +17,8 @@ paper:
     - echo $CI_JOB_ID > jobid.tex
     - latexmk main.tex -shell-escape
     - latexmk main-journal.tex -shell-escape
+    - latexmk submission.tex
+    - latexmk submission-anon.tex
   artifacts:
     paths:
       - paper/*.pdf
