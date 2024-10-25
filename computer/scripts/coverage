@@ -1,2 +1,0 @@
-#! /bin/sh
-verilator_coverage --write-info merged.info logs/*.dat | perl -nle 'print "Total coverage: $1" and exit if m/Total coverage .* (\d+\.\d+)%/'
