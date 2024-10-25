@@ -17,12 +17,12 @@ class RegTmp : public ::testing::Test {
         reg_tmp_dut->eval();
     }
 
-    void SetUp() {
+    void SetUp() override {
         reg_tmp_dut = new reg_tmp;
         reg_tmp_dut->eval();
     }
 
-    void TearDown() {
+    void TearDown() override {
         reg_tmp_dut->final();
         delete reg_tmp_dut;
     }
@@ -45,64 +45,7 @@ TEST_F(RegTmp, TuringRequirement2132) {
 
     ASSERT_EQ(reg_tmp_dut->out, 0b11101111);
 }
-/*
-TEST_F(RegTmp, REQTBD) {
-    reg_tmp_dut->op = reg_tmp_control::reg_op_e::LOAD;
-    reg_tmp_dut->in = 0b11101111;
 
-    AdvanceClock();
-
-    ASSERT_EQ(reg_tmp_dut->rootp->reg_tmp__DOT__reg_tmp, 0b11101111);
-
-    reg_tmp_dut->op = reg_tmp_control::reg_op_e::ENABLE;
-    reg_tmp_dut->rootp->reg_tmp__DOT__reg_tmp = 0b1010101;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_tmp_dut->out, 0b1010101);
-}
-
-TEST_F(RegTmp, REQTBD2) {
-    reg_tmp_dut->op = reg_tmp_control::reg_op_e::LOAD;
-    reg_tmp_dut->in = 0b11101111;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_tmp_dut->rootp->reg_tmp__DOT__reg_tmp, 0b11101111);
-
-    reg_tmp_dut->op = 4;  // invalid op
-    reg_tmp_dut->in = 0b1010101;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_tmp_dut->rootp->reg_tmp__DOT__reg_tmp, 0b11101111);
-
-    reg_tmp_dut->op = reg_tmp_control::reg_op_e::ENABLE;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_tmp_dut->out, 0b11101111);
-}
-
-TEST_F(RegTmp, REQTBD3) {
-    reg_tmp_dut->op = reg_tmp_control::reg_op_e::LOAD;
-    reg_tmp_dut->in = 0b11101111;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_tmp_dut->rootp->reg_tmp__DOT__reg_tmp, 0b11101111);
-
-    reg_tmp_dut->reset = 1;
-
-    AdvanceClock();
-
-    reg_tmp_dut->op = reg_tmp_control::reg_op_e::ENABLE;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_tmp_dut->out, 0);
-}
-*/
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     testing::InitGoogleTest(&argc, argv);

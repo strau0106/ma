@@ -17,12 +17,12 @@ class RegAcc : public ::testing::Test {
         reg_acc_dut->eval();
     }
 
-    void SetUp() {
+    void SetUp() override {
         reg_acc_dut = new reg_acc;
         reg_acc_dut->eval();
     }
 
-    void TearDown() {
+    void TearDown() override {
         reg_acc_dut->final();
         delete reg_acc_dut;
     }
@@ -45,64 +45,7 @@ TEST_F(RegAcc, TuringRequirement2132) {
 
     ASSERT_EQ(reg_acc_dut->out, 0b11101111);
 }
-/*
-TEST_F(RegAcc, REQTBD) {
-    reg_acc_dut->op = reg_acc_control::reg_op_e::LOAD;
-    reg_acc_dut->in = 0b11101111;
 
-    AdvanceClock();
-
-    ASSERT_EQ(reg_acc_dut->reg_direct, 0b11101111);
-
-    reg_acc_dut->op = reg_acc_control::reg_op_e::ENABLE;
-    reg_acc_dut->rootp->reg_direct = 0b1010101;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_acc_dut->out, 0b1010101);
-}
-
-TEST_F(RegAcc, REQTBD2) {
-    reg_acc_dut->op = reg_acc_control::reg_op_e::LOAD;
-    reg_acc_dut->in = 0b11101111;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_acc_dut->reg_direct, 0b11101111);
-
-    reg_acc_dut->op = 4;  // invalid op
-    reg_acc_dut->in = 0b1010101;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_acc_dut->reg_direct, 0b11101111);
-
-    reg_acc_dut->op = reg_acc_control::reg_op_e::ENABLE;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_acc_dut->out, 0b11101111);
-}
-
-TEST_F(RegAcc, REQTBD3) {
-    reg_acc_dut->op = reg_acc_control::reg_op_e::LOAD;
-    reg_acc_dut->in = 0b11101111;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_acc_dut->reg_direct, 0b11101111);
-
-    reg_acc_dut->reset = 1;
-
-    AdvanceClock();
-
-    reg_acc_dut->op = reg_acc_control::reg_op_e::ENABLE;
-
-    AdvanceClock();
-
-    ASSERT_EQ(reg_acc_dut->out, 0);
-}
-*/
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     testing::InitGoogleTest(&argc, argv);

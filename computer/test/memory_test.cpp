@@ -7,7 +7,7 @@
 #include <verilated.h>
 
 class Memory : public ::testing::Test {
-   protected:
+   public:
     memory* memory_dut;
 
     void AdvanceClock() {
@@ -26,7 +26,8 @@ class Memory : public ::testing::Test {
     void TearDown() {
         memory_dut->final();
         std::string log_file = "logs/memory";
-        log_file += ::testing::UnitTest::GetInstance()->current_test_info()->name();
+        log_file +=
+            ::testing::UnitTest::GetInstance()->current_test_info()->name();
         log_file += ".log";
         VerilatedCov::write(log_file.c_str());
         delete memory_dut;
@@ -86,7 +87,7 @@ TEST_F(Memory, FeatureRequirement2121) {
     // data_word_selector is still 1
 
     memory_dut->rootp->memory__DOT__cells
-        .m_storage[(ARBITRARY_READ_LOCATION << 1)+1] = ARBITRARY_DATA;
+        .m_storage[(ARBITRARY_READ_LOCATION << 1) + 1] = ARBITRARY_DATA;
     memory_dut->rootp->memory__DOT__memory_address_register =
         ARBITRARY_READ_LOCATION;
 
@@ -123,7 +124,6 @@ TEST_F(Memory, TuringRequirementt2122) {
     AdvanceClock();
 
     ASSERT_EQ(memory_dut->out, 0b11111111);
-
 
     memory_dut->in = 10;
     memory_dut->address_reg_op = memory_control::address_reg_op_e::REL_SUB;

@@ -1,6 +1,4 @@
-#ifndef LIB_ASSEMBLER_H
-#define LIB_ASSEMBLER_H
-
+#pragma once
 #include "microcode.h"
 
 class Assembler {
@@ -10,33 +8,13 @@ class Assembler {
     unsigned int ptr;
 
    public:
-    Assembler(Microcode* _microcode) {
-        this->microcode = _microcode;
-        this->ptr = 0;
-        std::fill(memory, memory + 16383 - 1, 0);
-    };
-    Assembler* next(const char _name[4]) {
-        memory[ptr] = this->microcode->GetMacroInstructionOpcode(_name);
-        ptr++;
-        ptr++;
-        return this;
-    }
+    explicit Assembler(Microcode* _microcode);
 
-    Assembler* next(const char _name[4], char8_t arg) {
-        memory[ptr] = this->microcode->GetMacroInstructionOpcode(_name);
-        ptr++;
-        memory[ptr] = arg;
-        ptr++;
-        return this;
-    }
+    Assembler* next(const char _name[4]);
 
-    void StoreIntoModel(CData* m_storage) {
-        std::copy(memory, memory + (1 << 9) - 1, m_storage);
-    }
+    Assembler* next(const char _name[4], char8_t arg);
 
-    const unsigned int GetCurrentInstructionAddress() {
-        return ptr/2;
-    }
+    void StoreIntoModel(CData* m_storage);
+
+    unsigned int GetCurrentInstructionAddress() const;
 };
-
-#endif  // LIB_ASSEMBLER_H

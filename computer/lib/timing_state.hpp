@@ -1,16 +1,18 @@
-#ifndef LIB_TIMING_STATE_HPP
-#define LIB_TIMING_STATE_HPP
+#pragma once
 
 #include <cpu_control.h>
+#include <globals.h>
 #include <control_word.hpp>
 
 class TimingState {
    private:
-    std::array<ControlWord*, NUMBER_OF_FLAGS> control_words = * new std::array<ControlWord*, NUMBER_OF_FLAGS>();
+    std::array<ControlWord*, NUMBER_OF_FLAGS> control_words =
+        std::array<ControlWord*, NUMBER_OF_FLAGS>();
+
    public:
     TimingState() {
-            for (int i = 0; i < NUMBER_OF_FLAGS; i++) {
-            this->control_words[i]=(new ControlWord())->set_next_instr(1);
+        for (int i = 0; i < NUMBER_OF_FLAGS; i++) {
+            this->control_words[i] = (new ControlWord())->set_next_instr(1);
         }
     }
 
@@ -26,9 +28,7 @@ class TimingState {
         return this;
     }
 
-    const std::array<ControlWord*, NUMBER_OF_FLAGS> bin() {
+    std::array<ControlWord*, NUMBER_OF_FLAGS> bin() const {
         return this->control_words;
     }
 };
-
-#endif  // LIB_TIMING_STATE_HPP

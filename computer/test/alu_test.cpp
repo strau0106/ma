@@ -16,12 +16,12 @@ class ALU : public ::testing::Test {
         alu_dut->eval();
     }
 
-    void SetUp() {
+    void SetUp() override {
         alu_dut = new alu;
         alu_dut->eval();
     }
 
-    void TearDown() {
+    void TearDown() override {
         alu_dut->final();
         delete alu_dut;
     }
@@ -156,7 +156,6 @@ TEST_F(ALU, TuringRequirement2112) {
 
     EXPECT_EQ(alu_dut->result, 254);
     EXPECT_EQ(alu_dut->flag, alu_control::alu_flag_e::CARRY);
-
 }
 
 TEST_F(ALU, FeatureRequirement2116) {
@@ -205,7 +204,6 @@ TEST_F(ALU, FreatureRequirement2118) {
 
     EXPECT_EQ(alu_dut->result, 0);
 }
-
 
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);

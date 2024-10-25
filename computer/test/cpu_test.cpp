@@ -11,28 +11,12 @@
 #include <string>
 
 class CPU : public ::testing::Test {
-   protected:
+   public:
     cpu* cpu_dut;
     std::unique_ptr<VerilatedContext> contextp{new VerilatedContext};
 
-    void RunUntilHalt() {
-        while (!cpu_dut->rootp->cpu__DOT__halt) {
-            contextp->timeInc(1);
-            cpu_dut->eval();
-        }
-    }
-
-    void RunUntilCondition(bool& condition) {
-        while (condition) {
-            contextp->timeInc(1);
-            cpu_dut->eval();
-        }
-    }
-
-    void RunAndDumpUntilHalt(const char* dumpfile) {
-
-        //Verilated::traceEverOn(true);
-        VerilatedFstC* tfp = new VerilatedFstC;
+    void RunAndDumpUntilHalt(const char* dumpfile) const {
+        auto* tfp = new VerilatedFstC;
         cpu_dut->trace(tfp, 99);
         tfp->open(dumpfile);
         while (!cpu_dut->rootp->cpu__DOT__halt) {
@@ -44,28 +28,14 @@ class CPU : public ::testing::Test {
         }
         tfp->close();
     }
-    /*
-    void RunAndDumpUntilCondition(const char* dumpfile, bool& condition) {
 
-        contextp->traceEverOn(true);
-        VerilatedVcdC* tfp = new VerilatedVcdC;
-        cpu_dut->trace(tfp, 99);
-        tfp->open(dumpfile);
-        while (contextp->time() && condition) {
-            contextp->timeInc(1);
-            cpu_dut->eval();
-            tfp->dump(contextp->time());
-        }
-        tfp->close();
-    } */
-
-    void SetUp() {
+    void SetUp() override {
         cpu_dut = new cpu;
         cpu_dut->eval();
         Verilated::time(0);
     }
 
-    void TearDown() {
+    void TearDown() override {
         cpu_dut->final();
         std::string log_file = "logs/cpu_";
         log_file += std::to_string(contextp->time());
@@ -76,59 +46,13 @@ class CPU : public ::testing::Test {
     }
 };
 
-TEST_F(CPU, Req) {
-    // init memory with two arbitrary values
-    // and let run through to see if we get those values read into control_unit.macro_intsruction
-    cpu_dut->rootp->cpu__DOT__memory__DOT__cells[0] = 0b10101010;
-    cpu_dut->rootp->cpu__DOT__memory__DOT__cells[2] = 0b010101011;
-
-    Microcode* TestMicrocode;
-    TestMicrocode = new Microcode;
-    TestMicrocode->StoreMicrocodeIntoModel(
-        cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
-
-    std::cout
-        << cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage[0];
-
-    cpu_dut->eval();
-
-    Verilated::traceEverOn(true);
-    VerilatedFstC* tfp = new VerilatedFstC;
-    cpu_dut->trace(tfp, 99);
-    tfp->open("dumpfile.fst");
-    cpu_dut->eval();
-    contextp->timeInc(1);
-    while (contextp->time() < 10000) {
-        contextp->timeInc(1);
-        cpu_dut->eval();
-        tfp->dump(contextp->time());
-    }
-    tfp->close();
-}
-
-TEST_F(CPU, FunctionalTestCorrectStorageOfInstructionInMicrocode) {
-    Microcode* TestMicrocode = new Microcode();
-    TestMicrocode->AddMacroInstruction(
-        (new MacroInstruction("TST"))
-            ->set_next_state(new TimingState(
-                (new ControlWord())
-                    ->set_data_word_selector(1)
-                    ->set_memory_op(cpu_control::memory_op_e::READ)
-                    ->set_rax_op(cpu_control::reg_op_e::LOAD))));
-
-    TestMicrocode->StoreMicrocodeIntoModel(
-        cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
-
-    cpu_dut->eval();
-}
-
 TEST_F(CPU, DemoSection41) {
     contextp->time(0);
     Verilated::time(0);
     contextp->traceEverOn(true);
     Verilated::traceEverOn(true);
 
-    auto FibMicrocode = (new Microcode());
+    auto* FibMicrocode = (new Microcode());
 
     FibMicrocode->AddMacroInstruction(
         (new MacroInstruction("LDA"))
@@ -181,7 +105,7 @@ TEST_F(CPU, DemoSection41) {
     FibMicrocode->StoreMicrocodeIntoModel(
         cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
 
-    auto FibAssembler = new Assembler(FibMicrocode);
+    auto* FibAssembler = new Assembler(FibMicrocode);
 
     FibAssembler->next("LDA", 0)->next("LDB", 1);
     for (int i = 0; i < 10; i++) {
@@ -194,7 +118,7 @@ TEST_F(CPU, DemoSection41) {
 
     cpu_dut->eval();
 
-    RunAndDumpUntilHalt("dumpfile3.fst");
+    RunAndDumpUntilHalt("fib.fst");
     EXPECT_EQ(cpu_dut->rootp->cpu__DOT__rcx__DOT__reg_tmp, 89);
 }
 
@@ -321,7 +245,7 @@ TEST_F(CPU, DemoSection43) {
     contextp->traceEverOn(true);
     Verilated::traceEverOn(true);
 
-    auto BrainfuckMicrocode = (new Microcode());
+    auto* BrainfuckMicrocode = (new Microcode());
 
     BrainfuckMicrocode->AddMacroInstruction(
         (new MacroInstruction("LDA"))
@@ -410,11 +334,15 @@ TEST_F(CPU, DemoSection43) {
             ->set_next_state(
                 new TimingState((new ControlWord())->set_halt(1))));
     BrainfuckMicrocode->ComputeMicrocodeFromMacroInstructions();
-    BrainfuckMicrocode->StoreMicrocodeIntoModel(cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
+    BrainfuckMicrocode->StoreMicrocodeIntoModel(
+        cpu_dut->rootp->cpu__DOT__control_unit__DOT__microcode.m_storage);
     BrainfuckMicrocode->ComputeOpCodes();
 
-    auto BrainfuckAssembler = (new Assembler(BrainfuckMicrocode));
-    BrainfuckAssembler->next("LDB", 150)->next("REA")->next("REA")->next("REA"); // Move MAR away from 0 so that it does not interfere.
+    auto* BrainfuckAssembler = (new Assembler(BrainfuckMicrocode));
+    BrainfuckAssembler->next("LDB", 150)
+        ->next("REA")
+        ->next("REA")
+        ->next("REA");  // Move MAR away from 0 so that it does not interfere.
 
     std::string brainfuck_program = "++>>+++++[-[-]]>>+++";
     // set address 0 to 2
@@ -441,14 +369,21 @@ TEST_F(CPU, DemoSection43) {
                 BrainfuckAssembler->next("LDB", 1)->next("RES");
                 break;
             case '[':
-                opening_brackets[++ptr] = BrainfuckAssembler->GetCurrentInstructionAddress();
+                opening_brackets[++ptr] =
+                    BrainfuckAssembler->GetCurrentInstructionAddress();
                 break;
             case ']':
                 BrainfuckAssembler->next("LDA")
                     ->next("LDB", 0)
                     ->next("SUB")
-                    ->next("LDB",(BrainfuckAssembler->GetCurrentInstructionAddress()-opening_brackets[ptr--]) + 2)
+                    ->next("LDB",
+                           (BrainfuckAssembler->GetCurrentInstructionAddress() -
+                            opening_brackets[ptr--]) +
+                               2)
                     ->next("JNE");
+                break;
+            default:
+                throw std::runtime_error("Invalid Instruction");
                 break;
         }
     }
@@ -459,36 +394,23 @@ TEST_F(CPU, DemoSection43) {
 
     cpu_dut->eval();
 
-    VerilatedFstC* tfp = new VerilatedFstC;
-    cpu_dut->trace(tfp, 99);
-    tfp->open("brainfuck.fst");
-    while (!cpu_dut->rootp->cpu__DOT__halt && contextp->time() != 100000
-           ) {
-        contextp->timeInc(1);
-        cpu_dut->eval();
-        tfp->dump(contextp->time());
-    }
-    tfp->close();
+    RunAndDumpUntilHalt("brainfuck.fst");
 
     const auto memory_address_register =
         cpu_dut->rootp->cpu__DOT__memory__DOT__memory_address_register;
     const auto& memory = cpu_dut->rootp->cpu__DOT__memory__DOT__cells;
 
-    EXPECT_EQ(memory[(memory_address_register<<1)+1], 3);
+    EXPECT_EQ(memory[(memory_address_register << 1) + 1], 3);
     EXPECT_EQ(memory[((memory_address_register - 2) << 1) + 1], 0);
     EXPECT_EQ(memory[((memory_address_register - 4) << 1) + 1], 2);
 }
 
-TEST_F(CPU, DemoSection44) {}
-
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     testing::InitGoogleTest(&argc, argv);
+    Verilated::mkdir("logs");
+
     auto res = RUN_ALL_TESTS();
 
-    //std::this_thread::sleep_for(std::chrono::seconds(1));std::this_thread::sleep_for(std::chrono::seconds(5));
-    Verilated::mkdir("logs");
-    //VerilatedCov::write("logs/cpu.dat");
-    //std::this_thread::sleep_for(std::chrono::seconds(1));std::this_thread::sleep_for(std::chrono::seconds(5));
     return res;
 }

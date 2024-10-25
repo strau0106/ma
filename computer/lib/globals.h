@@ -1,0 +1,9 @@
+#pragma once
+
+#define CONTROL_WORD_WIDTH 25
+
+#define MICRO_INSTRUCTION_WORD_WIDTH 14
+
+#define NUMBER_OF_FLAGS 4
+
+#define NUMBER_OF_DEFINABLE_STATES 12

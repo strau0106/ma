@@ -1,4 +1,4 @@
-#include <cpu_control.h>
+#include <globals.h>
 #include <macro_instruction.h>
 #include <micro_instruction_word.hpp>
 
@@ -18,15 +18,15 @@ MacroInstruction* MacroInstruction::set_next_state(TimingState* next_state) {
 }
 
 MacroInstruction* MacroInstruction::set_remaining_states(TimingState* state) {
-    for (unsigned int& i = this->current_state;
-         i < NUMBER_OF_DEFINABLE_STATES; i++) {
+    for (unsigned int& i = this->current_state; i < NUMBER_OF_DEFINABLE_STATES;
+         i++) {
         this->timing_states[i] = state;
     }
     return this;
 }
 
-MacroInstruction* MacroInstruction::set_opcode(unsigned int opcode) {
-    this->opcode = opcode;
+MacroInstruction* MacroInstruction::set_opcode(unsigned int _opcode) {
+    this->opcode = _opcode;
     return this;
 }
 

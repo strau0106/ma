@@ -1,12 +1,9 @@
-#ifndef LIB_MACRO_INSTRUCTION_H
-#define LIB_MACRO_INSTRUCTION_H
+#pragma once
 
+#include <globals.h>
 #include <control_word.hpp>
 #include <string>
 #include <timing_state.hpp>
-
-#define NUMBER_OF_FLAGS 4
-#define NUMBER_OF_DEFINABLE_STATES 12
 
 class MacroInstruction {
    private:
@@ -16,7 +13,7 @@ class MacroInstruction {
     unsigned int current_state = 0;
 
    public:
-    MacroInstruction(const char _name[4]);
+    explicit MacroInstruction(const char _name[4]);
 
     MacroInstruction* add_timing_state(char state_number,
                                        TimingState* timing_state);
@@ -33,5 +30,3 @@ class MacroInstruction {
 
     std::map<unsigned int, ControlWord*> bin_map();
 };
-
-#endif  // LIB_MACRO_INSTRUCTION_H

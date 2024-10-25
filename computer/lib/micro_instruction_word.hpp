@@ -1,5 +1,4 @@
-#ifndef LIB_MICRO_INSTRUCTION_WORD_HPP
-#define LIB_MICRO_INSTRUCTION_WORD_HPP
+#pragma once
 
 #include <control_word.hpp>
 
@@ -14,16 +13,16 @@ class MicroInstructionWord {
         this->state = 0;
         this->opcode = 0;
     }
-    MicroInstructionWord* set_flag(unsigned int flag) {
-        this->flag = flag;
+    MicroInstructionWord* set_flag(unsigned int _flag) {
+        this->flag = _flag;
         return this;
     }
-    MicroInstructionWord* set_state(unsigned int state) {
-        this->state = state;
+    MicroInstructionWord* set_state(unsigned int _state) {
+        this->state = _state;
         return this;
     }
-    MicroInstructionWord* set_opcode(unsigned int opcode) {
-        this->opcode = opcode;
+    MicroInstructionWord* set_opcode(unsigned int _opcode) {
+        this->opcode = _opcode;
         return this;
     }
     unsigned int bin() const {
@@ -33,5 +32,3 @@ class MicroInstructionWord {
         return val;
     }
 };
-
-#endif  // LIB_MICRO_INSTRUCTION_WORD_HPP
